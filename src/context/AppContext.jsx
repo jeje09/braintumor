@@ -263,19 +263,62 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('jjuni_admin_password', newPassword);
   };
 
-  // Content Actions
+  // Quick Links
   const updateQuickLinks = (newLinks) => {
     setQuickLinks(newLinks);
   };
 
+  // 1. Health Stories CRUD
+  const addHealthStory = (item) => {
+    setHealthStories(prev => [{ ...item, id: Date.now() }, ...prev]);
+  };
+  const updateHealthStory = (id, item) => {
+    setHealthStories(prev => prev.map(s => s.id === id ? { ...s, ...item } : s));
+  };
+  const deleteHealthStory = (id) => {
+    setHealthStories(prev => prev.filter(s => s.id !== id));
+  };
+
+  // 2. Food Calories CRUD
+  const addFoodCalorie = (item) => {
+    setFoodCalories(prev => [{ ...item, id: Date.now() }, ...prev]);
+  };
+  const updateFoodCalorie = (id, item) => {
+    setFoodCalories(prev => prev.map(f => f.id === id ? { ...f, ...item } : f));
+  };
+  const deleteFoodCalorie = (id) => {
+    setFoodCalories(prev => prev.filter(f => f.id !== id));
+  };
+
+  // 3. Healing Travel CRUD
+  const addHealingTravel = (item) => {
+    setHealingTravel(prev => [{ ...item, id: Date.now() }, ...prev]);
+  };
+  const updateHealingTravel = (id, item) => {
+    setHealingTravel(prev => prev.map(t => t.id === id ? { ...t, ...item } : t));
+  };
+  const deleteHealingTravel = (id) => {
+    setHealingTravel(prev => prev.filter(t => t.id !== id));
+  };
+
+  // 4. Perfume Stories CRUD
+  const addPerfumeStory = (item) => {
+    setPerfumeStories(prev => [{ ...item, id: Date.now() }, ...prev]);
+  };
+  const updatePerfumeStory = (id, item) => {
+    setPerfumeStories(prev => prev.map(p => p.id === id ? { ...p, ...item } : p));
+  };
+  const deletePerfumeStory = (id) => {
+    setPerfumeStories(prev => prev.filter(p => p.id !== id));
+  };
+
+  // 5. Products CRUD
   const addProduct = (newProduct) => {
     setProducts(prev => [{ ...newProduct, id: Date.now() }, ...prev]);
   };
-
   const updateProduct = (id, updatedProduct) => {
     setProducts(prev => prev.map(p => p.id === id ? { ...p, ...updatedProduct } : p));
   };
-
   const deleteProduct = (id) => {
     setProducts(prev => prev.filter(p => p.id !== id));
   };
@@ -308,13 +351,21 @@ export const AppProvider = ({ children }) => {
       quickLinks,
       updateQuickLinks,
       healthStories,
-      setHealthStories,
+      addHealthStory,
+      updateHealthStory,
+      deleteHealthStory,
       foodCalories,
-      setFoodCalories,
+      addFoodCalorie,
+      updateFoodCalorie,
+      deleteFoodCalorie,
       healingTravel,
-      setHealingTravel,
+      addHealingTravel,
+      updateHealingTravel,
+      deleteHealingTravel,
       perfumeStories,
-      setPerfumeStories,
+      addPerfumeStory,
+      updatePerfumeStory,
+      deletePerfumeStory,
       products,
       addProduct,
       updateProduct,
