@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { ImageDropzone } from '../../components/ImageDropzone';
 import { 
   ShieldCheck, 
   Plus, 
@@ -31,11 +32,11 @@ export const Admin = () => {
     quickLinks, 
     updateQuickLinks, 
     // 5 Panel Data & CRUD
-    products, addProduct, deleteProduct,
-    healthStories, addHealthStory, deleteHealthStory,
-    foodCalories, addFoodCalorie, deleteFoodCalorie,
-    healingTravel, addHealingTravel, deleteHealingTravel,
-    perfumeStories, addPerfumeStory, deletePerfumeStory
+    products, addProduct, updateProduct, deleteProduct,
+    healthStories, addHealthStory, updateHealthStory, deleteHealthStory,
+    foodCalories, addFoodCalorie, updateFoodCalorie, deleteFoodCalorie,
+    healingTravel, addHealingTravel, updateHealingTravel, deleteHealingTravel,
+    perfumeStories, addPerfumeStory, updatePerfumeStory, deletePerfumeStory
   } = useApp();
 
   const [inputPassword, setInputPassword] = useState('');
@@ -52,6 +53,9 @@ export const Admin = () => {
   // Admin Active Panel Tab ('shopping', 'health', 'calories', 'travel', 'perfume', 'quicklinks')
   const [activeAdminSubTab, setActiveAdminSubTab] = useState('shopping');
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
+
+  // Edit Mode State (holds item ID if editing, else null)
+  const [editingId, setEditingId] = useState(null);
 
   // 1. Quick Links Form State
   const [coupangUrl, setCoupangUrl] = useState(quickLinks.coupang);
@@ -143,11 +147,81 @@ export const Admin = () => {
     setTimeout(() => setSaveSuccessMsg(''), 3000);
   };
 
-  // Submit Handlers
+  // Edit Loader Handlers
+  const startEditProduct = (prod) => {
+    setEditingId(prod.id);
+    setProdTitle(prod.title);
+    setProdCategory(prod.category);
+    setProdPrice(prod.price);
+    setProdOrigPrice(prod.originalPrice || '');
+    setProdImage(prod.image || '');
+    setProdDesc(prod.description || '');
+    setProdPaytap(prod.paytapLink || '');
+    setProdKcp(prod.kcpLink || '');
+    setProdBest(prod.isBest || false);
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  };
+
+  const startEditHealth = (story) => {
+    setEditingId(story.id);
+    setHealthTitle(story.title);
+    setHealthCategory(story.category);
+    setHealthReadTime(story.readTime || '5분 읽기');
+    setHealthImage(story.image || '');
+    setHealthSummary(story.summary || '');
+    setHealthContent(story.content || '');
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  };
+
+  const startEditFood = (food) => {
+    setEditingId(food.id);
+    setFoodName(food.name);
+    setFoodCaloriesVal(food.calories);
+    setFoodProtein(food.protein || '');
+    setFoodCarbs(food.carbs || '');
+    setFoodFat(food.fat || '');
+    setFoodCategory(food.category);
+    setFoodIcon(food.icon || '🍚');
+    setFoodTip(food.healthTip || '');
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  };
+
+  const startEditTravel = (spot) => {
+    setEditingId(spot.id);
+    setTravelName(spot.name);
+    setTravelLocation(spot.location);
+    setTravelTag(spot.tag || '');
+    setTravelImage(spot.image || '');
+    setTravelDesc(spot.description || '');
+    setTravelSeason(spot.bestSeason || '사계절');
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  };
+
+  const startEditPerfume = (perfume) => {
+    setEditingId(perfume.id);
+    setPerfumeName(perfume.name);
+    setPerfumeNotes(perfume.notes || '');
+    setPerfumeMood(perfume.mood || '');
+    setPerfumeImage(perfume.image || '');
+    setPerfumeDesc(perfume.description || '');
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setProdTitle(''); setProdPrice(''); setProdOrigPrice(''); setProdImage(''); setProdDesc(''); setProdPaytap(''); setProdKcp(''); setProdBest(false);
+    setHealthTitle(''); setHealthSummary(''); setHealthContent(''); setHealthImage('');
+    setFoodName(''); setFoodCaloriesVal(''); setFoodProtein(''); setFoodCarbs(''); setFoodFat(''); setFoodTip('');
+    setTravelName(''); setTravelLocation(''); setTravelTag(''); setTravelDesc(''); setTravelImage('');
+    setPerfumeName(''); setPerfumeNotes(''); setPerfumeMood(''); setPerfumeDesc(''); setPerfumeImage('');
+  };
+
+  // Submit Handlers (Handles both ADD and EDIT)
   const handleAddProductSubmit = (e) => {
     e.preventDefault();
     if (!prodTitle || !prodPrice) return;
-    addProduct({
+    
+    const payload = {
       title: prodTitle,
       category: prodCategory,
       price: parseInt(prodPrice, 10),
@@ -157,15 +231,23 @@ export const Admin = () => {
       paytapLink: prodPaytap || 'https://payapp.kr/paytap_demo',
       kcpLink: prodKcp || 'https://kcp.co.kr/kcp_checkout_demo',
       isBest: prodBest
-    });
-    setProdTitle(''); setProdPrice(''); setProdOrigPrice(''); setProdImage(''); setProdDesc(''); setProdPaytap(''); setProdKcp(''); setProdBest(false);
-    showMsg('쇼핑몰 신규 상품이 추가되었습니다!');
+    };
+
+    if (editingId) {
+      updateProduct(editingId, payload);
+      showMsg('상품 정보가 성공적으로 수정되었습니다!');
+    } else {
+      addProduct(payload);
+      showMsg('쇼핑몰 신규 상품이 추가되었습니다!');
+    }
+    cancelEdit();
   };
 
   const handleAddHealthSubmit = (e) => {
     e.preventDefault();
     if (!healthTitle) return;
-    addHealthStory({
+
+    const payload = {
       title: healthTitle,
       category: healthCategory,
       readTime: healthReadTime || '5분 읽기',
@@ -173,15 +255,23 @@ export const Admin = () => {
       image: healthImage || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80',
       summary: healthSummary,
       content: healthContent
-    });
-    setHealthTitle(''); setHealthSummary(''); setHealthContent(''); setHealthImage('');
-    showMsg('건강이야기 아티클이 성공적으로 추가되었습니다!');
+    };
+
+    if (editingId) {
+      updateHealthStory(editingId, payload);
+      showMsg('건강이야기 아티클이 수정되었습니다!');
+    } else {
+      addHealthStory(payload);
+      showMsg('건강이야기 아티클이 성공적으로 추가되었습니다!');
+    }
+    cancelEdit();
   };
 
   const handleAddFoodSubmit = (e) => {
     e.preventDefault();
     if (!foodName || !foodCaloriesVal) return;
-    addFoodCalorie({
+
+    const payload = {
       name: foodName,
       calories: parseInt(foodCaloriesVal, 10),
       protein: parseFloat(foodProtein) || 0,
@@ -190,38 +280,61 @@ export const Admin = () => {
       category: foodCategory,
       icon: foodIcon || '🥗',
       healthTip: foodTip || '균형 잡힌 자이언트 영양 식품'
-    });
-    setFoodName(''); setFoodCaloriesVal(''); setFoodProtein(''); setFoodCarbs(''); setFoodFat(''); setFoodTip('');
-    showMsg('음식 칼로리 신규 항목이 추가되었습니다!');
+    };
+
+    if (editingId) {
+      updateFoodCalorie(editingId, payload);
+      showMsg('음식 칼로리 정보가 수정되었습니다!');
+    } else {
+      addFoodCalorie(payload);
+      showMsg('음식 칼로리 신규 항목이 추가되었습니다!');
+    }
+    cancelEdit();
   };
 
   const handleAddTravelSubmit = (e) => {
     e.preventDefault();
     if (!travelName || !travelLocation) return;
-    addHealingTravel({
+
+    const payload = {
       name: travelName,
       location: travelLocation,
       tag: travelTag || '청정 피톤치드 코스',
       image: travelImage || 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
       description: travelDesc,
       bestSeason: travelSeason
-    });
-    setTravelName(''); setTravelLocation(''); setTravelTag(''); setTravelDesc(''); setTravelImage('');
-    showMsg('힐링 여행지가 성공적으로 추가되었습니다!');
+    };
+
+    if (editingId) {
+      updateHealingTravel(editingId, payload);
+      showMsg('힐링 여행지 정보가 수정되었습니다!');
+    } else {
+      addHealingTravel(payload);
+      showMsg('힐링 여행지가 성공적으로 추가되었습니다!');
+    }
+    cancelEdit();
   };
 
   const handleAddPerfumeSubmit = (e) => {
     e.preventDefault();
     if (!perfumeName) return;
-    addPerfumeStory({
+
+    const payload = {
       name: perfumeName,
       notes: perfumeNotes || '시더우드, 라벤더, 베르가못',
       mood: perfumeMood || '심신 안정이 필요할 때',
       image: perfumeImage || 'https://images.unsplash.com/photo-1615397349754-cfa2066a298e?auto=format&fit=crop&w=800&q=80',
       description: perfumeDesc
-    });
-    setPerfumeName(''); setPerfumeNotes(''); setPerfumeMood(''); setPerfumeDesc(''); setPerfumeImage('');
-    showMsg('천연 아로마 향수가 성공적으로 추가되었습니다!');
+    };
+
+    if (editingId) {
+      updatePerfumeStory(editingId, payload);
+      showMsg('아로마 향수 정보가 수정되었습니다!');
+    } else {
+      addPerfumeStory(payload);
+      showMsg('천연 아로마 향수가 성공적으로 추가되었습니다!');
+    }
+    cancelEdit();
   };
 
   const handleSaveQuickLinks = (e) => {
@@ -312,11 +425,11 @@ export const Admin = () => {
                   어드민 5대 패널 통합 제어 센터
                 </h2>
                 <span className="bg-emerald-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">
-                  보안 관리자
+                  드래그앤드롭 이미지 지원
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                건강이야기, 음식칼로리, 힐링여행지, 향수이야기, 쇼핑몰 5대 패널의 데이터를 자유롭게 추가, 수정, 삭제합니다.
+                건강이야기, 음식칼로리, 힐링여행지, 향수이야기, 쇼핑몰 5대 패널의 이미지를 드래그 앤 드롭 및 URL로 자유롭게 수정·추가·삭제합니다.
               </p>
             </div>
           </div>
@@ -365,45 +478,18 @@ export const Admin = () => {
 
             <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  현재 비밀번호
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="현재 비밀번호 입력"
-                  value={currPasswordInput}
-                  onChange={(e) => setCurrPasswordInput(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">현재 비밀번호</label>
+                <input type="password" required placeholder="현재 비밀번호 입력" value={currPasswordInput} onChange={(e) => setCurrPasswordInput(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  새 비밀번호
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="새로 설정할 비밀번호"
-                  value={newPasswordInput}
-                  onChange={(e) => setNewPasswordInput(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">새 비밀번호</label>
+                <input type="password" required placeholder="새로 설정할 비밀번호" value={newPasswordInput} onChange={(e) => setNewPasswordInput(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  새 비밀번호 재확인
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="새 비밀번호 다시 입력"
-                  value={confirmPasswordInput}
-                  onChange={(e) => setConfirmPasswordInput(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">새 비밀번호 재확인</label>
+                <input type="password" required placeholder="새 비밀번호 다시 입력" value={confirmPasswordInput} onChange={(e) => setConfirmPasswordInput(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
 
               {changePwdError && (
@@ -414,19 +500,8 @@ export const Admin = () => {
               )}
 
               <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowChangePwdModal(false)}
-                  className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs"
-                >
-                  취소
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md"
-                >
-                  비밀번호 변경 저장
-                </button>
+                <button type="button" onClick={() => setShowChangePwdModal(false)} className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs">취소</button>
+                <button type="submit" className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md">비밀번호 변경 저장</button>
               </div>
             </form>
           </div>
@@ -436,11 +511,9 @@ export const Admin = () => {
       {/* 5-Panel Admin Sub Navigation Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto border-b border-slate-200 dark:border-slate-800 pb-2 scrollbar-none">
         <button
-          onClick={() => setActiveAdminSubTab('shopping')}
+          onClick={() => { setActiveAdminSubTab('shopping'); cancelEdit(); }}
           className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
-            activeAdminSubTab === 'shopping'
-              ? 'bg-pink-600 text-white shadow-md'
-              : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
+            activeAdminSubTab === 'shopping' ? 'bg-pink-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
           }`}
         >
           <ShoppingBag className="w-4 h-4" />
@@ -448,11 +521,9 @@ export const Admin = () => {
         </button>
 
         <button
-          onClick={() => setActiveAdminSubTab('health')}
+          onClick={() => { setActiveAdminSubTab('health'); cancelEdit(); }}
           className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
-            activeAdminSubTab === 'health'
-              ? 'bg-emerald-600 text-white shadow-md'
-              : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
+            activeAdminSubTab === 'health' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
           }`}
         >
           <HeartPulse className="w-4 h-4" />
@@ -460,11 +531,9 @@ export const Admin = () => {
         </button>
 
         <button
-          onClick={() => setActiveAdminSubTab('calories')}
+          onClick={() => { setActiveAdminSubTab('calories'); cancelEdit(); }}
           className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
-            activeAdminSubTab === 'calories'
-              ? 'bg-amber-600 text-white shadow-md'
-              : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
+            activeAdminSubTab === 'calories' ? 'bg-amber-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
           }`}
         >
           <Utensils className="w-4 h-4" />
@@ -472,11 +541,9 @@ export const Admin = () => {
         </button>
 
         <button
-          onClick={() => setActiveAdminSubTab('travel')}
+          onClick={() => { setActiveAdminSubTab('travel'); cancelEdit(); }}
           className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
-            activeAdminSubTab === 'travel'
-              ? 'bg-teal-600 text-white shadow-md'
-              : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
+            activeAdminSubTab === 'travel' ? 'bg-teal-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
           }`}
         >
           <Compass className="w-4 h-4" />
@@ -484,11 +551,9 @@ export const Admin = () => {
         </button>
 
         <button
-          onClick={() => setActiveAdminSubTab('perfume')}
+          onClick={() => { setActiveAdminSubTab('perfume'); cancelEdit(); }}
           className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
-            activeAdminSubTab === 'perfume'
-              ? 'bg-purple-600 text-white shadow-md'
-              : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
+            activeAdminSubTab === 'perfume' ? 'bg-purple-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
           }`}
         >
           <Sparkles className="w-4 h-4" />
@@ -496,11 +561,9 @@ export const Admin = () => {
         </button>
 
         <button
-          onClick={() => setActiveAdminSubTab('quicklinks')}
+          onClick={() => { setActiveAdminSubTab('quicklinks'); cancelEdit(); }}
           className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
-            activeAdminSubTab === 'quicklinks'
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
+            activeAdminSubTab === 'quicklinks' ? 'bg-blue-600 text-white shadow-md' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
           }`}
         >
           <ExternalLink className="w-4 h-4" />
@@ -509,14 +572,21 @@ export const Admin = () => {
       </div>
 
       {/* =================================================================== */}
-      {/* 1. 쇼핑몰 상품 패널 관리자                                         */}
+      {/* 1. 쇼핑몰 상품 패널 관리자 (Drag & Drop Image Dropzone 탑재)       */}
       {/* =================================================================== */}
       {activeAdminSubTab === 'shopping' && (
         <div className="space-y-8">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
-            <div className="flex items-center gap-2 text-pink-600 dark:text-pink-400 font-extrabold text-lg">
-              <Plus className="w-5 h-5" />
-              <span>신규 쇼핑몰 상품 올리기</span>
+          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border-2 border-pink-200 dark:border-pink-900/50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-pink-600 dark:text-pink-400 font-extrabold text-lg">
+                {editingId ? <Edit3 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                <span>{editingId ? '상품 정보 수정하기' : '신규 쇼핑몰 상품 올리기'}</span>
+              </div>
+              {editingId && (
+                <button type="button" onClick={cancelEdit} className="text-xs font-bold text-slate-500 hover:text-slate-800 underline">
+                  수정 취소 (신규 등록 모드)
+                </button>
+              )}
             </div>
 
             <form onSubmit={handleAddProductSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -544,9 +614,13 @@ export const Admin = () => {
                 <input type="number" placeholder="45000" value={prodOrigPrice} onChange={(e) => setProdOrigPrice(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
               </div>
 
+              {/* Drag & Drop Image Dropzone */}
               <div className="sm:col-span-2">
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">상품 이미지 URL</label>
-                <input type="url" placeholder="https://images.unsplash.com/..." value={prodImage} onChange={(e) => setProdImage(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                <ImageDropzone
+                  value={prodImage}
+                  onChange={setProdImage}
+                  label="상품 이미지 (URL 입력 또는 컴퓨터에서 이미지 드래그 앤 드롭)"
+                />
               </div>
 
               <div className="sm:col-span-2">
@@ -571,7 +645,7 @@ export const Admin = () => {
                 </label>
                 <button type="submit" className="px-6 py-2.5 bg-pink-600 hover:bg-pink-700 text-white font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs">
                   <Save className="w-4 h-4" />
-                  <span>상품 등록하기</span>
+                  <span>{editingId ? '상품 수정 저장' : '상품 신규 등록하기'}</span>
                 </button>
               </div>
             </form>
@@ -590,9 +664,14 @@ export const Admin = () => {
                       <p className="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-0.5">{prod.price.toLocaleString()}원</p>
                     </div>
                   </div>
-                  <button onClick={() => deleteProduct(prod.id)} className="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => startEditProduct(prod)} className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors" title="수정">
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => deleteProduct(prod.id)} className="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -601,14 +680,21 @@ export const Admin = () => {
       )}
 
       {/* =================================================================== */}
-      {/* 2. 건강이야기 패널 관리자                                           */}
+      {/* 2. 건강이야기 패널 관리자 (Drag & Drop Image Dropzone 탑재)        */}
       {/* =================================================================== */}
       {activeAdminSubTab === 'health' && (
         <div className="space-y-8">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
-            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-extrabold text-lg">
-              <Plus className="w-5 h-5" />
-              <span>신규 건강이야기 아티클 올리기</span>
+          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border-2 border-emerald-200 dark:border-emerald-900/50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-extrabold text-lg">
+                {editingId ? <Edit3 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                <span>{editingId ? '건강이야기 아티클 수정하기' : '신규 건강이야기 아티클 올리기'}</span>
+              </div>
+              {editingId && (
+                <button type="button" onClick={cancelEdit} className="text-xs font-bold text-slate-500 hover:text-slate-800 underline">
+                  수정 취소 (신규 등록 모드)
+                </button>
+              )}
             </div>
 
             <form onSubmit={handleAddHealthSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -631,9 +717,13 @@ export const Admin = () => {
                 <input type="text" placeholder="5분 읽기" value={healthReadTime} onChange={(e) => setHealthReadTime(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">이미지 URL</label>
-                <input type="url" placeholder="https://images.unsplash.com/..." value={healthImage} onChange={(e) => setHealthImage(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+              {/* Drag & Drop Image Dropzone */}
+              <div className="sm:col-span-2">
+                <ImageDropzone
+                  value={healthImage}
+                  onChange={setHealthImage}
+                  label="아티클 대표 이미지 (URL 입력 또는 컴퓨터에서 드래그 앤 드롭)"
+                />
               </div>
 
               <div className="sm:col-span-2">
@@ -649,7 +739,7 @@ export const Admin = () => {
               <div className="sm:col-span-2 flex justify-end">
                 <button type="submit" className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs">
                   <Save className="w-4 h-4" />
-                  <span>아티클 등록하기</span>
+                  <span>{editingId ? '아티클 수정 저장' : '아티클 신규 등록하기'}</span>
                 </button>
               </div>
             </form>
@@ -668,9 +758,14 @@ export const Admin = () => {
                       <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">{story.summary}</p>
                     </div>
                   </div>
-                  <button onClick={() => deleteHealthStory(story.id)} className="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => startEditHealth(story)} className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors" title="수정">
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => deleteHealthStory(story.id)} className="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -683,10 +778,17 @@ export const Admin = () => {
       {/* =================================================================== */}
       {activeAdminSubTab === 'calories' && (
         <div className="space-y-8">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
-            <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold text-lg">
-              <Plus className="w-5 h-5" />
-              <span>신규 음식 칼로리 정보 올리기</span>
+          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border-2 border-amber-200 dark:border-amber-900/50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold text-lg">
+                {editingId ? <Edit3 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                <span>{editingId ? '음식 칼로리 정보 수정하기' : '신규 음식 칼로리 정보 올리기'}</span>
+              </div>
+              {editingId && (
+                <button type="button" onClick={cancelEdit} className="text-xs font-bold text-slate-500 hover:text-slate-800 underline">
+                  수정 취소 (신규 등록 모드)
+                </button>
+              )}
             </div>
 
             <form onSubmit={handleAddFoodSubmit} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -739,7 +841,7 @@ export const Admin = () => {
               <div className="sm:col-span-3 flex justify-end pt-2">
                 <button type="submit" className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs">
                   <Save className="w-4 h-4" />
-                  <span>음식 등록하기</span>
+                  <span>{editingId ? '음식 정보 수정 저장' : '음식 등록하기'}</span>
                 </button>
               </div>
             </form>
@@ -757,9 +859,14 @@ export const Admin = () => {
                       <p className="text-[11px] font-black text-amber-600 dark:text-amber-400">{food.calories} kcal</p>
                     </div>
                   </div>
-                  <button onClick={() => deleteFoodCalorie(food.id)} className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => startEditFood(food)} className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors" title="수정">
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => deleteFoodCalorie(food.id)} className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -768,14 +875,21 @@ export const Admin = () => {
       )}
 
       {/* =================================================================== */}
-      {/* 4. 힐링여행지 패널 관리자                                           */}
+      {/* 4. 힐링여행지 패널 관리자 (Drag & Drop Image Dropzone 탑재)         */}
       {/* =================================================================== */}
       {activeAdminSubTab === 'travel' && (
         <div className="space-y-8">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
-            <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-extrabold text-lg">
-              <Plus className="w-5 h-5" />
-              <span>신규 힐링 여행지 올리기</span>
+          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border-2 border-teal-200 dark:border-teal-900/50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-extrabold text-lg">
+                {editingId ? <Edit3 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                <span>{editingId ? '힐링 여행지 정보 수정하기' : '신규 힐링 여행지 올리기'}</span>
+              </div>
+              {editingId && (
+                <button type="button" onClick={cancelEdit} className="text-xs font-bold text-slate-500 hover:text-slate-800 underline">
+                  수정 취소 (신규 등록 모드)
+                </button>
+              )}
             </div>
 
             <form onSubmit={handleAddTravelSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -799,9 +913,13 @@ export const Admin = () => {
                 <input type="text" placeholder="봄, 가을 / 사계절" value={travelSeason} onChange={(e) => setTravelSeason(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
               </div>
 
+              {/* Drag & Drop Image Dropzone */}
               <div className="sm:col-span-2">
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">이미지 URL</label>
-                <input type="url" placeholder="https://images.unsplash.com/..." value={travelImage} onChange={(e) => setTravelImage(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                <ImageDropzone
+                  value={travelImage}
+                  onChange={setTravelImage}
+                  label="여행지 대표 사진 (URL 입력 또는 컴퓨터에서 드래그 앤 드롭)"
+                />
               </div>
 
               <div className="sm:col-span-2">
@@ -812,7 +930,7 @@ export const Admin = () => {
               <div className="sm:col-span-2 flex justify-end">
                 <button type="submit" className="px-6 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs">
                   <Save className="w-4 h-4" />
-                  <span>여행지 등록하기</span>
+                  <span>{editingId ? '여행지 수정 저장' : '여행지 등록하기'}</span>
                 </button>
               </div>
             </form>
@@ -831,9 +949,14 @@ export const Admin = () => {
                       <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">{spot.tag}</p>
                     </div>
                   </div>
-                  <button onClick={() => deleteHealingTravel(spot.id)} className="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => startEditTravel(spot)} className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors" title="수정">
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => deleteHealingTravel(spot.id)} className="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -842,14 +965,21 @@ export const Admin = () => {
       )}
 
       {/* =================================================================== */}
-      {/* 5. 향수이야기 패널 관리자                                           */}
+      {/* 5. 향수이야기 패널 관리자 (Drag & Drop Image Dropzone 탑재)        */}
       {/* =================================================================== */}
       {activeAdminSubTab === 'perfume' && (
         <div className="space-y-8">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
-            <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-extrabold text-lg">
-              <Plus className="w-5 h-5" />
-              <span>신규 천연 아로마 향수 올리기</span>
+          <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-6 border-2 border-purple-200 dark:border-purple-900/50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-extrabold text-lg">
+                {editingId ? <Edit3 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                <span>{editingId ? '아로마 향수 정보 수정하기' : '신규 천연 아로마 향수 올리기'}</span>
+              </div>
+              {editingId && (
+                <button type="button" onClick={cancelEdit} className="text-xs font-bold text-slate-500 hover:text-slate-800 underline">
+                  수정 취소 (신규 등록 모드)
+                </button>
+              )}
             </div>
 
             <form onSubmit={handleAddPerfumeSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -868,9 +998,13 @@ export const Admin = () => {
                 <input type="text" placeholder="깊은 숲속 명상 & 신경 안정이 필요할 때" value={perfumeMood} onChange={(e) => setPerfumeMood(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">이미지 URL</label>
-                <input type="url" placeholder="https://images.unsplash.com/..." value={perfumeImage} onChange={(e) => setPerfumeImage(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
+              {/* Drag & Drop Image Dropzone */}
+              <div className="sm:col-span-2">
+                <ImageDropzone
+                  value={perfumeImage}
+                  onChange={setPerfumeImage}
+                  label="향수/아로마 대표 사진 (URL 입력 또는 컴퓨터에서 드래그 앤 드롭)"
+                />
               </div>
 
               <div className="sm:col-span-2">
@@ -881,7 +1015,7 @@ export const Admin = () => {
               <div className="sm:col-span-2 flex justify-end">
                 <button type="submit" className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-1.5 text-xs">
                   <Save className="w-4 h-4" />
-                  <span>향수 등록하기</span>
+                  <span>{editingId ? '향수 수정 저장' : '향수 등록하기'}</span>
                 </button>
               </div>
             </form>
@@ -899,9 +1033,14 @@ export const Admin = () => {
                       <p className="text-xs text-purple-600 dark:text-purple-400 font-medium truncate mt-0.5">{perfume.notes}</p>
                     </div>
                   </div>
-                  <button onClick={() => deletePerfumeStory(perfume.id)} className="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => startEditPerfume(perfume)} className="p-2 rounded-xl text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors" title="수정">
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => deletePerfumeStory(perfume.id)} className="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors" title="삭제">
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
