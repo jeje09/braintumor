@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../../context/AppContext';
 import { Sparkles, Heart, Wind, Flame } from 'lucide-react';
 
 export const PerfumeStory = () => {

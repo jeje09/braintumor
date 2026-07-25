@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../../context/AppContext';
 import { 
   ShieldCheck, 
   Plus, 
@@ -8,31 +8,42 @@ import {
   ExternalLink, 
   Save, 
   ShoppingBag, 
-  HeartPulse, 
-  Utensils, 
-  Compass, 
-  Sparkles,
-  CheckCircle
+  Lock, 
+  KeyRound, 
+  LogOut, 
+  CheckCircle,
+  AlertCircle,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 export const Admin = () => {
   const { 
+    adminPassword,
+    isAdminAuthenticated,
+    loginAdmin,
+    logoutAdmin,
+    updateAdminPassword,
     quickLinks, 
     updateQuickLinks, 
     products, 
     addProduct, 
-    deleteProduct,
-    healthStories,
-    setHealthStories,
-    foodCalories,
-    setFoodCalories,
-    healingTravel,
-    setHealingTravel,
-    perfumeStories,
-    setPerfumeStories
+    deleteProduct
   } = useApp();
 
-  const [activeAdminSubTab, setActiveAdminSubTab] = useState('products'); // 'products', 'quicklinks', 'health'
+  const [inputPassword, setInputPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
+
+  // Admin Change Password Modal State
+  const [showChangePwdModal, setShowChangePwdModal] = useState(false);
+  const [currPasswordInput, setCurrPasswordInput] = useState('');
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [changePwdError, setChangePwdError] = useState('');
+
+  // Admin Dashboard Tabs
+  const [activeAdminSubTab, setActiveAdminSubTab] = useState('products');
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
 
   // Quick Links Form State
@@ -49,6 +60,43 @@ export const Admin = () => {
   const [newProdPaytap, setNewProdPaytap] = useState('');
   const [newProdKcp, setNewProdKcp] = useState('');
   const [newProdBest, setNewProdBest] = useState(false);
+
+  // Login Handler
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const success = loginAdmin(inputPassword);
+    if (!success) {
+      setLoginError('비밀번호가 올바르지 않습니다. (기본 비밀번호: 1234!)');
+    } else {
+      setLoginError('');
+      setInputPassword('');
+    }
+  };
+
+  // Change Password Handler
+  const handleChangePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (currPasswordInput !== adminPassword) {
+      setChangePwdError('현재 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    if (!newPasswordInput || newPasswordInput.length < 3) {
+      setChangePwdError('새 비밀번호는 최소 3자 이상 입력해주세요.');
+      return;
+    }
+    if (newPasswordInput !== confirmPasswordInput) {
+      setChangePwdError('새 비밀번호 확인이 일치하지 않습니다.');
+      return;
+    }
+
+    updateAdminPassword(newPasswordInput);
+    setShowChangePwdModal(false);
+    setCurrPasswordInput('');
+    setNewPasswordInput('');
+    setConfirmPasswordInput('');
+    setChangePwdError('');
+    showMsg('관리자 비밀번호가 성공적으로 변경되었습니다!');
+  };
 
   const handleSaveQuickLinks = (e) => {
     e.preventDefault();
@@ -75,7 +123,6 @@ export const Admin = () => {
       isBest: newProdBest
     });
 
-    // Reset Form
     setNewProdTitle('');
     setNewProdPrice('');
     setNewProdOrigPrice('');
@@ -93,23 +140,113 @@ export const Admin = () => {
     setTimeout(() => setSaveSuccessMsg(''), 3000);
   };
 
+  /* ========================================================================= */
+  /* UNAUTHENTICATED: Show Admin Password Lock Screen                          */
+  /* ========================================================================= */
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="max-w-md mx-auto py-16 px-4">
+        <div className="glass-card p-8 rounded-3xl space-y-6 shadow-2xl border border-blue-100 dark:border-slate-800 text-center relative overflow-hidden">
+          <div className="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto text-3xl shadow-inner">
+            <Lock className="w-8 h-8" />
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">
+              관리자 어드민 접속 인증
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              보호된 관리자 대시보드입니다. 비밀번호를 입력해주세요.<br />
+              <span className="text-blue-600 font-bold">(초기 비밀번호: 1234!)</span>
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4 text-left">
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                관리자 비밀번호
+              </label>
+              <div className="relative">
+                <input
+                  type={showPasswordInput ? 'text' : 'password'}
+                  required
+                  placeholder="비밀번호 입력 (초기값: 1234!)"
+                  value={inputPassword}
+                  onChange={(e) => setInputPassword(e.target.value)}
+                  className="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordInput(!showPasswordInput)}
+                  className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600"
+                >
+                  {showPasswordInput ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {loginError && (
+              <div className="flex items-center gap-1.5 text-xs text-rose-500 font-bold bg-rose-50 dark:bg-rose-950/50 p-2.5 rounded-xl border border-rose-200 dark:border-rose-900">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{loginError}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-2xl shadow-lg shadow-blue-600/30 transition-all active:scale-95"
+            >
+              관리자 대시보드 로그인
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  /* ========================================================================= */
+  /* AUTHENTICATED: Full Admin Dashboard                                       */
+  /* ========================================================================= */
   return (
     <div className="space-y-8 pb-16">
-      {/* Header */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-3 bg-gradient-to-r from-slate-900 to-indigo-950 text-white">
-        <div className="flex items-center justify-between">
+      {/* Header Bar with Logout & Change Password */}
+      <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-2xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-400/30 text-blue-400 flex items-center justify-center text-2xl">
+            <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-400/30 text-blue-400 flex items-center justify-center text-2xl shadow-inner">
               <ShieldCheck className="w-7 h-7" />
             </div>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-                쭈니의 건강 이야기 - 관리자 어드민 센터
-              </h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  어드민 관리자 센터
+                </h2>
+                <span className="bg-emerald-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">
+                  인증됨
+                </span>
+              </div>
               <p className="text-xs text-slate-400 mt-0.5">
                 패널 콘텐츠, 퀵링크 바로가기 및 쇼핑 상품 컨테이너를 통합 관리합니다.
               </p>
             </div>
+          </div>
+
+          {/* Admin Utility Buttons */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowChangePwdModal(true)}
+              className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-1.5 border border-white/10"
+            >
+              <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+              <span>비밀번호 변경</span>
+            </button>
+            <button
+              onClick={logoutAdmin}
+              className="px-3.5 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold transition-all flex items-center gap-1.5 border border-rose-500/30"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>어드민 잠금</span>
+            </button>
           </div>
         </div>
       </div>
@@ -118,6 +255,92 @@ export const Admin = () => {
         <div className="p-4 bg-emerald-500 text-white rounded-2xl font-bold text-sm flex items-center gap-2 shadow-lg animate-in slide-in-from-top duration-200">
           <CheckCircle className="w-5 h-5" />
           <span>{saveSuccessMsg}</span>
+        </div>
+      )}
+
+      {/* Change Password Modal */}
+      {showChangePwdModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 space-y-5 relative">
+            <button
+              onClick={() => setShowChangePwdModal(false)}
+              className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition-colors"
+            >
+              ✕
+            </button>
+
+            <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold text-lg">
+              <KeyRound className="w-5 h-5" />
+              <span>관리자 비밀번호 변경</span>
+            </div>
+
+            <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  현재 비밀번호
+                </label>
+                <input
+                  type="password"
+                  required
+                  placeholder="현재 비밀번호 입력"
+                  value={currPasswordInput}
+                  onChange={(e) => setCurrPasswordInput(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  새 비밀번호
+                </label>
+                <input
+                  type="password"
+                  required
+                  placeholder="새로 설정할 비밀번호"
+                  value={newPasswordInput}
+                  onChange={(e) => setNewPasswordInput(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  새 비밀번호 재확인
+                </label>
+                <input
+                  type="password"
+                  required
+                  placeholder="새 비밀번호 다시 입력"
+                  value={confirmPasswordInput}
+                  onChange={(e) => setConfirmPasswordInput(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {changePwdError && (
+                <div className="flex items-center gap-1.5 text-xs text-rose-500 font-bold bg-rose-50 dark:bg-rose-950/50 p-2.5 rounded-xl">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{changePwdError}</span>
+                </div>
+              )}
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowChangePwdModal(false)}
+                  className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs"
+                >
+                  취소
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md"
+                >
+                  비밀번호 변경 저장
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 

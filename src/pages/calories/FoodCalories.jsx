@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../../context/AppContext';
 import { Utensils, Search, Plus, Trash2, Activity, Zap, Info } from 'lucide-react';
 
 export const FoodCalories = () => {

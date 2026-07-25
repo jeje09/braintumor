@@ -4,12 +4,12 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CheckoutModal } from './components/CheckoutModal';
 
-import { HealthStory } from './pages/HealthStory';
-import { FoodCalories } from './pages/FoodCalories';
-import { HealingTravel } from './pages/HealingTravel';
-import { PerfumeStory } from './pages/PerfumeStory';
-import { Shopping } from './pages/Shopping';
-import { Admin } from './pages/Admin';
+import { HealthStory } from './pages/health/HealthStory';
+import { FoodCalories } from './pages/calories/FoodCalories';
+import { HealingTravel } from './pages/travel/HealingTravel';
+import { PerfumeStory } from './pages/perfume/PerfumeStory';
+import { Shopping } from './pages/shopping/Shopping';
+import { Admin } from './pages/admin/Admin';
 
 const MainContent = () => {
   const { activeTab } = useApp();

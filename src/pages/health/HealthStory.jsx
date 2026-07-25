@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../../context/AppContext';
 import { HeartPulse, BookOpen, Clock, Tag, ChevronRight, Sparkles, ExternalLink } from 'lucide-react';
 
 export const HealthStory = () => {

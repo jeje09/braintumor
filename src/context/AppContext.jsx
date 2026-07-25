@@ -158,7 +158,14 @@ const INITIAL_PRODUCTS = [
 ];
 
 export const AppProvider = ({ children }) => {
-  const [activeTab, setActiveTab] = useState('health'); // 'health', 'calories', 'travel', 'perfume', 'shopping', 'admin'
+  const [activeTab, setActiveTab] = useState('health');
+  
+  // Admin Password Security State (Default: '1234!')
+  const [adminPassword, setAdminPassword] = useState(() => {
+    return localStorage.getItem('jjuni_admin_password') || '1234!';
+  });
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+
   const [quickLinks, setQuickLinks] = useState(() => {
     const saved = localStorage.getItem('jjuni_quick_links');
     return saved ? JSON.parse(saved) : INITIAL_QUICK_LINKS;
@@ -192,14 +199,18 @@ export const AppProvider = ({ children }) => {
   const [paymentModal, setPaymentModal] = useState({
     isOpen: false,
     product: null,
-    gateway: 'paytap' // 'paytap' | 'kcp'
+    gateway: 'paytap'
   });
 
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('jjuni_theme') === 'dark';
   });
 
-  // LocalStorage Persist Effects
+  // LocalStorage Effects
+  useEffect(() => {
+    localStorage.setItem('jjuni_admin_password', adminPassword);
+  }, [adminPassword]);
+
   useEffect(() => {
     localStorage.setItem('jjuni_quick_links', JSON.stringify(quickLinks));
   }, [quickLinks]);
@@ -234,7 +245,25 @@ export const AppProvider = ({ children }) => {
     }
   }, [darkMode]);
 
-  // Admin Actions
+  // Admin Security Actions
+  const loginAdmin = (inputPassword) => {
+    if (inputPassword === adminPassword) {
+      setIsAdminAuthenticated(true);
+      return true;
+    }
+    return false;
+  };
+
+  const logoutAdmin = () => {
+    setIsAdminAuthenticated(false);
+  };
+
+  const updateAdminPassword = (newPassword) => {
+    setAdminPassword(newPassword);
+    localStorage.setItem('jjuni_admin_password', newPassword);
+  };
+
+  // Content Actions
   const updateQuickLinks = (newLinks) => {
     setQuickLinks(newLinks);
   };
@@ -271,6 +300,11 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider value={{
       activeTab,
       setActiveTab,
+      adminPassword,
+      isAdminAuthenticated,
+      loginAdmin,
+      logoutAdmin,
+      updateAdminPassword,
       quickLinks,
       updateQuickLinks,
       healthStories,

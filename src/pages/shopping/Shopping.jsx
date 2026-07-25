@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../../context/AppContext';
 import { ShoppingBag, CreditCard, ShieldCheck, Tag, Star, Sparkles } from 'lucide-react';
 
 export const Shopping = () => {

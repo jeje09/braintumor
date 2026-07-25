@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../../context/AppContext';
 import { Compass, MapPin, Calendar, Sparkles, ChevronRight } from 'lucide-react';
 
 export const HealingTravel = () => {
