@@ -14,7 +14,13 @@ export const NaverShopping = () => {
 
   return (
     <div className="space-y-8 pb-16">
-      {/* Header */}
+      {/* 🚨 VERY TOP MANDATORY AFFILIATE NOTICE BANNER - 2X FONT SIZE 🚨 */}
+      <div className="p-4 sm:p-6 rounded-3xl bg-emerald-500/15 dark:bg-emerald-950/80 border-2 border-emerald-400 dark:border-emerald-700 text-emerald-950 dark:text-emerald-100 font-black text-base sm:text-lg lg:text-xl flex items-center justify-center gap-3 text-center shadow-xl animate-pulse">
+        <AlertCircle className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>이 포스팅은 네이버 브랜드 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</span>
+      </div>
+
+      {/* Main Header */}
       <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 relative overflow-hidden bg-gradient-to-r from-emerald-900/10 via-teal-900/10 to-green-900/10 border border-emerald-200 dark:border-emerald-900/50">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl shadow-sm font-black">
@@ -28,12 +34,6 @@ export const NaverShopping = () => {
               네이버 스마트스토어 및 브랜드 커넥트 공식 셀렉션 라이브 스토어.
             </p>
           </div>
-        </div>
-
-        {/* MANDATORY AFFILIATE NOTICE BANNER */}
-        <div className="p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs font-bold flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-          <span>이 포스팅은 네이버 브랜드 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</span>
         </div>
 
         {/* Categories */}
@@ -124,8 +124,8 @@ export const NaverShopping = () => {
         ))}
       </div>
 
-      {/* Bottom Mandatory Notice */}
-      <div className="text-center py-6 text-xs text-emerald-800 dark:text-emerald-300 font-bold bg-emerald-50 dark:bg-slate-900/60 rounded-2xl border border-emerald-200 dark:border-slate-800">
+      {/* Bottom Notice */}
+      <div className="text-center py-6 text-xs sm:text-sm text-emerald-900 dark:text-emerald-300 font-black bg-emerald-50 dark:bg-slate-900/60 rounded-2xl border border-emerald-200 dark:border-slate-800">
         이 포스팅은 네이버 브랜드 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
       </div>
     </div>

@@ -14,7 +14,13 @@ export const CoupangShopping = () => {
 
   return (
     <div className="space-y-8 pb-16">
-      {/* Header */}
+      {/* 🚨 VERY TOP MANDATORY AFFILIATE NOTICE BANNER - 2X FONT SIZE 🚨 */}
+      <div className="p-4 sm:p-6 rounded-3xl bg-amber-500/15 dark:bg-amber-950/80 border-2 border-amber-400 dark:border-amber-700 text-amber-950 dark:text-amber-100 font-black text-base sm:text-lg lg:text-xl flex items-center justify-center gap-3 text-center shadow-xl animate-pulse">
+        <AlertCircle className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600 dark:text-amber-400 shrink-0" />
+        <span>이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</span>
+      </div>
+
+      {/* Main Header */}
       <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 relative overflow-hidden bg-gradient-to-r from-amber-900/10 via-orange-900/10 to-red-900/10 border border-amber-200 dark:border-amber-900/50">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl shadow-sm font-black">
@@ -28,12 +34,6 @@ export const CoupangShopping = () => {
               쿠팡 로켓배송 최저가로 만나는 엄선된 건강 자이언트 유기농 상품 라인업.
             </p>
           </div>
-        </div>
-
-        {/* MANDATORY AFFILIATE NOTICE BANNER */}
-        <div className="p-3.5 rounded-2xl bg-amber-500/10 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-xs font-bold flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
-          <span>이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</span>
         </div>
 
         {/* Categories */}
@@ -124,8 +124,8 @@ export const CoupangShopping = () => {
         ))}
       </div>
 
-      {/* Bottom Mandatory Notice */}
-      <div className="text-center py-6 text-xs text-amber-800 dark:text-amber-300 font-bold bg-amber-50 dark:bg-slate-900/60 rounded-2xl border border-amber-200 dark:border-slate-800">
+      {/* Bottom Notice */}
+      <div className="text-center py-6 text-xs sm:text-sm text-amber-900 dark:text-amber-300 font-black bg-amber-50 dark:bg-slate-900/60 rounded-2xl border border-amber-200 dark:border-slate-800">
         이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
       </div>
     </div>
