@@ -9,6 +9,8 @@ import { FoodCalories } from './pages/calories/FoodCalories';
 import { HealingTravel } from './pages/travel/HealingTravel';
 import { PerfumeStory } from './pages/perfume/PerfumeStory';
 import { Shopping } from './pages/shopping/Shopping';
+import { CoupangShopping } from './pages/coupang/CoupangShopping';
+import { NaverShopping } from './pages/naver/NaverShopping';
 import { Admin } from './pages/admin/Admin';
 
 const MainContent = () => {
@@ -21,6 +23,8 @@ const MainContent = () => {
       {activeTab === 'travel' && <HealingTravel />}
       {activeTab === 'perfume' && <PerfumeStory />}
       {activeTab === 'shopping' && <Shopping />}
+      {activeTab === 'coupang' && <CoupangShopping />}
+      {activeTab === 'naver' && <NaverShopping />}
       {activeTab === 'admin' && <Admin />}
     </main>
   );

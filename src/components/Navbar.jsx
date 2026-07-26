@@ -11,7 +11,9 @@ import {
   Sun, 
   Moon,
   Menu,
-  X
+  X,
+  Rocket,
+  ShoppingBag as NaverIcon
 } from 'lucide-react';
 
 export const Navbar = () => {
@@ -23,7 +25,9 @@ export const Navbar = () => {
     { id: 'calories', label: '음식칼로리', icon: Utensils, color: 'text-amber-500' },
     { id: 'travel', label: '힐링여행지', icon: Compass, color: 'text-teal-500' },
     { id: 'perfume', label: '향수이야기', icon: Sparkles, color: 'text-purple-500' },
-    { id: 'shopping', label: '쇼핑몰', icon: ShoppingBag, color: 'text-pink-500' },
+    { id: 'shopping', label: '웰니스쇼핑', icon: ShoppingBag, color: 'text-pink-500' },
+    { id: 'coupang', label: '쿠팡쇼핑', icon: Rocket, color: 'text-orange-500' },
+    { id: 'naver', label: '네이버쇼핑', icon: NaverIcon, color: 'text-emerald-600' },
     { id: 'admin', label: '관리자', icon: ShieldCheck, color: 'text-blue-500' },
   ];
 
@@ -72,17 +76,17 @@ export const Navbar = () => {
               <span className="text-xl">🌿</span>
             </div>
             <div>
-              <h1 className="font-extrabold text-lg sm:text-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent tracking-tight">
+              <h1 className="font-extrabold text-base sm:text-lg bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent tracking-tight">
                 쭈니의 건강 이야기
               </h1>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 tracking-wider">
-                NATUROPATHY & HEALING LIFE
+                NATUROPATHY & AFFILIATE SHOPPING
               </p>
             </div>
           </button>
 
           {/* Desktop Navigation Tabs */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-1">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -90,7 +94,7 @@ export const Navbar = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
                     isActive
                       ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/25 scale-105'
                       : 'text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400'
@@ -116,7 +120,7 @@ export const Navbar = () => {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="lg:hidden p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -126,7 +130,7 @@ export const Navbar = () => {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg px-4 pt-2 pb-4 space-y-1.5 shadow-2xl animate-in slide-in-from-top duration-200">
+        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg px-4 pt-2 pb-4 space-y-1.5 shadow-2xl animate-in slide-in-from-top duration-200">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;

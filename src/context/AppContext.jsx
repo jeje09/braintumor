@@ -130,30 +130,56 @@ const INITIAL_PRODUCTS = [
     paytapLink: "https://payapp.kr/paytap_demo_02",
     kcpLink: "https://kcp.co.kr/kcp_checkout_demo_02",
     isBest: true
+  }
+];
+
+const INITIAL_COUPANG_PRODUCTS = [
+  {
+    id: 201,
+    title: "쿠팡 로켓배송 프리미엄 오가닉 유기농 새싹보리 파우더",
+    price: 19800,
+    originalPrice: 25000,
+    category: "건강기능식품",
+    image: "https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=800&q=80",
+    description: "쿠팡 파트너스 추천 상품! 100% 국산 유기농 어린 새싹보리 착즙 분말.",
+    coupangLink: "https://link.coupang.com/a/bC12345",
+    isBest: true
   },
   {
-    id: 103,
-    title: "천연 카모마일 릴렉싱 하이브리드 티 세트",
-    price: 24000,
-    originalPrice: 28000,
+    id: 202,
+    title: "쿠팡 최저가 딥슬립 라벤더 웰니스 디퓨저 세트",
+    price: 24500,
+    originalPrice: 31000,
+    category: "아로마테라피",
+    image: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=800&q=80",
+    description: "쿠팡 로켓와우 직송. 남프랑스 유기농 라벤더 오일로 완성하는 안락한 수면 힐링.",
+    coupangLink: "https://link.coupang.com/a/bC67890",
+    isBest: true
+  }
+];
+
+const INITIAL_NAVER_PRODUCTS = [
+  {
+    id: 301,
+    title: "네이버 브랜드커넥트 100% 유기농 편백 림프 괄사 마사지 오일",
+    price: 34000,
+    originalPrice: 42000,
+    category: "뷰티/힐링",
+    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+    description: "네이버 브랜드 커넥트 공식 셀렉션! 림프 순환과 피부 디톡스를 돕는 오가닉 마사지 오일.",
+    naverLink: "https://brandconnect.naver.com/product/10001",
+    isBest: true
+  },
+  {
+    id: 302,
+    title: "네이버 스마트스토어 무카페인 천연 카모마일 티백 파우치",
+    price: 22000,
+    originalPrice: 26000,
     category: "건강차",
     image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80",
-    description: "무카페인 천연 허브 꽃잎 함유. 긴장 완화 및 속편한 장 건강을 돕는 유기농 티 파우치.",
-    paytapLink: "https://payapp.kr/paytap_demo_03",
-    kcpLink: "https://kcp.co.kr/kcp_checkout_demo_03",
+    description: "네이버 쇼핑 메인 추천. 100% 독일산 유기농 카모마일 꽃잎을 한가득 담은 순수 힐링 티.",
+    naverLink: "https://brandconnect.naver.com/product/10002",
     isBest: false
-  },
-  {
-    id: 104,
-    title: "힐링 슬립 딥드림 라벤더 디퓨저 패키지",
-    price: 32000,
-    originalPrice: 42000,
-    category: "아로마/치유",
-    image: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=800&q=80",
-    description: "고급 인테리어와 수면 힐링을 동시에 충족하는 프리미엄 오가닉 라벤더 디퓨저 세트.",
-    paytapLink: "https://payapp.kr/paytap_demo_04",
-    kcpLink: "https://kcp.co.kr/kcp_checkout_demo_04",
-    isBest: true
   }
 ];
 
@@ -196,6 +222,17 @@ export const AppProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
   });
 
+  // NEW: Coupang & Naver Products State
+  const [coupangProducts, setCoupangProducts] = useState(() => {
+    const saved = localStorage.getItem('jjuni_coupang_products');
+    return saved ? JSON.parse(saved) : INITIAL_COUPANG_PRODUCTS;
+  });
+
+  const [naverProducts, setNaverProducts] = useState(() => {
+    const saved = localStorage.getItem('jjuni_naver_products');
+    return saved ? JSON.parse(saved) : INITIAL_NAVER_PRODUCTS;
+  });
+
   const [paymentModal, setPaymentModal] = useState({
     isOpen: false,
     product: null,
@@ -218,6 +255,14 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('jjuni_products', JSON.stringify(products));
   }, [products]);
+
+  useEffect(() => {
+    localStorage.setItem('jjuni_coupang_products', JSON.stringify(coupangProducts));
+  }, [coupangProducts]);
+
+  useEffect(() => {
+    localStorage.setItem('jjuni_naver_products', JSON.stringify(naverProducts));
+  }, [naverProducts]);
 
   useEffect(() => {
     localStorage.setItem('jjuni_health_stories', JSON.stringify(healthStories));
@@ -245,7 +290,7 @@ export const AppProvider = ({ children }) => {
     }
   }, [darkMode]);
 
-  // Admin Security Actions
+  // Admin Actions
   const loginAdmin = (inputPassword) => {
     if (inputPassword === adminPassword) {
       setIsAdminAuthenticated(true);
@@ -263,80 +308,47 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('jjuni_admin_password', newPassword);
   };
 
-  // Quick Links
   const updateQuickLinks = (newLinks) => {
     setQuickLinks(newLinks);
   };
 
-  // 1. Health Stories CRUD
-  const addHealthStory = (item) => {
-    setHealthStories(prev => [{ ...item, id: Date.now() }, ...prev]);
-  };
-  const updateHealthStory = (id, item) => {
-    setHealthStories(prev => prev.map(s => s.id === id ? { ...s, ...item } : s));
-  };
-  const deleteHealthStory = (id) => {
-    setHealthStories(prev => prev.filter(s => s.id !== id));
-  };
+  // CRUD Handlers
+  const addHealthStory = (item) => setHealthStories(prev => [{ ...item, id: Date.now() }, ...prev]);
+  const updateHealthStory = (id, item) => setHealthStories(prev => prev.map(s => s.id === id ? { ...s, ...item } : s));
+  const deleteHealthStory = (id) => setHealthStories(prev => prev.filter(s => s.id !== id));
 
-  // 2. Food Calories CRUD
-  const addFoodCalorie = (item) => {
-    setFoodCalories(prev => [{ ...item, id: Date.now() }, ...prev]);
-  };
-  const updateFoodCalorie = (id, item) => {
-    setFoodCalories(prev => prev.map(f => f.id === id ? { ...f, ...item } : f));
-  };
-  const deleteFoodCalorie = (id) => {
-    setFoodCalories(prev => prev.filter(f => f.id !== id));
-  };
+  const addFoodCalorie = (item) => setFoodCalories(prev => [{ ...item, id: Date.now() }, ...prev]);
+  const updateFoodCalorie = (id, item) => setFoodCalories(prev => prev.map(f => f.id === id ? { ...f, ...item } : f));
+  const deleteFoodCalorie = (id) => setFoodCalories(prev => prev.filter(f => f.id !== id));
 
-  // 3. Healing Travel CRUD
-  const addHealingTravel = (item) => {
-    setHealingTravel(prev => [{ ...item, id: Date.now() }, ...prev]);
-  };
-  const updateHealingTravel = (id, item) => {
-    setHealingTravel(prev => prev.map(t => t.id === id ? { ...t, ...item } : t));
-  };
-  const deleteHealingTravel = (id) => {
-    setHealingTravel(prev => prev.filter(t => t.id !== id));
-  };
+  const addHealingTravel = (item) => setHealingTravel(prev => [{ ...item, id: Date.now() }, ...prev]);
+  const updateHealingTravel = (id, item) => setHealingTravel(prev => prev.map(t => t.id === id ? { ...t, ...item } : t));
+  const deleteHealingTravel = (id) => setHealingTravel(prev => prev.filter(t => t.id !== id));
 
-  // 4. Perfume Stories CRUD
-  const addPerfumeStory = (item) => {
-    setPerfumeStories(prev => [{ ...item, id: Date.now() }, ...prev]);
-  };
-  const updatePerfumeStory = (id, item) => {
-    setPerfumeStories(prev => prev.map(p => p.id === id ? { ...p, ...item } : p));
-  };
-  const deletePerfumeStory = (id) => {
-    setPerfumeStories(prev => prev.filter(p => p.id !== id));
-  };
+  const addPerfumeStory = (item) => setPerfumeStories(prev => [{ ...item, id: Date.now() }, ...prev]);
+  const updatePerfumeStory = (id, item) => setPerfumeStories(prev => prev.map(p => p.id === id ? { ...p, ...item } : p));
+  const deletePerfumeStory = (id) => setPerfumeStories(prev => prev.filter(p => p.id !== id));
 
-  // 5. Products CRUD
-  const addProduct = (newProduct) => {
-    setProducts(prev => [{ ...newProduct, id: Date.now() }, ...prev]);
-  };
-  const updateProduct = (id, updatedProduct) => {
-    setProducts(prev => prev.map(p => p.id === id ? { ...p, ...updatedProduct } : p));
-  };
-  const deleteProduct = (id) => {
-    setProducts(prev => prev.filter(p => p.id !== id));
-  };
+  const addProduct = (newProduct) => setProducts(prev => [{ ...newProduct, id: Date.now() }, ...prev]);
+  const updateProduct = (id, updatedProduct) => setProducts(prev => prev.map(p => p.id === id ? { ...p, ...updatedProduct } : p));
+  const deleteProduct = (id) => setProducts(prev => prev.filter(p => p.id !== id));
+
+  // NEW: Coupang Products CRUD
+  const addCoupangProduct = (item) => setCoupangProducts(prev => [{ ...item, id: Date.now() }, ...prev]);
+  const updateCoupangProduct = (id, item) => setCoupangProducts(prev => prev.map(p => p.id === id ? { ...p, ...item } : p));
+  const deleteCoupangProduct = (id) => setCoupangProducts(prev => prev.filter(p => p.id !== id));
+
+  // NEW: Naver Products CRUD
+  const addNaverProduct = (item) => setNaverProducts(prev => [{ ...item, id: Date.now() }, ...prev]);
+  const updateNaverProduct = (id, item) => setNaverProducts(prev => prev.map(p => p.id === id ? { ...p, ...item } : p));
+  const deleteNaverProduct = (id) => setNaverProducts(prev => prev.filter(p => p.id !== id));
 
   const openCheckout = (product, gateway = 'paytap') => {
-    setPaymentModal({
-      isOpen: true,
-      product,
-      gateway
-    });
+    setPaymentModal({ isOpen: true, product, gateway });
   };
 
   const closeCheckout = () => {
-    setPaymentModal({
-      isOpen: false,
-      product: null,
-      gateway: 'paytap'
-    });
+    setPaymentModal({ isOpen: false, product: null, gateway: 'paytap' });
   };
 
   return (
@@ -350,26 +362,13 @@ export const AppProvider = ({ children }) => {
       updateAdminPassword,
       quickLinks,
       updateQuickLinks,
-      healthStories,
-      addHealthStory,
-      updateHealthStory,
-      deleteHealthStory,
-      foodCalories,
-      addFoodCalorie,
-      updateFoodCalorie,
-      deleteFoodCalorie,
-      healingTravel,
-      addHealingTravel,
-      updateHealingTravel,
-      deleteHealingTravel,
-      perfumeStories,
-      addPerfumeStory,
-      updatePerfumeStory,
-      deletePerfumeStory,
-      products,
-      addProduct,
-      updateProduct,
-      deleteProduct,
+      healthStories, addHealthStory, updateHealthStory, deleteHealthStory,
+      foodCalories, addFoodCalorie, updateFoodCalorie, deleteFoodCalorie,
+      healingTravel, addHealingTravel, updateHealingTravel, deleteHealingTravel,
+      perfumeStories, addPerfumeStory, updatePerfumeStory, deletePerfumeStory,
+      products, addProduct, updateProduct, deleteProduct,
+      coupangProducts, addCoupangProduct, updateCoupangProduct, deleteCoupangProduct,
+      naverProducts, addNaverProduct, updateNaverProduct, deleteNaverProduct,
       paymentModal,
       openCheckout,
       closeCheckout,
