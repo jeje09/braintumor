@@ -1,93 +1,72 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { ExternalLink, Heart } from 'lucide-react';
+import { ExternalLink, Heart, ShieldAlert } from 'lucide-react';
 
 export const Footer = () => {
-  const { quickLinks, setActiveTab } = useApp();
+  const { communityLinks } = useApp();
 
   return (
-    <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md pt-12 pb-8 text-xs text-slate-500 dark:text-slate-400">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <footer className="mt-20 border-t border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+        
+        {/* Top section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand Info */}
+          {/* Brand info */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="text-2xl">🌿</span>
-              <span className="font-black text-base text-slate-800 dark:text-slate-100">
-                쭈니의 건강 이야기
+              <span className="text-2xl">🎗️</span>
+              <span className="font-black text-lg text-slate-900 dark:text-white">
+                뇌종양 <span className="text-violet-600 dark:text-violet-400">동행</span>
               </span>
             </div>
-            <p className="leading-relaxed">
-              몸과 마음의 면역 자생력을 높이는 올바른 자연치유 정보와 검증된 웰니스 수제 아로마 & 건강 라이프를 제시합니다.
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              교모세포종(GBM) 및 뇌종양 환우와 보호자들을 위한 검증된 의학 정보, 최신 임상연구, 항암 영양 가이드, 그리고 서로의 희망을 나누는 동행 공간입니다.
             </p>
           </div>
 
-          {/* Quick Nav */}
-          <div className="space-y-2">
-            <h4 className="font-bold text-slate-800 dark:text-slate-200">주요 힐링 패널</h4>
-            <ul className="space-y-1.5">
-              <li>
-                <button onClick={() => setActiveTab('health')} className="hover:text-emerald-600 transition-colors">
-                  건강이야기 칼럼
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('calories')} className="hover:text-emerald-600 transition-colors">
-                  음식 칼로리 계산기
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('travel')} className="hover:text-emerald-600 transition-colors">
-                  전국 힐링 여행지
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('perfume')} className="hover:text-emerald-600 transition-colors">
-                  천연 아로마 향수
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('shopping')} className="hover:text-emerald-600 transition-colors">
-                  웰니스 쇼핑몰
-                </button>
-              </li>
+          {/* Quick links */}
+          <div className="space-y-3">
+            <h4 className="font-extrabold text-xs text-slate-900 dark:text-white uppercase tracking-wider">
+              주요 환우 커뮤니티 & 관련 기관
+            </h4>
+            <ul className="space-y-2">
+              {communityLinks.map((link, idx) => (
+                <li key={idx}>
+                  <a 
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                  >
+                    <span>• {link.name}</span>
+                    <ExternalLink className="w-3 h-3 text-slate-400" />
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* External Links */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-slate-800 dark:text-slate-200">바로가기 채널</h4>
-            <div className="flex flex-col gap-2">
-              <a
-                href={quickLinks.coupang}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-bold hover:underline"
-              >
-                <span>쿠팡 파트너스 추천 페이지</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href={quickLinks.inpock}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-purple-600 dark:text-purple-400 font-bold hover:underline"
-              >
-                <span>인포크링크 공식 멀티채널</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+          {/* Medical Disclaimer */}
+          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 space-y-2">
+            <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 text-xs font-bold">
+              <ShieldAlert className="w-4 h-4 flex-shrink-0" />
+              <span>의학적 법적 고지</span>
             </div>
+            <p className="text-[11px] text-amber-800 dark:text-amber-300/80 leading-relaxed">
+              본 웹사이트에서 제공하는 정보는 학술적 참고 및 정보 제공 목적으로 작성되었으며, 전문 의료진의 진단 및 치료를 대체할 수 없습니다. 모든 치료 결정은 반드시 담당 전문의와 상의하십시오.
+            </p>
           </div>
         </div>
 
-        <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <p>© 2026 쭈니의 건강 이야기 (JJUNI Naturopathy). All rights reserved.</p>
+        {/* Bottom copyright */}
+        <div className="pt-6 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <p>© 2026 뇌종양 동행 (Brain Tumor Companion). All rights reserved.</p>
           <p className="flex items-center gap-1">
-            <span>Crafted with</span>
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-current inline" />
-            <span>for Naturopathy & Healing</span>
+            <span>누나와 모든 환우분들의 쾌유를 진심으로 기원합니다.</span>
+            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
           </p>
         </div>
+
       </div>
     </footer>
   );

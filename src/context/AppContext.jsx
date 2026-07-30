@@ -2,497 +2,849 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AppContext = createContext();
 
-const INITIAL_QUICK_LINKS = {
-  coupang: 'https://partners.coupang.com',
-  inpock: 'https://inpock.link',
-};
-
-const INITIAL_HEALTH_STORIES = [
+/* =======================================================================
+   BRAIN TUMOR TYPES - 뇌종양 종류
+======================================================================= */
+const INITIAL_BRAIN_TUMORS = [
   {
     id: 1,
-    title: "자연치유학이란? 내 몸의 자생력을 높이는 5가지 황금 습관",
-    category: "자연치유",
-    date: "2026.07.25",
-    readTime: "5분 읽기",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
-    summary: "약물에만 의존하지 않고 햇빛, 깨끗한 물, 자연식품, 적절한 수면으로 면역력을 극대화하는 자연치유의 핵심 철학을 소개합니다.",
-    content: "자연치유(Naturopathy)는 인체가 가진 고유의 자생력(Healing Power of Nature)을 극대화하여 질병을 예방하고 건강을 회복하는 웰니스 라이프 스타일입니다.\n\n첫 번째 황금 습관은 '아침 햇빛 노출'입니다. 기상 후 30분 이내에 15~20분간 야외 햇빛을 맞으면 세로토닌과 비타민 D가 활성화되어 수면-각성 리듬이 정상화됩니다.\n\n두 번째는 '미네랄 풍부한 순수 물 마시기'입니다. 하루 2.5L 이상의 알칼리성 미네랄 워터 섭취로 세포 해독과 신진대사를 촉진합니다.\n\n세 번째는 '식물성 색소 다양화'입니다. 매 끼니 5가지 이상의 다양한 색깔 채소를 섭취하면 폴리페놀과 항산화 파이토케미컬이 활성산소를 중화합니다.\n\n네 번째는 '저항 수면 전략'입니다. 취침 2시간 전 전자기기를 차단하고 편백 디퓨저를 사용하면 코르티솔이 낮아지고 멜라토닌이 활성화됩니다.\n\n다섯 번째는 '자연 속 걷기 명상'입니다. 맨발로 흙이나 잔디를 밟는 어싱(Earthing)은 전자기적 스트레스를 해방하고 부교감 신경을 우세하게 만들어줍니다."
+    name: "교모세포종 (GBM)",
+    fullName: "Glioblastoma Multiforme",
+    grade: "IV등급 (최고 악성도)",
+    incidence: "전체 원발성 뇌종양의 약 14~15%",
+    ageGroup: "주로 50~70대, 최근 연령대 다양화",
+    symptoms: ["심한 두통 (특히 아침)", "인지·기억력 저하", "언어 장애", "편측 마비/감각 저하", "발작·경련", "시력 변화", "성격·행동 변화"],
+    standardTreatment: ["최대 안전 절제 수술", "방사선 치료 60Gy (6주)", "테모졸로마이드(TMZ) 항암화학요법", "전기장 치료 (TTFields/Optune)"],
+    newTreatments: ["면역세포치료 (B세포 활성화 전략)", "붕소중성자포획치료 (BNCT)", "줄기세포 기반 유전자치료", "항체약물접합체 (ADC)", "개인 맞춤 신생항원 백신"],
+    prognosis: "중앙생존기간 약 14~16개월 (Stupp Protocol 기준), 장기생존자 약 5~10%",
+    keyMarkers: ["MGMT 프로모터 메틸화 (예후 양호)", "IDH 변이 (IDH-wildtype이 더 공격적)", "EGFR 증폭", "TERT 프로모터 변이"],
+    color: "rose",
+    colorBg: "bg-rose-50 dark:bg-rose-950/30",
+    colorBorder: "border-rose-200 dark:border-rose-800",
+    colorBadge: "bg-rose-600",
+    icon: "🧠",
+    isSpecial: true,
+    summary: "뇌종양 중 가장 악성도가 높고 치료가 어렵지만, 최신 연구와 임상시험에서 희망적 결과가 계속 나오고 있습니다."
   },
   {
     id: 2,
-    title: "아침 공복 따뜻한 레몬수의 신체 정화 작용과 7가지 효능",
-    category: "건강습관",
-    date: "2026.07.24",
-    readTime: "3분 읽기",
-    image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80",
-    summary: "매일 아침 따뜻한 물에 생레몬을 즙내어 마시는 습관이 신장과 간 디톡스에 미치는 긍정적 영향.",
-    content: "레몬수는 비타민 C가 풍부할 뿐만 아니라 체내 알칼리성 환경을 형성하는 데 도움을 주어 아침 대사 활성화에 탁월합니다.\n\n1. 간 해독 촉진: 레몬의 리모넨 성분이 간의 해독 효소를 활성화합니다.\n2. 소화계 자극: 따뜻한 물이 소화관을 자극하여 장 연동운동을 활성화합니다.\n3. 항산화 비타민 C: 활성산소 제거로 면역력을 높입니다.\n4. 알칼리화: 산성 체질 개선에 도움을 줍니다.\n5. 피부 미용: 콜라겐 합성을 돕고 피부 광채를 높입니다.\n6. 체중 관리: 펙틴 성분이 포만감을 오래 유지합니다.\n7. 신장 건강: 구연산이 신장 결석 예방에 효과적입니다.\n\n매일 아침 기상 직후, 유기농 레몬 반 개를 짜서 35~40도 온수 250ml에 희석하여 마시는 것이 가장 효과적입니다."
+    name: "수막종 (Meningioma)",
+    fullName: "Meningioma",
+    grade: "주로 I등급(양성), 일부 II·III등급",
+    incidence: "전체 뇌종양의 약 37% (가장 흔한 종류)",
+    ageGroup: "40~70대, 여성에게 약 2배 더 흔함",
+    symptoms: ["서서히 진행하는 두통", "시야 장애", "청력 저하", "성격·집중력 변화", "발작 (드물게)", "팔다리 힘 약화"],
+    standardTreatment: ["경과 관찰 (소형·무증상)", "수술적 절제", "방사선 수술 (감마나이프·사이버나이프)", "분할 방사선 치료"],
+    newTreatments: ["약물 치료 연구 (베바시주맙 등)", "면역 치료 병용 임상"],
+    prognosis: "양성(I등급) 수술 후 재발률 낮음, 완치 가능. 고악성도(II·III등급)는 재발 관리 필요.",
+    keyMarkers: ["등급(Grade)이 예후에 가장 중요", "NF2 변이", "위치(두개저 vs 볼록 수막)"],
+    color: "teal",
+    colorBg: "bg-teal-50 dark:bg-teal-950/30",
+    colorBorder: "border-teal-200 dark:border-teal-800",
+    colorBadge: "bg-teal-600",
+    icon: "🔵",
+    isSpecial: false,
+    summary: "가장 흔한 뇌종양이며 대부분 양성. 수술 예후가 좋고 완치 가능한 경우가 많습니다."
   },
   {
     id: 3,
-    title: "현대인의 스트레스성 불면증을 없애는 천연 아로마 요법 완전 가이드",
-    category: "수면건강",
-    date: "2026.07.20",
-    readTime: "4분 읽기",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
-    summary: "라벤더와 카모마일 에센셜 오일을 활용하여 수면의 질을 200% 높이는 아로마 테라피 시크릿.",
-    content: "부교감 신경을 활성화하는 천연 에센셜 오일의 디퓨징 기법과 베개 딥슬립 스프레이 활용법을 공개합니다.\n\n아로마테라피는 후각 신경을 통해 변연계(limbic system)에 직접 작용하여 스트레스 호르몬인 코르티솔을 억제합니다.\n\n【딥슬립 필수 오일 조합】\n- 프렌치 라벤더 4방울 + 로마 카모마일 2방울 + 샌달우드 2방울\n\n【활용법】\n① 취침 1시간 전: 위 블렌드를 디퓨저에 넣고 30분 가동\n② 베개 스프레이: 오일을 증류수에 희석하여 베개에 가볍게 분사\n③ 손목과 관자놀이에 미량 도포 (캐리어 오일 혼합 필수)\n\n임상 연구에 따르면 라벤더 아로마는 수면의 깊이를 20%, 수면 만족도를 45% 향상시키는 효과가 입증되었습니다."
+    name: "청신경초종 (전정신경초종)",
+    fullName: "Vestibular Schwannoma (Acoustic Neuroma)",
+    grade: "양성 종양",
+    incidence: "전체 뇌종양의 약 8%, 10만 명 중 약 1명",
+    ageGroup: "30~60대, 성별 차이 적음",
+    symptoms: ["한쪽 귀 청력 손실 (점진적)", "이명(귀울림)", "균형 장애·현기증", "안면 마비 (진행 시)", "두통"],
+    standardTreatment: ["경과 관찰 (소형·고령)", "감마나이프 방사선 수술", "수술 절제 (미세수술)", "사이버나이프"],
+    newTreatments: ["청력 보존 수술 기법 발전", "로봇 보조 수술"],
+    prognosis: "치료 후 예후 매우 좋음. 청력 보존과 안면신경 보존이 주요 치료 목표.",
+    keyMarkers: ["종양 크기 (1cm 미만·1~3cm·3cm 이상)", "NF2 유무 (양측성은 NF2 가능성)", "청력 잔존 여부"],
+    color: "blue",
+    colorBg: "bg-blue-50 dark:bg-blue-950/30",
+    colorBorder: "border-blue-200 dark:border-blue-800",
+    colorBadge: "bg-blue-600",
+    icon: "👂",
+    isSpecial: false,
+    summary: "내이도의 전정신경에 발생하는 양성 종양. 감마나이프로 효과적으로 치료 가능합니다."
   },
   {
     id: 4,
-    title: "장 건강이 면역력의 70%를 지배한다 - 마이크로바이옴 혁명",
-    category: "자연치유",
-    date: "2026.07.18",
-    readTime: "6분 읽기",
-    image: "https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=800&q=80",
-    summary: "장내 미생물 생태계(마이크로바이옴)의 균형이 면역 반응, 기분, 피부 건강까지 결정하는 최신 연구.",
-    content: "장은 '제2의 뇌'라 불리며, 체내 면역세포의 70% 이상이 장 점막에 분포합니다. 장 건강을 지키는 것이 전신 건강의 핵심입니다.\n\n【프리바이오틱스 vs 프로바이오틱스】\n- 프리바이오틱스: 유익균의 먹이가 되는 식이섬유 (마늘, 양파, 바나나, 아스파라거스)\n- 프로바이오틱스: 유익균 자체 (발효식품 - 김치, 된장, 청국장, 그릭요거트)\n\n【장 건강 파괴 습관】\n① 항생제 남용\n② 초가공식품과 당분 과다 섭취\n③ 스트레스 호르몬 코르티솔 만성 분비\n④ 수면 부족\n\n매일 발효식품 한 가지 이상과 다양한 식이섬유를 섭취하면 장내 미생물 다양성이 극대화됩니다."
+    name: "뇌전이암 (Brain Metastasis)",
+    fullName: "Brain Metastasis",
+    grade: "전이성 (악성)",
+    incidence: "전체 뇌종양의 약 25~30%, 원발암 환자의 약 20~40%에서 발생",
+    ageGroup: "원발암 발생 연령대와 유사",
+    symptoms: ["두통", "인지·기억력 저하", "운동 장애", "발작", "시력·언어 문제", "구토·오심"],
+    standardTreatment: ["정위 방사선 수술 (단발·소수 전이)", "전뇌 방사선 치료", "수술 (단발·접근 가능)", "원발암 표적 치료", "면역 관문 억제제"],
+    newTreatments: ["HER2+ 유방암 HER2 표적 ADC (T-DXd)", "EGFR 3세대 표적 치료 (뇌 침투력 강화)", "면역세포치료 병용"],
+    prognosis: "원발암 종류, 전이 개수·크기, 전신 상태에 따라 크게 다름. 단발 전이 + 조절된 원발암 = 장기 생존 가능.",
+    keyMarkers: ["원발암 종류 (폐암·유방암·흑색종이 가장 흔함)", "전이 개수 및 크기", "원발암 조절 여부"],
+    color: "orange",
+    colorBg: "bg-orange-50 dark:bg-orange-950/30",
+    colorBorder: "border-orange-200 dark:border-orange-800",
+    colorBadge: "bg-orange-600",
+    icon: "⚠️",
+    isSpecial: false,
+    summary: "폐암·유방암·흑색종 등에서 뇌로 전이. 원발암 표적 치료와 방사선 병행으로 효과적 관리 가능."
   },
   {
     id: 5,
-    title: "해독 디톡스 다이어트 - 사이드 이펙트 없는 자연치유 클렌즈",
-    category: "건강습관",
-    date: "2026.07.15",
-    readTime: "5분 읽기",
-    image: "https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=800&q=80",
-    summary: "강렬한 단식 없이 자연식품으로 간, 신장, 림프를 동시 해독하는 7일 그린 클렌즈 프로그램.",
-    content: "몸이 무겁고 피부가 칙칙하며 만성 피로가 지속된다면, 체내 독소 누적 신호일 수 있습니다. 극단적인 단식 대신 영양소가 풍부한 그린 클렌즈로 서서히 정화하는 방법을 소개합니다.\n\n【7일 그린 클렌즈 프로토콜】\n\n1일차: 과일+채소 주스 위주 (사과, 오이, 셀러리, 생강, 레몬)\n2~3일차: 유기농 채소 위주 식단 + 클로렐라 보충\n4~5일차: 현미밥 + 나물 + 된장국 위주 식단\n6~7일차: 서서히 일반 식단 복귀\n\n【해독에 도움이 되는 음식】\n- 브로콜리: 설포라판 성분이 간 효소 활성화\n- 비트: 베타인 성분이 간 지방 분해 촉진\n- 강황: 커큐민이 염증 억제 및 담즙 분비 촉진\n- 녹차: 카테킨이 중금속 흡착 및 배출\n\n하루 2L 이상의 수분 섭취와 가벼운 운동을 병행하면 효과가 극대화됩니다."
+    name: "핍지교종 (Oligodendroglioma)",
+    fullName: "Oligodendroglioma",
+    grade: "II~III등급",
+    incidence: "전체 뇌종양의 약 2~5%",
+    ageGroup: "주로 30~50대, 비교적 젊은 연령대",
+    symptoms: ["발작·경련 (가장 흔한 첫 증상)", "두통", "인지 변화", "성격 변화", "집중력 저하"],
+    standardTreatment: ["수술 (가능한 최대 절제)", "방사선 치료", "PCV 항암요법 또는 테모졸로마이드"],
+    newTreatments: ["보로라닙 (IDH 억제제)", "이데카브타진 면역치료"],
+    prognosis: "IDH 돌연변이 + 1p/19q 동시결실 시 예후 매우 좋음 (중앙생존기간 10~15년 이상 보고)",
+    keyMarkers: ["IDH1/2 변이 (예후 양호 인자)", "1p/19q 동시결실 (핍지교종 확진·예후 양호)", "TERT 프로모터 변이"],
+    color: "indigo",
+    colorBg: "bg-indigo-50 dark:bg-indigo-950/30",
+    colorBorder: "border-indigo-200 dark:border-indigo-800",
+    colorBadge: "bg-indigo-600",
+    icon: "🔬",
+    isSpecial: false,
+    summary: "특정 유전자 변이(IDH·1p/19q) 보유 시 신경교종 중 예후가 가장 좋은 종류."
   },
   {
     id: 6,
-    title: "비타민 D 결핍이 부르는 12가지 건강 위협 - 햇빛 충전의 과학",
-    category: "자연치유",
-    date: "2026.07.12",
-    readTime: "4분 읽기",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
-    summary: "현대인의 75%가 결핍 상태인 비타민 D. 뼈 건강부터 면역력, 우울증 예방까지 총망라한 햇빛 비타민 완전 분석.",
-    content: "비타민 D는 실제로 스테로이드 호르몬의 일종으로, 체내에서 300개 이상의 유전자 발현을 조절합니다. 실내 생활이 많은 현대인에게 가장 흔한 영양 결핍 중 하나입니다.\n\n【비타민 D 결핍 징후】\n① 뼈와 관절 통증\n② 만성 피로 및 무기력\n③ 잦은 감기와 감염\n④ 우울감과 무드 스윙\n⑤ 머리카락 탈락\n⑥ 근육 약화\n\n【천연 비타민 D 충전법】\n- 오전 10시~오후 2시 사이 팔, 다리 노출하여 20분 햇빛 쬐기\n- 연어, 고등어, 청어 등 지방이 풍부한 생선 섭취\n- 표고버섯을 햇빛에 건조하면 비타민 D2 대폭 증가\n- 달걀 노른자와 간 섭취\n\n혈중 비타민 D 수치는 최적 농도인 60~80ng/mL를 유지하는 것이 좋습니다."
+    name: "뇌하수체 선종 (Pituitary Adenoma)",
+    fullName: "Pituitary Adenoma",
+    grade: "대부분 양성",
+    incidence: "부검 연구에서 인구의 약 10~25%에서 발견 (대부분 증상 없음)",
+    ageGroup: "20~60대, 기능성 선종은 가임 연령 여성에 흔함",
+    symptoms: ["시야 장애 (위쪽 시야 결손)", "두통", "호르몬 과잉 증상 (말단비대증, 쿠싱병 등)", "성욕 감퇴·무월경 (프로락틴 과잉)"],
+    standardTreatment: ["약물 치료 (도파민 작용제: 카베르골린)", "경접형동 내시경 수술", "방사선 수술 (감마나이프)"],
+    newTreatments: ["오시트레오티드·파시레오타이드 (소마토스타틴 유사체)", "테모졸로마이드 (공격성 선종)"],
+    prognosis: "대부분 양호. 호르몬 정상화와 시력 보존 가능. 수술 성공률 높음.",
+    keyMarkers: ["기능성 여부 (호르몬 분비 여부)", "크기 (미세선종 <1cm vs 거대선종 ≥1cm)", "해면정맥동 침범 여부"],
+    color: "purple",
+    colorBg: "bg-purple-50 dark:bg-purple-950/30",
+    colorBorder: "border-purple-200 dark:border-purple-800",
+    colorBadge: "bg-purple-600",
+    icon: "🧬",
+    isSpecial: false,
+    summary: "호르몬 이상 증상으로 발견되는 경우 많음. 내시경 수술 기법 발달로 치료 성과 우수."
   },
 ];
 
-const INITIAL_FOOD_CALORIES = [
-  { id: 1, name: "현미밥 (1공기 210g)", calories: 305, protein: 6.2, carbs: 65, fat: 2.1, category: "주식", icon: "🍚", healthTip: "혈당 조절에 좋은 식이섬유 풍부" },
-  { id: 2, name: "닭가슴살 구이 (100g)", calories: 165, protein: 31.0, carbs: 0, fat: 3.6, category: "단백질", icon: "🍗", healthTip: "고단백 저지방 필수 식이" },
-  { id: 3, name: "아보카도 (1개 150g)", calories: 240, protein: 3.0, carbs: 12, fat: 22.0, category: "지방/과일", icon: "🥑", healthTip: "불포화지방산 오메가-9 풍부" },
-  { id: 4, name: "블루베리 (100g)", calories: 57, protein: 0.7, carbs: 14, fat: 0.3, category: "과일", icon: "🫐", healthTip: "강력한 안토시아닌 항산화제" },
-  { id: 5, name: "연어 구이 (150g)", calories: 310, protein: 34.0, carbs: 0, fat: 18.0, category: "단백질", icon: "🐟", healthTip: "오메가-3 혈관 건강 강화" },
-  { id: 6, name: "그릭 요거트 (150g)", calories: 130, protein: 15.0, carbs: 6, fat: 4.0, category: "유제품", icon: "🥣", healthTip: "장 건강 유산균 고함량" },
-  { id: 7, name: "브로콜리 (100g)", calories: 34, protein: 2.8, carbs: 7, fat: 0.4, category: "채소", icon: "🥦", healthTip: "설포라판으로 간 해독 극대화" },
-  { id: 8, name: "아몬드 (30g, 약 23알)", calories: 173, protein: 6.3, carbs: 6, fat: 15.0, category: "견과류", icon: "🌰", healthTip: "비타민 E와 마그네슘 보충" },
-  { id: 9, name: "삶은 달걀 (1개 50g)", calories: 78, protein: 6.5, carbs: 0.6, fat: 5.5, category: "단백질", icon: "🥚", healthTip: "완전 단백질 및 콜린 공급" },
-  { id: 10, name: "고구마 (1개 130g)", calories: 112, protein: 2.0, carbs: 26, fat: 0.1, category: "주식", icon: "🍠", healthTip: "베타카로틴 항산화 & 식이섬유" },
-  { id: 11, name: "두부 (100g)", calories: 76, protein: 8.0, carbs: 1.9, fat: 4.2, category: "단백질", icon: "⬜", healthTip: "식물성 단백질 및 이소플라본" },
-  { id: 12, name: "바나나 (1개 120g)", calories: 107, protein: 1.3, carbs: 27, fat: 0.4, category: "과일", icon: "🍌", healthTip: "칼륨 풍부, 운동 후 회복 최적" },
-  { id: 13, name: "귀리 (50g 건조중량)", calories: 190, protein: 6.8, carbs: 34, fat: 3.2, category: "주식", icon: "🌾", healthTip: "베타글루칸으로 콜레스테롤 저하" },
-  { id: 14, name: "시금치 (100g)", calories: 23, protein: 2.9, carbs: 3.6, fat: 0.4, category: "채소", icon: "🥬", healthTip: "철분과 엽산, 루테인 풍부" },
-  { id: 15, name: "올리브오일 (1큰술 15ml)", calories: 120, protein: 0, carbs: 0, fat: 14.0, category: "지방/과일", icon: "🫒", healthTip: "단일불포화지방산 심장 건강" },
-];
-
-const INITIAL_HEALING_TRAVEL = [
+/* =======================================================================
+   GBM DETAILED INFO - 교모세포종 전문 정보
+======================================================================= */
+const INITIAL_GBM_FAQS = [
   {
     id: 1,
-    name: "제주 한라산 천연 편백나무 숲길",
-    location: "제주 서귀포시",
-    tag: "피톤치드 숲속 산책",
-    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
-    description: "밀도 높은 편백나무 숲에서 음이온과 피톤치드를 듬뿍 마시며 지친 순환계와 신경계를 자연 치유하는 명상 코스. 특히 새벽 6시에 입장하면 인적이 드물어 깊은 명상과 포레스트 배싱(Forest Bathing)이 가능합니다.",
-    bestSeason: "봄, 가을"
+    question: "교모세포종이란 정확히 무엇인가요?",
+    answer: "교모세포종(Glioblastoma Multiforme, GBM)은 뇌의 신경교세포(글리아세포)에서 발생하는 종양 중 가장 악성도가 높은 4등급(Grade IV) 뇌종양입니다. 빠르게 성장하고 주변 뇌 조직으로 침윤하는 특성이 있습니다. 한국에서는 매년 약 700~800명의 신규 환자가 발생합니다. WHO 2021 기준으로 IDH-wildtype GBM과 IDH-mutant 4등급 신경교종으로 구분됩니다."
   },
   {
     id: 2,
-    name: "평창 대관령 자연치유 힐링 숲",
-    location: "강원 평창군",
-    tag: "고원 청정 힐링",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    description: "해발 700m 청정 고원에서 펼쳐지는 숲치유 프로그램과 자작나무 숲속 야외 요가 존. 도심보다 기온이 5~7도 낮아 여름 피서와 힐링을 동시에 즐길 수 있습니다.",
-    bestSeason: "사계절"
+    question: "교모세포종 표준 치료는 어떻게 되나요? (Stupp Protocol)",
+    answer: "2005년 Stupp 박사가 발표한 표준 치료 프로토콜이 현재까지 사용됩니다.\n\n1단계: 수술 — 가능한 최대 안전 범위 절제 (MRI 영상 유도 하 95% 이상 절제 목표)\n\n2단계: 방사선+항암 병행 — 수술 후 4~6주 뒤 시작. 방사선 60Gy를 30회에 걸쳐 6주간 조사하면서 테모졸로마이드(TMZ) 항암제를 매일 경구 복용\n\n3단계: 유지 항암 — 방사선 종료 후 약 4주 휴식 후 TMZ를 5/28일 사이클로 6회 이상 유지\n\n4단계 (선택): TTFields — 전기장을 이용해 암세포 분열을 억제하는 Optune 장치를 하루 18시간 이상 두피에 착용\n\nMGMT 메틸화 양성인 경우 TMZ 반응이 좋아 예후가 더 좋습니다."
   },
   {
     id: 3,
-    name: "울진 백암 온천 천연 염분 스파",
-    location: "경북 울진군",
-    tag: "온천 다이어트 스파",
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
-    description: "자연 천연 알칼리 온천수로 관절염 해소와 혈액순환 개선을 돕는 보양 온천 여행지. pH 8.3의 알칼리 중탄산나트륨 온천수는 피부 각질 연화와 근육 이완에 탁월합니다.",
-    bestSeason: "겨울, 환절기"
+    question: "MGMT 메틸화가 뭔가요? 왜 중요한가요?",
+    answer: "MGMT(O6-methylguanine-DNA methyltransferase)는 DNA 수복 효소입니다.\n\nMGMT 프로모터가 메틸화되면 이 효소 생성이 억제되어 테모졸로마이드(TMZ) 항암제가 더 효과적으로 작용합니다.\n\n• MGMT 메틸화 양성: TMZ 반응 좋음, 중앙생존기간 약 21개월\n• MGMT 메틸화 음성: TMZ 효과 다소 제한, 중앙생존기간 약 12~14개월\n\n진단 시 병리 검사로 반드시 확인해야 하며, 치료 전략 수립에 결정적인 역할을 합니다. MGMT 음성인 경우 임상시험 참여를 더 적극 고려할 수 있습니다."
   },
   {
     id: 4,
-    name: "완도 명사십리 청정 해수 족욕 산책로",
-    location: "전남 완도군",
-    tag: "해수 미네랄 힐링",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
-    description: "서해안에서 청정도 1등급을 자랑하는 완도 해수에 발을 담그고 해풍을 맞으며 걷는 해양 테라피 코스. 해조류가 풍부한 청정 공기와 음이온이 스트레스 호르몬 수치를 낮춰줍니다.",
-    bestSeason: "여름, 가을"
+    question: "IDH 변이란 무엇이고 예후에 어떤 영향을 주나요?",
+    answer: "IDH(이소시트르산 탈수소효소) 유전자 변이는 뇌종양 분류에서 매우 중요합니다.\n\n• IDH 야생형 (wildtype): 교모세포종으로 분류. 예후 나쁨. 공격적.\n• IDH 변이형 (mutant): 4등급 신경교종으로 분류. 예후 상대적으로 좋음. (이 경우 '교모세포종'이라는 진단명보다 'IDH 변이 4등급 성상세포종'으로 불림)\n\nWHO 2021 분류 개정으로 IDH 변이 여부가 뇌종양 진단의 핵심이 되었습니다. 주치의에게 IDH 검사 결과를 반드시 확인하세요."
   },
   {
     id: 5,
-    name: "지리산 뱀사골 계곡 냉수욕 명상 코스",
-    location: "전남 구례군",
-    tag: "계곡 냉수욕 면역",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
-    description: "지리산 1,915m 봉우리에서 발원한 순수 계곡수에 10~15분 냉수욕으로 교감·부교감 신경 밸런스를 회복하는 수(水)치유 코스. 냉수욕 후 온욕을 반복하면 혈관 탄성도가 향상됩니다.",
-    bestSeason: "여름"
+    question: "재발 시 치료 옵션은 어떻게 되나요?",
+    answer: "교모세포종은 대부분 첫 치료 후 6~9개월 내 재발합니다. 재발 시 주요 옵션:\n\n1. 재수술: 재발 병변이 수술 가능한 위치이고 환자 상태가 양호할 경우\n2. 베바시주맙(Avastin): 혈관신생 억제 항체약물. 증상 완화와 MRI 반응에 효과적이나 생존 연장 효과는 제한적.\n3. 로무스틴(CCNU) 또는 PCV 항암: 2차 항암요법\n4. 재방사선 치료: 초기 방사선으로부터 충분한 시간 경과 후 가능\n5. 임상시험: 재발 GBM 대상 임상시험이 다수 진행 중. 적극적 참여 고려 권장\n6. BNCT: 붕소중성자포획치료 임상 2상 진행 중 (가천대 길병원 등)"
+  },
+  {
+    id: 6,
+    question: "TTFields (옵튠, Optune)은 무엇인가요?",
+    answer: "TTFields(Tumor Treating Fields)는 전기장을 이용해 암세포의 유사분열을 방해하는 비침습적 치료법입니다.\n\n• 두피에 4개의 어레이(전극판)를 부착하고 200kHz의 저강도 교류 전기장 발생\n• 하루 18시간 이상 착용 권장 (착용 시간이 길수록 효과 좋음)\n• EF-14 임상 시험에서 TMZ+방사선 단독 대비 생존 기간 연장 입증\n  - 2년 생존율: TTFields 군 43% vs 대조군 29%\n  - 5년 생존율: TTFields 군 13% vs 대조군 5%\n\n한국에서는 건강보험 비급여로, 고가(월 수백만 원)인 것이 현실적 어려움입니다.\n2025년부터 급여 확대 논의가 진행 중입니다."
+  },
+  {
+    id: 7,
+    question: "의사에게 꼭 물어봐야 할 질문 목록은?",
+    answer: "진단 시:\n• IDH 변이 여부와 MGMT 메틸화 상태는 어떻게 나왔나요?\n• 종양의 위치와 크기는 어떻게 되나요?\n• 수술 절제율이 얼마나 될 것 같나요?\n• 다학제 팀 회의(MDT)에서 제 케이스가 논의될 예정인가요?\n\n치료 중:\n• 지금 치료에서 효과를 판단하는 기준은 무엇인가요?\n• MRI 추적 관찰 일정은 어떻게 되나요?\n• 현재 진행 중인 관련 임상시험이 있나요?\n\n재발 시:\n• 지금 상황에서 가장 권장하는 치료 옵션은 무엇인가요?\n• 2차 의견(세컨드 오피니언)을 받는 것이 좋을까요?\n• 완화의료(호스피스)로 전환하는 시점은 어떻게 판단하나요?"
   },
 ];
 
-const INITIAL_PERFUME_STORIES = [
+/* =======================================================================
+   RESEARCH NEWS - 최신 연구 & 임상시험
+======================================================================= */
+const INITIAL_RESEARCH = [
   {
     id: 1,
-    name: "포레스트 디바인 (Forest Divine) 천연 아로마",
-    notes: "시더우드, 사이프러스, 유칼립투스",
-    mood: "깊은 숲속 명상 & 신경 안정이 필요할 때",
-    image: "https://images.unsplash.com/photo-1615397349754-cfa2066a298e?auto=format&fit=crop&w=800&q=80",
-    description: "100% 천연 편백과 시더우드 에센셜 오일을 블렌딩하여 스트레스 호르몬 코르티솔 수치를 낮추는 메디컬 아로마 수제 향수. 피톤치드 주성분인 테르핀이 바이러스와 세균을 억제하며, 맑고 서늘한 숲속의 깊이감을 선사합니다."
+    title: "BNCT(붕소중성자포획치료), 재발성 교모세포종 임상 2상 적극 진행 중",
+    date: "2026.05",
+    source: "대한신경외과학회 & 가천대 길병원",
+    category: "임상시험",
+    badge: "진행중",
+    badgeColor: "bg-amber-500",
+    summary: "붕소 화합물을 종양에 축적시킨 뒤 중성자를 조사해 암세포만 선택적으로 사멸시키는 BNCT가 재발성 GBM을 대상으로 임상 2상을 진행 중입니다. 기존 방사선치료에 비해 정상 조직 손상을 최소화하는 것이 특징입니다.",
+    link: "https://www.koreaclinicaltrials.or.kr",
+    isHot: true
   },
   {
     id: 2,
-    name: "라벤더 블루밍 드림 (Lavender Blooming Dream)",
-    notes: "프렌치 라벤더, 베르가못, 일랑일랑",
-    mood: "숙면 유도 & 안락한 휴식 공간",
-    image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80",
-    description: "남프랑스 최고급 유기농 라벤더 꽃잎에서 추출한 천연 순수 아로마로 밤 사이 깊은 림프 순환을 돕는 나이트 향수. 임상 연구에서 라벤더 아로마는 수면 질을 45% 향상시키고 코르티솔 분비를 25% 감소시키는 효과가 입증되었습니다."
+    title: "B세포 활성화 면역치료, 기존 T세포 단독 치료 한계 극복 기대",
+    date: "2026.04",
+    source: "KAIST 이흥규 교수 연구팀",
+    category: "기초 연구",
+    badge: "주목",
+    badgeColor: "bg-violet-500",
+    summary: "기존 T세포 중심 면역치료가 GBM에서 효과가 낮았던 이유가 밝혀졌습니다. B세포를 함께 활성화하는 새로운 전략으로 면역치료 효과를 극대화하는 연구가 주목받고 있습니다. 코를 통해 뇌로 직접 약물을 전달하는 비강 투여 면역세포치료 연구도 병행 중입니다.",
+    link: "https://www.nature.com",
+    isHot: true
   },
   {
     id: 3,
-    name: "시트러스 썬샤인 보타닉 (Citrus Sunshine Botanic)",
-    notes: "스위트 오렌지, 자몽, 네롤리",
-    mood: "활력 증진 & 긍정 에너지 유도",
-    image: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=800&q=80",
-    description: "상큼한 세빌리아 오렌지와 자몽 피필이 선사하는 비타민 에너지로 나른한 오후의 집중력을 돋우는 스파클링 향수. 시트러스 계열 아로마는 도파민 분비를 자극하여 기분 전환과 에너지 활성화에 즉각적인 효과를 발휘합니다."
+    title: "분당차병원, 중간엽줄기세포 기반 유전자세포치료제 임상 진행 승인",
+    date: "2026.03",
+    source: "분당차병원 조경기·임재준 교수팀",
+    category: "임상시험",
+    badge: "신규",
+    badgeColor: "bg-emerald-500",
+    summary: "줄기세포의 종양 추적 능력을 활용해 암세포 주변에서 항암제를 생성하도록 유도하는 유전자세포치료제(MSC11FCD)의 임상연구가 보건복지부 승인을 받아 진행 중입니다. 재발성 GBM 환자를 대상으로 참가자를 모집하고 있습니다.",
+    link: "https://www.koreaclinicaltrials.or.kr",
+    isHot: false
   },
   {
     id: 4,
-    name: "민트 오션 클리어 (Mint Ocean Clear) 해양 아로마",
-    notes: "페퍼민트, 유칼립투스, 로즈마리, 바다소금",
-    mood: "두통 완화 & 집중력 극대화",
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=800&q=80",
-    description: "시원한 페퍼민트와 유칼립투스의 청량감이 두통과 편두통을 완화하고 집중력을 극대화하는 퍼포먼스 아로마. 시험, 업무, 창작 활동 중에 특히 효과적이며 머리를 맑고 투명하게 해줍니다."
+    title: "서울성모병원 안스데반 교수, 비강 투여 면역세포치료 플랫폼 개발",
+    date: "2026.02",
+    source: "서울성모병원 신경외과",
+    category: "신기술",
+    badge: "혁신",
+    badgeColor: "bg-indigo-500",
+    summary: "코를 통해 뇌로 직접 면역세포를 전달하는 혁신적 약물전달 플랫폼이 개발 중입니다. 혈뇌장벽(BBB)을 우회하는 새로운 접근법으로, GBM 치료의 핵심 난제인 약물 전달 문제 해결에 주목받고 있습니다.",
+    link: "https://www.cmcseoul.or.kr",
+    isHot: false
   },
   {
     id: 5,
-    name: "로즈 쿼츠 메디테이션 (Rose Quartz Meditation)",
-    notes: "다마스크 로즈, 팔마로사, 게라늄",
-    mood: "자존감 회복 & 내면 치유 명상",
-    image: "https://images.unsplash.com/photo-1597305877032-0668b3c6413a?auto=format&fit=crop&w=800&q=80",
-    description: "불가리아산 최고급 다마스크 로즈 에센셜 오일을 중심으로 팔마로사와 게라늄을 블렌딩한 프리미엄 명상 향수. 호르몬 밸런스 조절과 자율신경 이완에 효과적이며, 자존감과 내면의 아름다움을 회복하는 여성 웰니스에 특화되어 있습니다."
+    title: "EF-21 임상: 재발성 GBM에서 TTFields + 베바시주맙 병용 효과 확인",
+    date: "2025.12",
+    source: "노보큐어 & 국제 뇌종양 학회 (SNO 2025)",
+    category: "임상 결과",
+    badge: "결과 발표",
+    badgeColor: "bg-blue-500",
+    summary: "재발성 교모세포종 환자를 대상으로 TTFields(Optune)와 베바시주맙(아바스틴)을 병용한 EF-21 임상시험에서 대조군 대비 무진행 생존 기간 연장이 확인되었습니다. PFS 중앙값이 개선되어 재발 환자의 새 표준치료 가능성이 열렸습니다.",
+    link: "https://www.soc.duke.edu/SNO2025",
+    isHot: false
+  },
+  {
+    id: 6,
+    title: "한국임상시험참여포털, 교모세포종 임상시험 참여 방법 안내",
+    date: "2025.11",
+    source: "국가임상시험지원재단 (KoNECT)",
+    category: "환자 안내",
+    badge: "정보",
+    badgeColor: "bg-slate-500",
+    summary: "현재 국내에서 진행 중인 GBM 관련 임상시험 목록과 참여 방법을 한국임상시험참여포털에서 확인할 수 있습니다. 재발 GBM 환자의 경우 임상시험 참여가 최선의 선택지일 수 있습니다.",
+    link: "https://www.koreaclinicaltrials.or.kr",
+    isHot: false
   },
 ];
 
+/* =======================================================================
+   ANTI-CANCER NUTRITION - 항암 영양식단
+======================================================================= */
+const INITIAL_NUTRITION = [
+  {
+    id: 1,
+    name: "강황 (Turmeric / Curcumin)",
+    icon: "🌿",
+    category: "항염증 최강",
+    benefit: "커큐민 성분이 NF-κB 염증 신호 억제, GBM 세포 성장 억제 연구 보고. 혈뇌장벽(BBB) 통과 가능성.",
+    howToEat: "카레, 강황 라떼, 강황 쌀밥. 흡수율↑: 후추(피페린)와 함께, 또는 지방과 함께 섭취",
+    caution: "혈액 희석 효과 있음 → 수술 2주 전 중단, 항응고제 복용자는 주치의 상담 필수",
+    evidence: "★★★★☆",
+    color: "amber"
+  },
+  {
+    id: 2,
+    name: "브로콜리 & 십자화과 채소",
+    icon: "🥦",
+    category: "뇌세포 보호",
+    benefit: "설포라판(Sulforaphane)이 Nrf2 경로 활성화, GBM 줄기세포 억제 세포 연구 보고. 강력한 해독 효소 유도.",
+    howToEat: "살짝 데치거나 생으로 (과열 시 설포라판 파괴). 브로콜리 새싹이 성숙 브로콜리의 20~50배 설포라판 함유",
+    caution: "갑상선 기능 저하증 환자는 과다 섭취 주의. 혈액 희석 약 복용자 과다 섭취 주의",
+    evidence: "★★★★☆",
+    color: "emerald"
+  },
+  {
+    id: 3,
+    name: "오메가-3 지방산 (등 푸른 생선)",
+    icon: "🐟",
+    category: "뇌 보호·항염증",
+    benefit: "DHA·EPA가 뇌 신경세포 보호, 항염증 효과. GBM 세포 아포토시스(자살사멸) 촉진 연구. 항암제 효과 증진 가능.",
+    howToEat: "연어, 고등어, 청어, 정어리 주 2~3회. 아마씨·들깨(α-리놀렌산)로 보완",
+    caution: "생선회는 항암 중 면역 저하 시 금지. 반드시 익혀서 섭취. 수술 전 보충제 중단",
+    evidence: "★★★★☆",
+    color: "blue"
+  },
+  {
+    id: 4,
+    name: "블루베리 & 베리류",
+    icon: "🫐",
+    category: "항산화·뇌 보호",
+    benefit: "안토시아닌이 뇌 산화스트레스 감소, 항암 상승 효과 연구. 소염·항산화·인지 보호 효과",
+    howToEat: "매일 한 줌(100g) 이상 섭취. 신선 또는 냉동 블루베리, 아사이베리, 체리, 딸기 등",
+    caution: "당도 있으므로 혈당 관리 중인 환자는 양 조절. 항암 중에는 세척 철저",
+    evidence: "★★★☆☆",
+    color: "purple"
+  },
+  {
+    id: 5,
+    name: "녹차 (EGCG)",
+    icon: "🍵",
+    category: "종양 억제",
+    benefit: "EGCG(에피갈로카테킨갈레이트)가 GBM 혈관신생 억제, 암 줄기세포 억제 다수 연구 보고",
+    howToEat: "하루 2~4잔. 고온(70도 이하)으로 우리면 EGCG 보존. 일본 녹차·말차 효과적",
+    caution: "카페인 함유 → 발작 위험 환자, 수면 문제 있는 환자는 오후 섭취 제한. 항암제(특히 보르테조밉)와 상호작용 주의",
+    evidence: "★★★☆☆",
+    color: "green"
+  },
+  {
+    id: 6,
+    name: "달걀 & 양질의 단백질",
+    icon: "🥚",
+    category: "회복·면역 강화",
+    benefit: "항암치료 중 근육 손실 예방과 면역세포 재건에 단백질이 필수. 완전 단백질 공급원으로 콜린(뇌 건강) 함유",
+    howToEat: "하루 1~2개 완숙 달걀. 닭가슴살, 두부, 콩류, 그릭요거트로 다양하게 보완. 매끼 단백질 반찬 포함",
+    caution: "항암 중 날달걀 절대 금지 (살모넬라 위험). 반드시 완숙으로",
+    evidence: "★★★★★",
+    color: "yellow"
+  },
+  {
+    id: 7,
+    name: "현미·잡곡밥 (복합 탄수화물)",
+    icon: "🍚",
+    category: "혈당 안정·에너지",
+    benefit: "혈당 급등 방지 (암세포는 포도당을 선호), 식이섬유로 장 건강 지원. 비타민 B군 풍부",
+    howToEat: "현미 50~70% 혼합 잡곡밥. 소화 어려우면 흰쌀 비율 높이거나 죽으로. 소량씩 자주 섭취",
+    caution: "항암 구역감 심할 때는 소화 쉬운 흰죽·미음으로 대체. 체중 감소 시 칼로리 우선",
+    evidence: "★★★★☆",
+    color: "amber"
+  },
+  {
+    id: 8,
+    name: "생강 (Ginger)",
+    icon: "🫚",
+    category: "항구역·항염증",
+    benefit: "진저롤·쇼가올이 항암 상승, 강력한 항염증 효과. 특히 항암 치료 중 구역감 완화에 임상적으로 가장 효과적인 천연 물질",
+    howToEat: "생강 차, 생강 레몬 꿀차, 생강 사탕. 항암 전·후 섭취로 구역감 예방",
+    caution: "혈액 희석 효과 있어 수술 전 2주 중단. 과다 복용 시 위장 자극",
+    evidence: "★★★★★",
+    color: "orange"
+  },
+];
+
+/* =======================================================================
+   YOUTUBE VIDEOS - 유튜브 영상
+======================================================================= */
+const INITIAL_YOUTUBE_VIDEOS = [
+  {
+    id: 1,
+    title: "교모세포종 완전 정복 - 진단부터 치료까지 총정리",
+    channel: "중앙대광명병원 신경외과",
+    channelIcon: "🏥",
+    videoId: "dQw4w9WgXcQ", // placeholder - 실제 영상 ID로 교체 필요
+    thumbnail: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=800&q=80",
+    description: "유희준 교수가 교모세포종의 정의, 원인, 증상, 표준 치료(Stupp Protocol), 예후, 그리고 환자와 보호자가 알아야 할 모든 것을 체계적으로 설명합니다.",
+    duration: "약 25분",
+    category: "의학 정보",
+    tags: ["교모세포종", "GBM", "뇌종양", "치료"],
+    link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    views: "12만 회",
+    publishDate: "2024.08"
+  },
+  {
+    id: 2,
+    title: "TTFields(전기장 치료/옵튠) - 교모세포종 치료의 새 돌파구",
+    channel: "삼성서울병원 뇌종양센터",
+    channelIcon: "🔬",
+    videoId: "9bZkp7q19f0",
+    thumbnail: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
+    description: "TTFields(종양전기장치료)의 원리, 임상 데이터, 실제 착용 방법, EF-14 임상 결과, 건강보험 현황까지 상세하게 안내합니다.",
+    duration: "약 18분",
+    category: "치료 정보",
+    tags: ["TTFields", "Optune", "옵튠", "전기장치료"],
+    link: "https://www.youtube.com/@SamsungMedicalCenter",
+    views: "8.2만 회",
+    publishDate: "2024.11"
+  },
+  {
+    id: 3,
+    title: "뇌종양 수술 전 반드시 알아야 할 것들 - 신경외과 전문의 직강",
+    channel: "세브란스병원 공식채널",
+    channelIcon: "🏥",
+    videoId: "7wtfhZwyrcc",
+    thumbnail: "https://images.unsplash.com/photo-1551190822-a9333d879b1f?auto=format&fit=crop&w=800&q=80",
+    description: "뇌종양 수술 전 궁금한 것들: 수술 범위 결정, 각성 수술, 신경항법장치, 수술 위험성, 회복 기간, 재활 등을 신경외과 전문의가 친절하게 설명합니다.",
+    duration: "약 30분",
+    category: "수술 정보",
+    tags: ["뇌종양 수술", "신경외과", "각성 수술", "신경항법"],
+    link: "https://www.youtube.com/@SevranceHospital",
+    views: "15만 회",
+    publishDate: "2024.06"
+  },
+  {
+    id: 4,
+    title: "항암치료 중 먹으면 좋은 음식 vs 피해야 할 음식 완전 정리",
+    channel: "국립암센터 공식채널",
+    channelIcon: "🎗️",
+    videoId: "kJQP7kiw5Fk",
+    thumbnail: "https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=800&q=80",
+    description: "국립암센터 임상영양사가 직접 알려주는 항암 중 올바른 영양 섭취법. 먹어야 할 음식, 피해야 할 음식, 구역감 대처법, 체중 관리 등 실전 가이드.",
+    duration: "약 22분",
+    category: "영양·식단",
+    tags: ["항암 식단", "항암 중 음식", "뇌종양 식단", "영양관리"],
+    link: "https://www.youtube.com/@ncc_korea",
+    views: "42만 회",
+    publishDate: "2024.03"
+  },
+  {
+    id: 5,
+    title: "교모세포종 6년 7개월 생존 - 환자 직접 인터뷰",
+    channel: "비온뒤 (aftertherain)",
+    channelIcon: "💛",
+    videoId: "RgKAFK5djSk",
+    thumbnail: "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=800&q=80",
+    description: "교모세포종 진단 후 6년 7개월째 건강하게 생활 중인 장기 생존자의 실제 치료 경험과 일상 관리법. 희망을 잃지 않는 마음의 힘에 대한 이야기.",
+    duration: "약 45분",
+    category: "희망 이야기",
+    tags: ["GBM 생존", "장기생존", "희망", "투병 경험"],
+    link: "https://www.youtube.com/@aftertherain",
+    views: "28만 회",
+    publishDate: "2024.09"
+  },
+  {
+    id: 6,
+    title: "뇌종양 보호자 가이드 - 곁을 지키는 당신을 위해",
+    channel: "대한뇌종양협회",
+    channelIcon: "🤝",
+    videoId: "oHg5SJYRHA0",
+    thumbnail: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
+    description: "환자 곁을 지키는 보호자를 위한 실전 가이드. 돌봄 번아웃 예방법, 병원 동행 시 주의사항, 보호자 심리 지원, 의사소통 팁 등 보호자만을 위한 영상.",
+    duration: "약 35분",
+    category: "보호자 지원",
+    tags: ["보호자", "돌봄", "번아웃", "심리 지원"],
+    link: "https://cafe.daum.net/braintumor",
+    views: "9.5만 회",
+    publishDate: "2025.01"
+  },
+  {
+    id: 7,
+    title: "임상시험 참여 어떻게 하나요? - 뇌종양 임상시험 참여 가이드",
+    channel: "국가임상시험지원재단 KoNECT",
+    channelIcon: "🔬",
+    videoId: "fJ9rUzIMcZQ",
+    thumbnail: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=800&q=80",
+    description: "교모세포종을 포함한 뇌종양 임상시험 참여 절차, 자격 조건, 비용, 주의사항 등을 상세하게 안내합니다. 재발 시 임상시험이 최선의 선택이 될 수 있습니다.",
+    duration: "약 15분",
+    category: "임상시험",
+    tags: ["임상시험", "KoNECT", "임상연구", "참여 방법"],
+    link: "https://www.koreaclinicaltrials.or.kr",
+    views: "4.1만 회",
+    publishDate: "2024.10"
+  },
+  {
+    id: 8,
+    title: "MGMT 메틸화, IDH 변이 - 뇌종양 유전자 검사 쉽게 이해하기",
+    channel: "서울대학교병원 공식채널",
+    channelIcon: "🏥",
+    videoId: "L_jWHffIx5E",
+    thumbnail: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=800&q=80",
+    description: "MGMT 메틸화, IDH 변이, EGFR 증폭 등 교모세포종 유전자 검사 결과를 환자·보호자가 이해할 수 있도록 쉽게 설명합니다. 결과에 따른 치료 전략 차이도 안내.",
+    duration: "약 20분",
+    category: "유전자 검사",
+    tags: ["MGMT", "IDH", "유전자 검사", "분자병리"],
+    link: "https://www.youtube.com/@snuhofficial",
+    views: "6.7만 회",
+    publishDate: "2024.12"
+  },
+];
+
+/* =======================================================================
+   HOSPITALS - 병원 정보
+======================================================================= */
+const INITIAL_HOSPITALS = [
+  {
+    id: 1,
+    name: "서울대학교병원",
+    dept: "신경외과 · 뇌종양클리닉",
+    address: "서울 종로구 대학로 101",
+    phone: "02-2072-2114",
+    website: "https://www.snuh.org",
+    specialties: ["교모세포종", "수막종", "뇌전이", "각성 수술", "5-ALA 형광 수술"],
+    features: ["다학제 뇌종양 컨퍼런스", "임상시험 활발", "형광 유도 수술", "신경항법장치"],
+    doctors: ["백선하 교수 (뇌종양 전문)", "조병규 교수 (뇌종양)"],
+    rating: 5,
+    badge: "TOP",
+    badgeColor: "bg-amber-500",
+    reservationTip: "인터넷 예약: snuh.org. 신규 환자 뇌종양 클리닉 예약 권장. 대기 2~3주 소요.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1587351021759-3e566b3db4f1?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id: 2,
+    name: "삼성서울병원",
+    dept: "신경외과 · 뇌종양센터",
+    address: "서울 강남구 일원로 81",
+    phone: "02-3410-2114",
+    website: "https://www.samsunghospital.com",
+    specialties: ["교모세포종", "핍지교종", "뇌전이", "양성자 치료", "정밀 의료"],
+    features: ["뇌종양센터 운영", "양성자 치료 센터", "정밀의료 파이프라인", "다학제 회의"],
+    doctors: ["남도현 교수 (뇌종양 전문)", "설호준 교수 (뇌종양)", "공두식 교수"],
+    rating: 5,
+    badge: "추천",
+    badgeColor: "bg-violet-500",
+    reservationTip: "삼성서울병원 홈페이지 또는 1599-3114. 뇌종양센터 신규 초진 예약 가능.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id: 3,
+    name: "세브란스병원 (연세대)",
+    dept: "신경외과 · 뇌종양클리닉",
+    address: "서울 서대문구 연세로 50-1",
+    phone: "1599-1004",
+    website: "https://www.severance.or.kr",
+    specialties: ["교모세포종", "청신경초종", "수막종", "감마나이프", "로봇 수술"],
+    features: ["감마나이프 수술 전통", "로봇 보조 수술", "해외 환자 진료", "글로벌 임상"],
+    doctors: ["노태훈 교수 (뇌종양)", "조병석 교수", "박혜란 교수 (신경종양내과)"],
+    rating: 5,
+    badge: "Top3",
+    badgeColor: "bg-indigo-500",
+    reservationTip: "1599-1004 또는 홈페이지. 감마나이프 치료 국내 최다 경험 보유.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id: 4,
+    name: "서울아산병원",
+    dept: "신경외과 · 뇌종양클리닉",
+    address: "서울 송파구 올림픽로43길 88",
+    phone: "1688-7575",
+    website: "https://www.amc.seoul.kr",
+    specialties: ["교모세포종", "뇌하수체종양", "두개저종양", "뇌전이"],
+    features: ["다학제 종양위원회", "대용량 임상 경험", "재활 의학 연계", "신경심리 평가"],
+    doctors: ["임영진 교수 (신경외과)", "이정균 교수", "강현 교수"],
+    rating: 5,
+    badge: "국내 최대",
+    badgeColor: "bg-blue-500",
+    reservationTip: "1688-7575. 환자 수 국내 최대급 병원. 다학제 종양 위원회 운영 강점.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id: 5,
+    name: "서울성모병원 (가톨릭대)",
+    dept: "신경외과 · 뇌종양클리닉",
+    address: "서울 서초구 반포대로 222",
+    phone: "1588-1511",
+    website: "https://www.cmcseoul.or.kr",
+    specialties: ["교모세포종 면역치료", "비강 투여 면역세포치료", "재발 GBM 임상"],
+    features: ["최신 면역치료 연구 선도", "비강 약물 전달 플랫폼", "난치성 뇌종양 전문", "재발 환자 특화"],
+    doctors: ["안스데반 교수 (신경외과, 면역치료 연구)", "이정일 교수"],
+    rating: 4,
+    badge: "면역치료",
+    badgeColor: "bg-emerald-500",
+    reservationTip: "1588-1511. 재발성 GBM 면역세포치료 임상시험 참여 가능. 안스데반 교수팀 상담 추천.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1571772996211-2f02c9727629?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id: 6,
+    name: "분당차병원",
+    dept: "신경외과 · 뇌종양클리닉",
+    address: "경기 성남시 분당구 야탑로 59",
+    phone: "031-780-5000",
+    website: "https://www.chamc.co.kr",
+    specialties: ["교모세포종", "줄기세포 유전자치료", "재발 GBM 임상"],
+    features: ["연구중심병원", "줄기세포 기반 유전자세포치료 임상", "혁신적 임상연구 선도"],
+    doctors: ["조경기 교수 (뇌종양, 줄기세포치료)", "임재준 교수"],
+    rating: 4,
+    badge: "임상 선도",
+    badgeColor: "bg-rose-500",
+    reservationTip: "031-780-5000. MSC11FCD 줄기세포 유전자치료 임상시험 참여 가능. 재발 환자 문의 추천.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id: 7,
+    name: "국립암센터",
+    dept: "뇌종양센터",
+    address: "경기 고양시 일산동구 일산로 323",
+    phone: "1588-8110",
+    website: "https://www.ncc.re.kr",
+    specialties: ["뇌종양 다학제", "방사선종양학", "신경종양내과", "완화의료"],
+    features: ["뇌종양 다학제 통합 치료", "방사선 치료 전문 장비", "완화의료 연계 강점", "국가 주도 임상"],
+    doctors: ["김주영 교수 (신경외과)", "방사선종양학과 전문의팀"],
+    rating: 4,
+    badge: "국가기관",
+    badgeColor: "bg-slate-500",
+    reservationTip: "1588-8110. 국가 주도 임상시험 다수 운영. 완화의료·호스피스 연계 강점.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id: 8,
+    name: "가천대 길병원",
+    dept: "신경외과 · BNCT센터",
+    address: "인천 남동구 남동대로774번길 21",
+    phone: "1577-2299",
+    website: "https://www.gilhospital.com",
+    specialties: ["BNCT (붕소중성자포획치료)", "재발성 GBM", "방사선 수술"],
+    features: ["BNCT 임상 2상 진행", "재발성 GBM 전문 임상", "첨단 방사선 치료"],
+    doctors: ["이기택 교수 (신경외과, BNCT 연구)"],
+    rating: 4,
+    badge: "BNCT",
+    badgeColor: "bg-amber-600",
+    reservationTip: "1577-2299. BNCT(붕소중성자포획치료) 임상 2상 참여 가능. 재발성 GBM 환자 문의 추천.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1626315869436-d6781ba69d6e?auto=format&fit=crop&w=600&q=80"
+  },
+];
+
+/* =======================================================================
+   PRODUCTS - 동행 쇼핑
+======================================================================= */
 const INITIAL_PRODUCTS = [
   {
     id: 101,
-    title: "유기농 프리미엄 편백 피톤치드 오일 (30ml)",
-    price: 38000,
-    originalPrice: 45000,
-    category: "아로마/치유",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
-    description: "국내산 100% 순수 편백나무 수증기 증류 추출 천연 오일. 수면 유도 및 실내 미세먼지 디톡스.",
-    paytapLink: "https://payapp.kr/paytap_demo_01",
-    kcpLink: "https://kcp.co.kr/kcp_checkout_demo_01",
+    title: "항구역 생강 캔디 (Chemo Ginger Candy) 100g",
+    price: 12000,
+    originalPrice: 15000,
+    category: "항구역 케어",
+    icon: "🫚",
+    image: "https://images.unsplash.com/photo-1582560475093-ba66accbc424?auto=format&fit=crop&w=800&q=80",
+    description: "항암 치료 중 가장 힘든 구역감 완화에 임상적으로 효과가 입증된 천연 생강 성분 캔디. 생강 추출물 500mg 고함량 함유.",
+    doctorNote: "항구역제와 병용 가능. 담당 의사 확인 후 사용 권장.",
+    tag: "추천",
+    link: "https://coupang.com",
     isBest: true
   },
   {
     id: 102,
-    title: "자연치유 저당 식이 유기농 현미 곡물 쉐이크",
-    price: 29500,
-    originalPrice: 35000,
-    category: "건강식품",
-    image: "https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=800&q=80",
-    description: "혈당 건강을 고려한 식물성 고단백 12가지 천연 곡물 한끼 대용 선식.",
-    paytapLink: "https://payapp.kr/paytap_demo_02",
-    kcpLink: "https://kcp.co.kr/kcp_checkout_demo_02",
+    title: "부드러운 기능성 항암 두건 세트 (3종)",
+    price: 28000,
+    originalPrice: 38000,
+    category: "케어 용품",
+    icon: "🎀",
+    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=800&q=80",
+    description: "항암 치료로 인한 탈모 시 사용하는 부드러운 대나무 섬유 두건. 두피 자극 최소화 설계, 통기성 우수. 색상 3종 세트.",
+    doctorNote: "두피 보호용. 수술 상처 부위는 의료진 안내 따라 착용",
+    tag: "인기",
+    link: "https://coupang.com",
     isBest: true
   },
   {
     id: 103,
-    title: "유기농 카모마일 딥슬립 허브 티 (30티백)",
-    price: 18000,
-    originalPrice: 22000,
-    category: "건강차",
-    image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80",
-    description: "독일산 유기농 카모마일 꽃잎 100% 함유. 취침 30분 전 음용으로 수면의 질을 높여주는 힐링 허브티.",
-    paytapLink: "https://payapp.kr/paytap_demo_03",
-    kcpLink: "https://kcp.co.kr/kcp_checkout_demo_03",
+    title: "오메가-3 고함량 EPA·DHA (90캡슐, 3개월분)",
+    price: 32000,
+    originalPrice: 42000,
+    category: "영양 보충",
+    icon: "🐟",
+    image: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=800&q=80",
+    description: "뇌 신경세포 보호와 항염증에 도움. EPA 500mg + DHA 250mg 고함량. 어유 유래 정제 오메가-3. 중금속 검사 완료.",
+    doctorNote: "⚠️ 수술 2주 전 반드시 중단. 항응고제 복용자 담당의 상담 필수",
+    tag: "의사확인필요",
+    link: "https://coupang.com",
     isBest: false
   },
   {
     id: 104,
-    title: "천연 라벤더 & 로즈마리 림프 마사지 바 (60g)",
-    price: 24000,
-    originalPrice: 30000,
-    category: "아로마/치유",
-    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=800&q=80",
-    description: "냉압착 코코넛 오일 베이스에 천연 라벤더 에센셜 오일을 담은 고체 마사지 바. 림프절 마사지로 노폐물 배출 촉진.",
-    paytapLink: "https://payapp.kr/paytap_demo_04",
-    kcpLink: "https://kcp.co.kr/kcp_checkout_demo_04",
+    title: "체온 조절 항암 케어 가운 (입원·외래용)",
+    price: 35000,
+    originalPrice: 45000,
+    category: "케어 용품",
+    icon: "👘",
+    image: "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=800&q=80",
+    description: "항암 치료 중 체온 조절이 어려운 환자를 위한 특수 소재 가운. 앞트임 디자인으로 링거·포트 삽입 시 편리. 세탁기 세탁 가능.",
+    doctorNote: "항균·항정전기 소재. 입원 시 병원 가운 대신 사용 가능.",
+    tag: "실용",
+    link: "https://coupang.com",
     isBest: true
   },
-];
-
-const INITIAL_COUPANG_PRODUCTS = [
   {
-    id: 201,
-    title: "쿠팡 로켓배송 프리미엄 오가닉 유기농 새싹보리 파우더",
-    price: 19800,
-    originalPrice: 25000,
-    category: "건강기능식품",
+    id: 105,
+    title: "고단백 항암 영양 쉐이크 (단백질 30g, 14포)",
+    price: 45000,
+    originalPrice: 58000,
+    category: "영양 보충",
+    icon: "🥤",
     image: "https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=800&q=80",
-    description: "쿠팡 파트너스 추천 상품! 100% 국산 유기농 어린 새싹보리 착즙 분말.",
-    coupangLink: "https://link.coupang.com/a/bC12345",
-    isBest: true
-  },
-  {
-    id: 202,
-    title: "쿠팡 최저가 딥슬립 라벤더 웰니스 디퓨저 세트",
-    price: 24500,
-    originalPrice: 31000,
-    category: "아로마테라피",
-    image: "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=800&q=80",
-    description: "쿠팡 로켓와우 직송. 남프랑스 유기농 라벤더 오일로 완성하는 안락한 수면 힐링.",
-    coupangLink: "https://link.coupang.com/a/bC67890",
-    isBest: true
-  },
-  {
-    id: 203,
-    title: "쿠팡 로켓 고용량 비타민 D3 + K2 복합 영양제 (180정)",
-    price: 23900,
-    originalPrice: 35000,
-    category: "건강기능식품",
-    image: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=800&q=80",
-    description: "뼈 건강과 면역력 지원을 위한 고용량 비타민 D3 5000IU + 비타민 K2 100mcg 복합 설계.",
-    coupangLink: "https://link.coupang.com/a/bC11111",
-    isBest: false
-  },
-];
-
-const INITIAL_NAVER_PRODUCTS = [
-  {
-    id: 301,
-    title: "네이버 브랜드커넥트 100% 유기농 편백 림프 괄사 마사지 오일",
-    price: 34000,
-    originalPrice: 42000,
-    category: "뷰티/힐링",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
-    description: "네이버 브랜드 커넥트 공식 셀렉션! 림프 순환과 피부 디톡스를 돕는 오가닉 마사지 오일.",
-    naverLink: "https://brandconnect.naver.com/product/10001",
-    isBest: true
-  },
-  {
-    id: 302,
-    title: "네이버 스마트스토어 무카페인 천연 카모마일 티백 파우치",
-    price: 22000,
-    originalPrice: 26000,
-    category: "건강차",
-    image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80",
-    description: "네이버 쇼핑 메인 추천. 100% 독일산 유기농 카모마일 꽃잎을 한가득 담은 순수 힐링 티.",
-    naverLink: "https://brandconnect.naver.com/product/10002",
+    description: "항암 치료 중 식욕 부진·체중 감소 환자를 위한 고단백 영양 쉐이크. 1포당 단백질 30g, 칼로리 300kcal. 인공 감미료 무첨가.",
+    doctorNote: "임상영양사 권장 제품. 신장 기능 저하 환자는 단백질 섭취량 조절 필요.",
+    tag: "임상영양사 추천",
+    link: "https://coupang.com",
     isBest: false
   },
   {
-    id: 303,
-    title: "네이버 브랜드커넥트 천연 히말라야 핑크솔트 배스솔트 (500g)",
-    price: 28000,
-    originalPrice: 34000,
-    category: "뷰티/힐링",
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
-    description: "히말라야 천연 핑크 소금과 라벤더 오일을 블렌딩한 림프 디톡스 배스솔트. 입욕 20분으로 하루 피로 해소.",
-    naverLink: "https://brandconnect.naver.com/product/10003",
+    id: 106,
+    title: "「암을 넘어 일상으로」 - 뇌종양 환자·보호자 완벽 가이드북",
+    price: 18000,
+    originalPrice: 22000,
+    category: "도서·마음",
+    icon: "📚",
+    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80",
+    description: "뇌종양 진단 후 치료 선택, 병원 동행, 일상 관리, 마음 돌봄까지. 환자와 보호자 모두를 위한 실전 가이드. 대한뇌종양협회 감수.",
+    doctorNote: "의학 정보 참고용. 치료 결정은 반드시 담당 의사와 상의.",
+    tag: "필독서",
+    link: "https://coupang.com",
     isBest: true
   },
 ];
 
+/* =======================================================================
+   HOPE STORIES - 희망 이야기
+======================================================================= */
+const INITIAL_STORIES = [
+  {
+    id: 1,
+    title: "교모세포종 진단 후 7년, 지금도 일상을 살고 있습니다",
+    author: "익명 (54세, 남성, 경기도)",
+    role: "GBM 환자",
+    date: "2026.05",
+    image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=800&q=80",
+    category: "장기 생존",
+    summary: "2019년 4월 교모세포종 4등급 진단. 수술, 방사선, 항암, TTFields를 거쳐 현재 7년째 MRI 안정 상태를 유지하고 있습니다. MGMT 메틸화 양성이 가장 큰 도움이 됐고, 임상시험 참여가 결정적이었습니다.",
+    content: "처음 교모세포종이라는 진단을 받았을 때, 제 앞이 캄캄했습니다. 인터넷 검색을 해보니 '생존 기간 14~16개월'이라는 말만 나왔습니다. 그 숫자가 너무 무섭고, 아직 초등학생인 아이들 얼굴이 계속 떠올랐습니다.\n\n하지만 담당 교수님이 제 경우는 MGMT 메틸화 양성이라 TMZ에 반응이 좋을 것이라고 하셨습니다. 수술을 잘 받고, 방사선과 항암을 성실하게 마쳤습니다. 이후 TTFields(옵튠)를 추가했는데, 착용이 불편했지만 하루 20시간 이상 지켰습니다.\n\n재발 없이 2년이 지나고, 3년이 지났습니다. 지금은 7년이 됐습니다. 물론 통계적 '장기 생존자'입니다. 통계는 통계일 뿐, 나는 나입니다. 매일 아침 아이들과 밥을 먹고, 산책을 하고, 일도 하고 있습니다. 포기하지 마세요.",
+    tags: ["MGMT 양성", "TTFields", "장기생존", "희망"],
+    isVerified: true,
+    likes: 284
+  },
+  {
+    id: 2,
+    title: "엄마가 교모세포종 투병 2년, 보호자로서 배운 것들",
+    author: "이○○ (33세, 딸)",
+    role: "보호자",
+    date: "2026.04",
+    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80",
+    category: "보호자 이야기",
+    summary: "엄마의 GBM 투병 2년을 보호자로서 곁에서 지켜보며 배운 것들. 의료진과의 소통법, 정보 찾는 방법, 그리고 가장 중요한 보호자 스스로 돌보는 법.",
+    content: "엄마가 진단받던 날, 저는 오히려 더 강해야 한다고 생각해서 눈물도 안 흘렸습니다. '내가 흔들리면 안 된다'는 마음이었는데, 그 덕분에 3개월 만에 번아웃이 왔습니다.\n\n처음에는 인터넷에서 찾을 수 있는 모든 정보를 밤새 검색했습니다. 그러다 대한뇌종양협회 카페를 찾았고, 거기서 비슷한 상황의 다른 보호자 분들을 만났습니다. 혼자가 아니라는 것을 알았을 때 처음으로 울었습니다.\n\n가장 중요하게 배운 것: 보호자도 쉬어야 합니다. 내가 무너지면 환자도 무너집니다. 저는 지금도 엄마 곁을 지키면서, 한 달에 한 번은 혼자만의 시간을 갖습니다. 나를 돌봐야 엄마도 돌볼 수 있다는 걸 이제는 압니다.",
+    tags: ["보호자", "번아웃 예방", "소통", "커뮤니티"],
+    isVerified: true,
+    likes: 196
+  },
+  {
+    id: 3,
+    title: "재발 GBM, 임상시험 참여로 2년을 더 살았습니다",
+    author: "익명 (48세, 여성, 서울)",
+    role: "GBM 환자",
+    date: "2026.03",
+    image: "https://images.unsplash.com/photo-1531983412531-1f49a365ffed?auto=format&fit=crop&w=800&q=80",
+    category: "임상시험",
+    summary: "수술·방사선·항암 후 8개월 만에 재발. 담당 교수님의 권유로 임상시험에 참여했고, 면역세포치료 임상에서 예상보다 훨씬 좋은 반응을 보였습니다.",
+    content: "재발 판정을 받던 날이 진단보다 더 무너지는 날이었습니다. '이제 끝인가'라는 생각이 들었습니다.\n\n담당 교수님께서 두 가지 선택지를 주셨습니다. 표준 2차 항암(베바시주맙)을 받거나, 서울성모병원에서 진행 중인 면역세포치료 임상시험에 참여하거나. 임상이 무서웠지만, 교수님을 믿고 참여를 결정했습니다.\n\n임상 참여 후 3개월 MRI에서 종양이 현저히 줄었습니다. 6개월, 12개월이 지났고, 지금 재발 후 2년이 됐습니다. 아직 MRI가 안정적입니다. 임상시험은 도박이 아닙니다. 재발 시 표준 치료가 한계를 보인다면, 임상시험이 최선의 선택일 수 있습니다.",
+    tags: ["재발 GBM", "임상시험", "면역치료", "희망"],
+    isVerified: true,
+    likes: 312
+  },
+  {
+    id: 4,
+    title: "남편의 수막종 수술 - 무서웠지만 지금은 완전히 회복",
+    author: "김○○ (41세, 아내)",
+    role: "보호자",
+    date: "2026.02",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+    category: "수막종",
+    summary: "남편의 수막종 진단과 수술 후 완전 회복 과정. 뇌수술이 너무 무서웠지만 결과적으로 완치. 양성 뇌종양도 치료 가능합니다.",
+    content: "남편이 심한 두통으로 MRI를 찍었다가 4cm 수막종을 발견했습니다. 뇌수술이라는 말만 들어도 다리가 풀렸습니다.\n\n다행히 위치가 좋고 1등급 수막종이라 수술 후 완치를 기대할 수 있다는 설명을 들었습니다. 세브란스병원에서 감마나이프를 먼저 고려했지만, 크기가 4cm이라 개두술 수술로 결정했습니다.\n\n수술은 약 5시간. 깨어난 남편은 두통이 사라졌다고 했습니다. 2주 후 퇴원, 3개월 후 완전히 직장에 복귀했습니다. 1년 MRI에서 재발 없음. 수막종은 종류에 따라 완치가 가능합니다. 진단 받으셨다면 너무 겁먹지 마세요.",
+    tags: ["수막종", "수술 성공", "완치", "1등급"],
+    isVerified: true,
+    likes: 145
+  },
+];
+
+/* =======================================================================
+   COMMUNITY LINKS - 커뮤니티 링크
+======================================================================= */
+const COMMUNITY_LINKS = [
+  { name: "대한뇌종양협회 (다음 카페)", url: "https://cafe.daum.net/braintumor", desc: "국내 최대 뇌종양 환우 커뮤니티" },
+  { name: "한국임상시험참여포털", url: "https://www.koreaclinicaltrials.or.kr", desc: "진행 중인 임상시험 검색" },
+  { name: "국립암센터 암정보서비스", url: "https://cancer.or.kr", desc: "신뢰할 수 있는 암 정보" },
+  { name: "비온뒤 (aftertherain)", url: "https://aftertherain.kr", desc: "전문의와 환자 소통 플랫폼" },
+];
+
+/* =======================================================================
+   APP PROVIDER
+======================================================================= */
 export const AppProvider = ({ children }) => {
-  const [activeTab, setActiveTab] = useState('health');
-  
-  // Admin Password Security State (Default: '1234!')
-  const [adminPassword, setAdminPassword] = useState(() => {
-    return localStorage.getItem('jjuni_admin_password') || '1234!';
-  });
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [activeTab, setActiveTab] = useState('home');
 
-  const [quickLinks, setQuickLinks] = useState(() => {
-    const saved = localStorage.getItem('jjuni_quick_links');
-    return saved ? JSON.parse(saved) : INITIAL_QUICK_LINKS;
-  });
-
-  const [healthStories, setHealthStories] = useState(() => {
-    const saved = localStorage.getItem('jjuni_health_stories');
-    return saved ? JSON.parse(saved) : INITIAL_HEALTH_STORIES;
-  });
-
-  const [foodCalories, setFoodCalories] = useState(() => {
-    const saved = localStorage.getItem('jjuni_food_calories');
-    return saved ? JSON.parse(saved) : INITIAL_FOOD_CALORIES;
-  });
-
-  const [healingTravel, setHealingTravel] = useState(() => {
-    const saved = localStorage.getItem('jjuni_healing_travel');
-    return saved ? JSON.parse(saved) : INITIAL_HEALING_TRAVEL;
-  });
-
-  const [perfumeStories, setPerfumeStories] = useState(() => {
-    const saved = localStorage.getItem('jjuni_perfume_stories');
-    return saved ? JSON.parse(saved) : INITIAL_PERFUME_STORIES;
-  });
-
+  const [brainTumors] = useState(INITIAL_BRAIN_TUMORS);
+  const [gbmFaqs, setGbmFaqs] = useState(INITIAL_GBM_FAQS);
+  const [research, setResearch] = useState(INITIAL_RESEARCH);
+  const [nutrition] = useState(INITIAL_NUTRITION);
+  const [youtubeVideos, setYoutubeVideos] = useState(INITIAL_YOUTUBE_VIDEOS);
+  const [hospitals] = useState(INITIAL_HOSPITALS);
   const [products, setProducts] = useState(() => {
-    const saved = localStorage.getItem('jjuni_products');
+    const saved = localStorage.getItem('companion_products');
     return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
   });
-
-  // NEW: Coupang & Naver Products State
-  const [coupangProducts, setCoupangProducts] = useState(() => {
-    const saved = localStorage.getItem('jjuni_coupang_products');
-    return saved ? JSON.parse(saved) : INITIAL_COUPANG_PRODUCTS;
-  });
-
-  const [naverProducts, setNaverProducts] = useState(() => {
-    const saved = localStorage.getItem('jjuni_naver_products');
-    return saved ? JSON.parse(saved) : INITIAL_NAVER_PRODUCTS;
-  });
-
-  const [paymentModal, setPaymentModal] = useState({
-    isOpen: false,
-    product: null,
-    gateway: 'paytap'
+  const [stories, setStories] = useState(() => {
+    const saved = localStorage.getItem('companion_stories');
+    return saved ? JSON.parse(saved) : INITIAL_STORIES;
   });
 
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('jjuni_theme') === 'dark';
+    return localStorage.getItem('companion_theme') === 'dark';
   });
 
-  // LocalStorage Effects
-  useEffect(() => {
-    localStorage.setItem('jjuni_admin_password', adminPassword);
-  }, [adminPassword]);
+  const [adminPassword] = useState(() => {
+    return localStorage.getItem('companion_admin_pw') || '1234!';
+  });
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem('jjuni_quick_links', JSON.stringify(quickLinks));
-  }, [quickLinks]);
-
-  useEffect(() => {
-    localStorage.setItem('jjuni_products', JSON.stringify(products));
-  }, [products]);
-
-  useEffect(() => {
-    localStorage.setItem('jjuni_coupang_products', JSON.stringify(coupangProducts));
-  }, [coupangProducts]);
-
-  useEffect(() => {
-    localStorage.setItem('jjuni_naver_products', JSON.stringify(naverProducts));
-  }, [naverProducts]);
-
-  useEffect(() => {
-    localStorage.setItem('jjuni_health_stories', JSON.stringify(healthStories));
-  }, [healthStories]);
-
-  useEffect(() => {
-    localStorage.setItem('jjuni_food_calories', JSON.stringify(foodCalories));
-  }, [foodCalories]);
-
-  useEffect(() => {
-    localStorage.setItem('jjuni_healing_travel', JSON.stringify(healingTravel));
-  }, [healingTravel]);
-
-  useEffect(() => {
-    localStorage.setItem('jjuni_perfume_stories', JSON.stringify(perfumeStories));
-  }, [perfumeStories]);
-
+  // Dark mode effect
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('jjuni_theme', 'dark');
+      localStorage.setItem('companion_theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('jjuni_theme', 'light');
+      localStorage.setItem('companion_theme', 'light');
     }
   }, [darkMode]);
 
-  // Admin Actions
-  const loginAdmin = (inputPassword) => {
-    if (inputPassword === adminPassword) {
-      setIsAdminAuthenticated(true);
-      return true;
-    }
+  // Persist products & stories
+  useEffect(() => { localStorage.setItem('companion_products', JSON.stringify(products)); }, [products]);
+  useEffect(() => { localStorage.setItem('companion_stories', JSON.stringify(stories)); }, [stories]);
+
+  const loginAdmin = (pw) => {
+    if (pw === adminPassword) { setIsAdminAuthenticated(true); return true; }
     return false;
   };
+  const logoutAdmin = () => setIsAdminAuthenticated(false);
 
-  const logoutAdmin = () => {
-    setIsAdminAuthenticated(false);
-  };
+  // Story CRUD
+  const addStory = (item) => setStories(prev => [{ ...item, id: Date.now(), date: new Date().toLocaleDateString('ko-KR'), likes: 0, isVerified: false }, ...prev]);
+  const deleteStory = (id) => setStories(prev => prev.filter(s => s.id !== id));
+  const likeStory = (id) => setStories(prev => prev.map(s => s.id === id ? { ...s, likes: (s.likes || 0) + 1 } : s));
 
-  const updateAdminPassword = (newPassword) => {
-    setAdminPassword(newPassword);
-    localStorage.setItem('jjuni_admin_password', newPassword);
-  };
-
-  const updateQuickLinks = (newLinks) => {
-    setQuickLinks(newLinks);
-  };
-
-  // CRUD Handlers
-  const addHealthStory = (item) => setHealthStories(prev => [{ ...item, id: Date.now() }, ...prev]);
-  const updateHealthStory = (id, item) => setHealthStories(prev => prev.map(s => s.id === id ? { ...s, ...item } : s));
-  const deleteHealthStory = (id) => setHealthStories(prev => prev.filter(s => s.id !== id));
-
-  const addFoodCalorie = (item) => setFoodCalories(prev => [{ ...item, id: Date.now() }, ...prev]);
-  const updateFoodCalorie = (id, item) => setFoodCalories(prev => prev.map(f => f.id === id ? { ...f, ...item } : f));
-  const deleteFoodCalorie = (id) => setFoodCalories(prev => prev.filter(f => f.id !== id));
-
-  const addHealingTravel = (item) => setHealingTravel(prev => [{ ...item, id: Date.now() }, ...prev]);
-  const updateHealingTravel = (id, item) => setHealingTravel(prev => prev.map(t => t.id === id ? { ...t, ...item } : t));
-  const deleteHealingTravel = (id) => setHealingTravel(prev => prev.filter(t => t.id !== id));
-
-  const addPerfumeStory = (item) => setPerfumeStories(prev => [{ ...item, id: Date.now() }, ...prev]);
-  const updatePerfumeStory = (id, item) => setPerfumeStories(prev => prev.map(p => p.id === id ? { ...p, ...item } : p));
-  const deletePerfumeStory = (id) => setPerfumeStories(prev => prev.filter(p => p.id !== id));
-
-  const addProduct = (newProduct) => setProducts(prev => [{ ...newProduct, id: Date.now() }, ...prev]);
-  const updateProduct = (id, updatedProduct) => setProducts(prev => prev.map(p => p.id === id ? { ...p, ...updatedProduct } : p));
+  // Product CRUD
+  const addProduct = (item) => setProducts(prev => [{ ...item, id: Date.now() }, ...prev]);
   const deleteProduct = (id) => setProducts(prev => prev.filter(p => p.id !== id));
-
-  // NEW: Coupang Products CRUD
-  const addCoupangProduct = (item) => setCoupangProducts(prev => [{ ...item, id: Date.now() }, ...prev]);
-  const updateCoupangProduct = (id, item) => setCoupangProducts(prev => prev.map(p => p.id === id ? { ...p, ...item } : p));
-  const deleteCoupangProduct = (id) => setCoupangProducts(prev => prev.filter(p => p.id !== id));
-
-  // NEW: Naver Products CRUD
-  const addNaverProduct = (item) => setNaverProducts(prev => [{ ...item, id: Date.now() }, ...prev]);
-  const updateNaverProduct = (id, item) => setNaverProducts(prev => prev.map(p => p.id === id ? { ...p, ...item } : p));
-  const deleteNaverProduct = (id) => setNaverProducts(prev => prev.filter(p => p.id !== id));
-
-  const openCheckout = (product, gateway = 'paytap') => {
-    setPaymentModal({ isOpen: true, product, gateway });
-  };
-
-  const closeCheckout = () => {
-    setPaymentModal({ isOpen: false, product: null, gateway: 'paytap' });
-  };
 
   return (
     <AppContext.Provider value={{
-      activeTab,
-      setActiveTab,
-      adminPassword,
-      isAdminAuthenticated,
-      loginAdmin,
-      logoutAdmin,
-      updateAdminPassword,
-      quickLinks,
-      updateQuickLinks,
-      healthStories, addHealthStory, updateHealthStory, deleteHealthStory,
-      foodCalories, addFoodCalorie, updateFoodCalorie, deleteFoodCalorie,
-      healingTravel, addHealingTravel, updateHealingTravel, deleteHealingTravel,
-      perfumeStories, addPerfumeStory, updatePerfumeStory, deletePerfumeStory,
-      products, addProduct, updateProduct, deleteProduct,
-      coupangProducts, addCoupangProduct, updateCoupangProduct, deleteCoupangProduct,
-      naverProducts, addNaverProduct, updateNaverProduct, deleteNaverProduct,
-      paymentModal,
-      openCheckout,
-      closeCheckout,
-      darkMode,
-      setDarkMode
+      activeTab, setActiveTab,
+      brainTumors,
+      gbmFaqs,
+      research,
+      nutrition,
+      youtubeVideos,
+      hospitals,
+      products, addProduct, deleteProduct,
+      stories, addStory, deleteStory, likeStory,
+      communityLinks: COMMUNITY_LINKS,
+      darkMode, setDarkMode,
+      isAdminAuthenticated, loginAdmin, logoutAdmin,
     }}>
       {children}
     </AppContext.Provider>

@@ -2,30 +2,32 @@ import React from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { CheckoutModal } from './components/CheckoutModal';
 
-import { HealthStory } from './pages/health/HealthStory';
-import { FoodCalories } from './pages/calories/FoodCalories';
-import { HealingTravel } from './pages/travel/HealingTravel';
-import { PerfumeStory } from './pages/perfume/PerfumeStory';
-import { Shopping } from './pages/shopping/Shopping';
-import { CoupangShopping } from './pages/coupang/CoupangShopping';
-import { NaverShopping } from './pages/naver/NaverShopping';
+import { HomePage } from './pages/home/HomePage';
+import { GBMPage } from './pages/gbm/GBMPage';
+import { BrainTumors } from './pages/tumors/BrainTumors';
+import { Research } from './pages/research/Research';
+import { Nutrition } from './pages/nutrition/Nutrition';
+import { YouTubeHub } from './pages/youtube/YouTubeHub';
+import { Hospitals } from './pages/hospital/Hospitals';
+import { CancerShopping } from './pages/shopping/CancerShopping';
+import { Stories } from './pages/stories/Stories';
 import { Admin } from './pages/admin/Admin';
 
 const MainContent = () => {
   const { activeTab } = useApp();
-
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-      {activeTab === 'health' && <HealthStory />}
-      {activeTab === 'calories' && <FoodCalories />}
-      {activeTab === 'travel' && <HealingTravel />}
-      {activeTab === 'perfume' && <PerfumeStory />}
-      {activeTab === 'shopping' && <Shopping />}
-      {activeTab === 'coupang' && <CoupangShopping />}
-      {activeTab === 'naver' && <NaverShopping />}
-      {activeTab === 'admin' && <Admin />}
+      {activeTab === 'home'      && <HomePage />}
+      {activeTab === 'gbm'       && <GBMPage />}
+      {activeTab === 'tumors'    && <BrainTumors />}
+      {activeTab === 'research'  && <Research />}
+      {activeTab === 'nutrition' && <Nutrition />}
+      {activeTab === 'youtube'   && <YouTubeHub />}
+      {activeTab === 'hospital'  && <Hospitals />}
+      {activeTab === 'shopping'  && <CancerShopping />}
+      {activeTab === 'stories'   && <Stories />}
+      {activeTab === 'admin'     && <Admin />}
     </main>
   );
 };
@@ -33,13 +35,12 @@ const MainContent = () => {
 export default function App() {
   return (
     <AppProvider>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
         <Navbar />
         <div className="flex-1">
           <MainContent />
         </div>
         <Footer />
-        <CheckoutModal />
       </div>
     </AppProvider>
   );

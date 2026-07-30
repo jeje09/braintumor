@@ -1,157 +1,132 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
-  HeartPulse, 
-  Utensils, 
-  Compass, 
-  Sparkles, 
-  ShoppingBag, 
-  ShieldCheck, 
-  ExternalLink, 
-  Sun, 
-  Moon,
-  Menu,
-  X,
-  Rocket,
-  ShoppingBag as NaverIcon
+  Heart, Activity, BookOpen, ShieldAlert, Sparkles, Youtube, 
+  Hospital, ShoppingBag, MessageSquare, Lock, Sun, Moon, Menu, X, Brain
 } from 'lucide-react';
 
 export const Navbar = () => {
-  const { activeTab, setActiveTab, quickLinks, darkMode, setDarkMode } = useApp();
+  const { activeTab, setActiveTab, darkMode, setDarkMode } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const tabs = [
-    { id: 'health', label: '건강이야기', icon: HeartPulse, color: 'text-emerald-500' },
-    { id: 'calories', label: '음식칼로리', icon: Utensils, color: 'text-amber-500' },
-    { id: 'travel', label: '힐링여행지', icon: Compass, color: 'text-teal-500' },
-    { id: 'perfume', label: '향수이야기', icon: Sparkles, color: 'text-purple-500' },
-    { id: 'shopping', label: '웰니스쇼핑', icon: ShoppingBag, color: 'text-pink-500' },
-    { id: 'coupang', label: '쿠팡쇼핑', icon: Rocket, color: 'text-orange-500' },
-    { id: 'naver', label: '네이버쇼핑', icon: NaverIcon, color: 'text-emerald-600' },
-    { id: 'admin', label: '관리자', icon: ShieldCheck, color: 'text-blue-500' },
+  const navItems = [
+    { id: 'home', label: '홈', icon: Heart },
+    { id: 'gbm', label: '교모세포종(GBM)', icon: Brain, highlight: true },
+    { id: 'tumors', label: '뇌종양 백과', icon: BookOpen },
+    { id: 'research', label: '최신 연구·임상', icon: Sparkles },
+    { id: 'nutrition', label: '항암 영양식단', icon: Activity },
+    { id: 'youtube', label: '추천 영상', icon: Youtube },
+    { id: 'hospital', label: '병원·전문의', icon: Hospital },
+    { id: 'shopping', label: '동행 쇼핑', icon: ShoppingBag },
+    { id: 'stories', label: '희망 이야기', icon: MessageSquare },
+    { id: 'admin', label: '관리자', icon: Lock },
   ];
 
-  return (
-    <header className="sticky top-0 z-40 glass-nav">
-      {/* Top Banner / Quick Links Bar */}
-      <div className="bg-emerald-600 dark:bg-emerald-950 text-white text-xs py-1.5 px-4 shadow-inner">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <span className="font-medium tracking-wide flex items-center gap-1.5">
-            <span className="inline-block animate-pulse">🌿</span>
-            <span>자연치유 & 웰니스 라이프 - 쭈니의 건강 이야기</span>
-          </span>
-          
-          <div className="flex items-center gap-2">
-            <a
-              href={quickLinks.coupang}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white px-2.5 py-0.5 rounded-full font-bold transition-all transform hover:scale-105 shadow-sm text-[11px]"
-            >
-              <span>쿠팡 파트너스</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
-            <a
-              href={quickLinks.inpock}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-0.5 rounded-full font-bold transition-all transform hover:scale-105 shadow-sm text-[11px]"
-            >
-              <span>인포크링크</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
-        </div>
-      </div>
+  const handleNavClick = (id) => {
+    setActiveTab(id);
+    setMobileMenuOpen(false);
+  };
 
-      {/* Main Navigation Bar */}
+  return (
+    <header className="sticky top-0 z-50 glass-nav transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo & Brand */}
-          <button 
-            onClick={() => setActiveTab('health')}
-            className="flex items-center gap-2.5 group text-left focus:outline-none"
+        <div className="flex items-center justify-between h-20">
+          
+          {/* Logo */}
+          <div 
+            onClick={() => handleNavClick('home')}
+            className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-              <span className="text-xl">🌿</span>
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-violet-500/30 group-hover:scale-105 transition-transform">
+              <span className="text-xl animate-ribbon">🎗️</span>
             </div>
             <div>
-              <h1 className="font-extrabold text-base sm:text-lg bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent tracking-tight">
-                쭈니의 건강 이야기
-              </h1>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 tracking-wider">
-                NATUROPATHY & AFFILIATE SHOPPING
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+                  뇌종양 <span className="gradient-text-hope">동행</span>
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+                  GBM Special
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                뇌종양 & 교모세포종 환우와 보호자를 위한 공간
               </p>
             </div>
-          </button>
+          </div>
 
-          {/* Desktop Navigation Tabs */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
               return (
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
                     isActive
-                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/25 scale-105'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400'
+                      ? item.highlight 
+                        ? 'bg-rose-600 text-white shadow-md shadow-rose-600/30 scale-105' 
+                        : 'bg-violet-600 text-white shadow-md shadow-violet-600/30 scale-105'
+                      : item.highlight
+                        ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-violet-50 dark:hover:bg-slate-800 hover:text-violet-600 dark:hover:text-violet-400'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : tab.color}`} />
-                  <span>{tab.label}</span>
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : item.highlight ? 'text-rose-500' : ''}`} />
+                  <span>{item.label}</span>
                 </button>
               );
             })}
           </nav>
 
-          {/* Right Utilities */}
+          {/* Right actions */}
           <div className="flex items-center gap-2">
+            {/* Dark Mode Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              title={darkMode ? '라이트 모드로 전환' : '다크 모드로 전환'}
+              className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+              title="다크 모드 전환"
             >
-              {darkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-indigo-600" />}
+              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
             </button>
 
-            {/* Mobile menu toggle */}
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="lg:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
+
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg px-4 pt-2 pb-4 space-y-1.5 shadow-2xl animate-in slide-in-from-top duration-200">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  setActiveTab(tab.id);
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-all ${
-                  isActive
-                    ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/25'
-                    : 'text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-800'
-                }`}
-              >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-white' : tab.color}`} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
+        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 py-4 space-y-2 animate-slide-right">
+          <div className="grid grid-cols-2 gap-2">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`flex items-center gap-2 p-3 rounded-xl text-xs font-bold transition-all text-left ${
+                    isActive
+                      ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30'
+                      : 'bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
     </header>
