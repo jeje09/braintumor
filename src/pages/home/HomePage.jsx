@@ -19,7 +19,7 @@ export const HomePage = () => {
         <div className="relative z-10 p-8 sm:p-14 space-y-6 md:w-1/2">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-xs font-bold text-emerald-700 border border-emerald-200 shadow-sm animate-fade-in-up">
-            <span className="animate-ribbon text-base">🌱</span>
+            <span className="animate-float text-base flex items-center">🧠<span className="-ml-1">🌱</span></span>
             <span>희망과 생명, 전문적인 의료 네트워크</span>
           </div>
 
@@ -97,8 +97,9 @@ export const HomePage = () => {
         <section className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-100 dark:border-emerald-900/60 bg-gradient-to-r from-emerald-50/50 via-white to-teal-50/50 dark:from-emerald-950/20 dark:to-teal-950/20 space-y-6 shadow-lg shadow-emerald-900/5 animate-fade-in-up">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-emerald-600/30 animate-float">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-emerald-600/30 animate-float relative">
                 🧠
+                <span className="absolute -top-1 -right-1 text-base">🌱</span>
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -237,7 +238,7 @@ export const HomePage = () => {
       <section className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-500 to-green-500 text-white space-y-4 shadow-xl animate-fade-in-up">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-2xl animate-float">🌱</span>
+            <span className="text-2xl animate-float">🧠🌱</span>
             <h2 className="text-xl font-black">실제 희망 이야기</h2>
           </div>
           <button

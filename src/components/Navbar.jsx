@@ -48,7 +48,7 @@ export const Navbar = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
-                  뇌종양 <span className="gradient-text-hope">동행</span>
+                  Living <span className="gradient-text-hope">With</span>
                 </span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300">
                   GBM Special
