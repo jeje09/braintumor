@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
+import { AuthModal } from './auth/AuthModal';
 import { 
   Heart, Activity, BookOpen, ShieldAlert, Sparkles, Youtube, 
-  Hospital, ShoppingBag, MessageSquare, Lock, Sun, Moon, Menu, X, Brain
+  Hospital, ShoppingBag, MessageSquare, Lock, Sun, Moon, Menu, X, Brain, User, LogOut
 } from 'lucide-react';
 
 export const Navbar = () => {
   const { activeTab, setActiveTab, darkMode, setDarkMode } = useApp();
+  const { user, signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const navItems = [
     { id: 'home', label: '홈', icon: Heart },
@@ -28,7 +32,8 @@ export const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 glass-nav transition-all duration-300">
+    <>
+      <header className="sticky top-0 z-50 glass-nav transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
@@ -83,6 +88,32 @@ export const Navbar = () => {
 
           {/* Right actions */}
           <div className="flex items-center gap-2">
+            {/* Auth Button */}
+            {user ? (
+              <div className="flex items-center gap-2 mr-2">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300">
+                  <User className="w-4 h-4" />
+                  <span className="text-xs font-bold truncate max-w-[100px]">
+                    {user.email?.split('@')[0]}
+                  </span>
+                </div>
+                <button
+                  onClick={() => signOut()}
+                  className="p-2 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-colors"
+                  title="로그아웃"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsAuthModalOpen(true)}
+                className="mr-2 px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold shadow-md shadow-violet-600/20 transition-all active:scale-95"
+              >
+                로그인
+              </button>
+            )}
+
             {/* Dark Mode Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
@@ -130,5 +161,11 @@ export const Navbar = () => {
         </div>
       )}
     </header>
+      
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
+    </>
   );
 };
