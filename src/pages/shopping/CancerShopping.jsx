@@ -46,6 +46,13 @@ export const CancerShopping = () => {
         ))}
       </div>
 
+      {/* Legal Notice */}
+      <div className="w-full text-center py-3 px-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+        <p className="text-xs md:text-sm font-bold text-sky-500 dark:text-sky-400">
+          이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
+        </p>
+      </div>
+
       {/* Product Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {filteredProducts.map((prod) => (
