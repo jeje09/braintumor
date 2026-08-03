@@ -68,10 +68,10 @@ export const GBMPage = () => {
             <span>글로벌 정통 가이드라인</span>
           </div>
           <h2 className="text-2xl font-black text-slate-900 dark:text-white">
-            표준 치료: 억불(Stupp) 프로토콜 (Stupp Protocol)
+            표준 치료: 슈투프 프로토콜 (Stupp Protocol)
           </h2>
-          <p className="text-base text-slate-500 mt-1">
-            2005년 스위스 억불 박사가 확립한 국제 표준 교모세포종 치료 순서입니다.
+          <p className="text-base text-slate-500 mt-1 leading-relaxed">
+            스위스의 신경종양학자 <strong>로저 슈투프(Roger Stupp)</strong> 교수가 2005년 《뉴잉글랜드 저널 오브 메디신(NEJM)》에 발표하여 전 세계 교모세포종 표준 치료(Standard of Care)로 자리 잡은 치료법입니다.
           </p>
         </div>
 
