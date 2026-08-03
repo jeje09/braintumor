@@ -91,23 +91,23 @@ export const Navbar = () => {
             {/* Logo Area */}
             <div
               onClick={() => handleNavClick('home')}
-              className="flex items-center gap-2.5 cursor-pointer group"
+              className="flex items-center gap-3 cursor-pointer group"
             >
-              <div className="w-10 h-10 flex items-center justify-center">
-                <img src="/logo.png" alt="logo" className="w-10 h-10 object-contain rounded-md" />
+              <div className="w-12 h-12 flex items-center justify-center">
+                <img src="/logo.png" alt="logo" className="w-12 h-12 object-contain rounded-md" />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="text-3xl font-black tracking-tight text-[#1E3A8A] dark:text-white leading-none">
-                  LIVING WITH
+                <span className="text-[22px] font-black tracking-tight text-[#1E3A8A] dark:text-white leading-none">
+                  Living with
                 </span>
-                <span className="text-[10px] text-slate-600 font-bold tracking-tight mt-1">
-                  뇌종양 환자와 가족들의 플랫폼
+                <span className="text-[22px] font-black tracking-tight text-[#1E3A8A] dark:text-white leading-tight mt-1">
+                  Brain Tumor
                 </span>
               </div>
             </div>
 
             {/* Desktop Navigation (Text Only) */}
-            <nav className="hidden lg:flex items-center gap-8 ml-10">
+            <nav className="hidden lg:flex flex-1 items-center justify-end gap-3 xl:gap-6 ml-6 whitespace-nowrap">
               {mainNavItems.map((item) => {
                 const isActive = activeTab === item.id;
                 return (
@@ -124,20 +124,7 @@ export const Navbar = () => {
               })}
             </nav>
 
-            {/* Right Icons (Search & Notice) */}
-            <div className="hidden lg:flex items-center gap-3 ml-auto text-[13px] font-bold text-slate-600">
-              <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input 
-                  type="text" 
-                  placeholder="관심있는 질환이 있으신가요?"
-                  className="pl-9 pr-4 py-1.5 rounded-full border border-slate-200 text-xs w-52 focus:outline-none focus:border-blue-400 transition-colors"
-                />
-              </div>
-              <button className="text-slate-400 hover:text-blue-700 transition-colors ml-2">
-                <Bell className="w-5 h-5" />
-              </button>
-            </div>
+            {/* Right Icons Removed per user request */}
 
             {/* Mobile Menu Button */}
             <button
