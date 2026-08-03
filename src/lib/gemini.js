@@ -35,7 +35,7 @@ export async function analyzeMedicalReceipt(imageFile) {
 
   try {
     // 가장 최신의 multimodal 모델 사용
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
 당신은 한국의 의료비 영수증을 분석하는 환자 권리 데이터센터의 AI 어시스턴트입니다.
@@ -99,7 +99,7 @@ export async function askReceiptQuestion(contextData, question) {
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
 당신은 '환자권리 데이터센터'의 친절하고 전문적인 의료비 질문 도우미 AI입니다.
