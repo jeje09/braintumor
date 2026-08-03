@@ -6,19 +6,19 @@ import {
 
 const CAROUSEL_IMAGES = [
   {
-    url: "/banner_surgery.png",
+    url: "/banner_community_kr.png",
     title: "암과 함께 살아가는 삶",
-    subtitle: "혁신적인 수술과 첨단 의료 기술로 새로운 희망을 찾아갑니다"
+    subtitle: "환자와 보호자가 서로를 지지하고 격려하는 따뜻한 공동체입니다."
   },
   {
-    url: "/banner_lab.png",
-    title: "최신 치료법 연구에 대한 소식 나눔",
-    subtitle: "가장 앞선 뇌종양 신약 개발과 임상시험 정보를 공유합니다"
+    url: "/banner_treatment_kr.png",
+    title: "최신 치료법에 대한 소식 공유",
+    subtitle: "희망을 품고 즐거운 마음으로 치료에 임하며 내일을 준비합니다."
   },
   {
-    url: "/banner_patient.png",
-    title: "환자와 보호자의 몸과 마음의 건강을 위하여",
-    subtitle: "치료의 모든 여정을 함께하며 따뜻한 돌봄과 지지를 제공합니다"
+    url: "/banner_exercise_kr.png",
+    title: "몸과 마음의 건강을 위한 정보",
+    subtitle: "함께 운동하고 활짝 웃으며 일상의 건강과 행복을 되찾습니다."
   }
 ];
 
@@ -126,43 +126,6 @@ export const HomePage = () => {
            </button>
         </div>
       </div>
-
-      {/* 4. Floating Right Sidebar */}
-      <div className="fixed right-6 bottom-10 z-40 hidden xl:flex flex-col w-[90px]">
-         <div className="bg-white shadow-[0_4px_20px_rgb(0,0,0,0.08)] border border-slate-200 flex flex-col text-center divide-y divide-slate-100 rounded-t-xl">
-            <div className="py-4 bg-white rounded-t-xl">
-              <span className="text-[11px] font-bold text-slate-600 block mb-1">최근 본 공고</span>
-              <span className="text-[10px] text-slate-400 block mt-3">로그인<br/>해주세요.</span>
-            </div>
-            
-            <div className="py-4 flex flex-col items-center bg-white">
-              <span className="text-[10px] text-slate-500 font-bold mb-1">고객센터</span>
-              <span className="text-sm font-black text-slate-800 leading-none">1644-3511</span>
-              <span className="text-[9px] text-slate-400 mt-1">8:00~20:00</span>
-            </div>
-            
-            <button className="flex flex-col items-center justify-center gap-1 py-3.5 bg-[#FEE500] hover:bg-[#F4DC00] transition-colors">
-               <MessageCircle className="w-4 h-4 text-slate-900 fill-slate-900" />
-               <span className="text-[11px] text-slate-900 font-bold">카톡문의</span>
-            </button>
-            
-            <button className="flex flex-col items-center justify-center gap-1 py-3.5 bg-white hover:bg-slate-50 transition-colors">
-               <Building2 className="w-4 h-4 text-slate-600" />
-               <span className="text-[11px] text-slate-600 font-bold">제휴/의뢰</span>
-            </button>
-            
-
-         </div>
-
-         <button 
-           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-           className="w-full mt-2 py-2 bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition-colors rounded-b-xl"
-         >
-           <span className="text-xs font-bold mr-1">TOP</span>
-           <ChevronUp className="w-4 h-4" />
-         </button>
-      </div>
-
     </div>
   );
 };
