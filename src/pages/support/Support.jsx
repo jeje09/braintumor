@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, HeartHandshake, CheckCircle2, AlertTriangle, FileText, Landmark } from 'lucide-react';
+import { ShieldAlert, HeartHandshake, CheckCircle2, AlertTriangle, FileText, Landmark, Activity, Heart, Stethoscope } from 'lucide-react';
 
 export const Support = () => {
   return (
@@ -163,6 +163,78 @@ export const Support = () => {
                 <li><strong>건강보험가입자:</strong> 2021년 7월 1일 기준 변경. 기준 충족 시 일부 예외적 한시 지원. (상세 내역은 관할 보건소 문의 필수)</li>
                 <li><strong>신청 방법:</strong> 환자 주민등록지 관할 보건소 직접 방문 상담 및 신청</li>
               </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 5. 성인 암 환자 의료비 지원사업 */}
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-teal-50 dark:bg-teal-900/30 rounded-2xl shrink-0">
+              <Stethoscope className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            </div>
+            <div className="space-y-4 flex-1">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">5. 성인 암 환자 의료비 지원사업 (보건복지부)</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                만 18세 이상의 저소득층 암 환자를 대상으로 의료급여수급자 및 차상위 본인부담경감대상자에게 의료비를 지원하는 국가 사업입니다.
+              </p>
+              
+              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+                <li><strong>지원 대상:</strong> 의료급여수급자 및 차상위 본인부담경감대상자 중 만 18세 이상 암환자 (당연 선정)</li>
+                <li><strong>지원 암종:</strong> 뇌종양을 포함한 전체 암종</li>
+                <li><strong>지원 금액 및 기간:</strong> 급여·비급여 구분 없이, <strong>연간 최대 300만 원</strong> (3년간 연속 지원)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 6. 경기도형 긴급복지지원 */}
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-2xl shrink-0">
+              <Activity className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div className="space-y-4 flex-1">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">6. 경기도형 긴급복지지원 (의료비 및 간병비)</h3>
+                <a href="https://housing.gg.go.kr/html/24404.do" target="_blank" rel="noopener noreferrer" className="text-[11px] font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 transition-colors">상세보기 ↗</a>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                갑작스러운 위기 상황(중한 질병 등)으로 생계 유지가 곤란한 경기도민을 위해 의료비와 간병비를 신속하게 지원하는 제도입니다.
+              </p>
+              
+              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+                <li><strong>지원 대상:</strong> 중한 질병 또는 부상으로 발생한 의료비를 감당하기 어려운 위기 가구 (소득 및 재산 기준 충족 시)</li>
+                <li><strong>의료비 지원:</strong> 각종 검사, 치료 등 당장 필요한 의료 서비스 비용 지원 (통상 최대 300만 원 범위 내)</li>
+                <li><strong>간병비 지원:</strong> 간병이 필수적이나 비용 부담으로 간병인을 구하지 못하는 경우 일부 간병 비용 지원</li>
+                <li><strong>신청 방법:</strong> 관할 시·군·구청 또는 읍·면·동 행정복지센터 방문 신청</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 7. 경기도 간병 SOS 프로젝트 */}
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-pink-50 dark:bg-pink-900/30 rounded-2xl shrink-0">
+              <Heart className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+            </div>
+            <div className="space-y-4 flex-1">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">7. 경기도 간병 SOS 프로젝트</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                저소득층 어르신의 간병비 부담을 덜어주는 경기도의 대표적인 간병인 지원 사업입니다. (2026년 기준 16개 시·군 시행 중)
+              </p>
+              
+              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+                <li><strong>지원 대상:</strong> 경기도 내 참여 16개 시·군에 주민등록이 된 만 65세 이상 저소득 어르신</li>
+                <li><strong>소득 기준:</strong> 기초생활수급자(생계·주거·의료급여) 및 차상위계층(장애인, 본인부담경감 등)</li>
+                <li><strong>지원 금액:</strong> 1인당 <strong>연간 최대 120만 원</strong> (횟수 제한 없음)</li>
+                <li><strong>입원 요건:</strong> 상해 또는 질병으로 병원급 의료기관 이상에 입원하여 간병 서비스를 받은 경우</li>
+                <li><strong>신청 방법:</strong> 매년 1월 ~ 12월, 거주지 관할 읍·면·동 행정복지센터(주민센터) 접수</li>
+              </ul>
+              <p className="text-xs text-pink-600 dark:text-pink-400 mt-2 font-medium">
+                * 세부 해당 지역 및 참여 시·군은 관할 지자체나 경기도청 공고문 확인이 필요합니다.
+              </p>
             </div>
           </div>
         </div>
