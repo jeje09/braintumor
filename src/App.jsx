@@ -16,9 +16,17 @@ import { Admin } from './pages/admin/Admin';
 
 const MainContent = () => {
   const { activeTab } = useApp();
+  
+  if (activeTab === 'home') {
+    return (
+      <main className="w-full">
+        <HomePage />
+      </main>
+    );
+  }
+
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-      {activeTab === 'home'      && <HomePage />}
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
       {activeTab === 'gbm'       && <GBMPage />}
       {activeTab === 'tumors'    && <BrainTumors />}
       {activeTab === 'research'  && <Research />}

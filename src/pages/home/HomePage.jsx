@@ -1,268 +1,182 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
-  Brain, Sparkles, BookOpen, Heart, Activity, Youtube, 
-  Hospital, ShoppingBag, MessageSquare, ChevronRight, ShieldAlert, ArrowRight 
+  ChevronRight, ArrowRight, HeartPulse, Building2, MessagesSquare, MessageCircle, ChevronUp, Download
 } from 'lucide-react';
 
 export const HomePage = () => {
-  const { setActiveTab, brainTumors, research, youtubeVideos, hospitals, stories } = useApp();
-
+  const { setActiveTab, brainTumors, research, hospitals, stories } = useApp();
   const gbmInfo = brainTumors.find(t => t.isSpecial);
 
   return (
-    <div className="space-y-12 pb-16">
+    <div className="relative w-full bg-slate-50 dark:bg-slate-950 pb-20">
       
-      {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl bg-white shadow-2xl flex flex-col md:flex-row items-center border border-emerald-100/60">
-        {/* Text Content */}
-        <div className="relative z-10 p-8 sm:p-14 space-y-6 md:w-1/2">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-xs font-bold text-emerald-700 border border-emerald-200 shadow-sm animate-fade-in-up">
-            <span className="animate-float text-base flex items-center">🧠<span className="-ml-1">🌱</span></span>
-            <span>희망과 생명, 전문적인 의료 네트워크</span>
-          </div>
-
-          {/* Headline */}
-          <div className="space-y-3 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-slate-900">
-              혼자가 아닙니다.<br />
-              <span className="text-emerald-600">최선의 치료, 함께 걷는 희망</span>
+      {/* 1. Full-width Hero Banner (MEDI25 Style) */}
+      <section className="relative w-full overflow-hidden bg-gradient-to-r from-teal-300 via-cyan-400 to-emerald-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative h-[380px] md:h-[460px] flex items-center justify-between">
+          
+          {/* Left Text */}
+          <div className="z-10 text-white space-y-4 pt-10">
+            <h1 className="text-4xl md:text-5xl lg:text-[54px] font-black leading-tight tracking-tight drop-shadow-md">
+              <span className="text-teal-900 font-extrabold text-[40px] md:text-[50px]">수많은 환우들이 선택한</span><br />
+              국내 1위 뇌종양·교모세포종 플랫폼
             </h1>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed opacity-95 max-w-xl font-medium mt-2">
-              가장 치열한 교모세포종(GBM)부터 다양한 뇌종양까지. 
-              최신 치료 연구, 신뢰받는 병원 및 의료진 정보, 검증된 투병 가이드를 통해 희망을 찾으세요.
+            <p className="text-lg md:text-xl font-bold opacity-90 drop-shadow-sm mt-4">
+              최신 임상 정보부터 희망을 나누는 동행 이야기까지
             </p>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex flex-wrap gap-3 pt-2 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            <button
-              onClick={() => setActiveTab('gbm')}
-              className="btn-sweep px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl shadow-xl shadow-emerald-900/20 transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2 text-sm"
-            >
-              <Brain className="w-4 h-4" />
-              <span>🧠 교모세포종(GBM) 심층 정보</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('hospital')}
-              className="px-6 py-3.5 bg-white hover:bg-slate-50 text-emerald-700 font-bold rounded-2xl border border-emerald-200 shadow-sm transition-all text-sm flex items-center gap-2 group"
-            >
-              <Hospital className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform" />
-              <span>전국 뇌종양 전문 병원·의사</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Hero Image */}
-        <div className="md:w-1/2 h-72 md:h-full w-full relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/40 to-transparent z-10 md:block hidden"></div>
-           <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent z-10 md:hidden block"></div>
-           <img src="/hero-image.png" alt="희망을 전하는 의료진과 환자" className="w-full h-full object-cover object-center scale-105 animate-pulse-soft" style={{ animationDuration: '6s', minHeight: '400px' }} />
-        </div>
-      </section>
-
-      {/* Quick Access Cards */}
-      <section className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {[
-          { id: 'gbm', title: '교모세포종 백과', desc: 'Stupp 프로토콜·유전자 검사', icon: Brain, color: 'bg-emerald-500' },
-          { id: 'research', title: '최신 연구 & 임상', desc: 'BNCT·면역세포치료·Optune', icon: Sparkles, color: 'bg-teal-500' },
-          { id: 'hospital', title: '병원 및 전문의', desc: '서울대·삼성·세브란스 등', icon: Hospital, color: 'bg-cyan-600' },
-          { id: 'stories', title: '희망 이야기', desc: '7년 장기생존자 투병기', icon: MessageSquare, color: 'bg-green-500' },
-        ].map((item, i) => {
-          const Icon = item.icon;
-          return (
-            <div
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className="glass-card p-5 rounded-2xl cursor-pointer hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1 transition-all duration-300 group border border-emerald-50 dark:border-slate-800 bg-white/90 animate-fade-in-up"
-              style={{ animationDelay: `${0.1 * i}s` }}
-            >
-              <div className={`w-10 h-10 rounded-xl ${item.color} text-white flex items-center justify-center mb-3 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-transform animate-float`} style={{ animationDelay: `${0.2 * i}s` }}>
-                <Icon className="w-5 h-5" />
+            
+            {/* Paging UI */}
+            <div className="absolute bottom-8 left-4 sm:left-6 lg:left-8 flex items-center gap-2">
+              <div className="bg-black/20 backdrop-blur-sm rounded-full px-4 py-1.5 text-xs font-bold text-white flex items-center gap-2">
+                <span>1 / 3</span>
+                <span className="cursor-pointer hover:text-teal-200">+</span>
               </div>
-              <h3 className="font-extrabold text-sm text-slate-800 dark:text-white group-hover:text-emerald-600 transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                {item.desc}
-              </p>
             </div>
-          );
-        })}
+          </div>
+
+          {/* Right Badge / Image */}
+          <div className="hidden md:block z-10 mr-10 relative">
+             <div className="w-64 h-72 bg-gradient-to-br from-blue-900 to-indigo-900 rounded-b-[40px] border-[6px] border-amber-400 p-6 flex flex-col items-center justify-center text-center shadow-2xl transform rotate-3 hover:rotate-0 transition-transform cursor-pointer shadow-indigo-900/50">
+                <span className="text-amber-400 font-black text-xl mb-2">2026 CSBA</span>
+                <span className="text-white text-sm font-bold opacity-80">환우 만족도 1위</span>
+                <h3 className="text-white text-2xl font-black mt-2 leading-tight">신뢰받는<br/>정보 플랫폼<br/>대상 1위</h3>
+             </div>
+          </div>
+          
+          {/* Background Graphic Elements */}
+          <div className="absolute right-0 bottom-0 opacity-20">
+             <svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 400L600 200V400H0Z" fill="white"/>
+                <path d="M100 400L600 100V400H100Z" fill="white" fillOpacity="0.5"/>
+             </svg>
+          </div>
+        </div>
       </section>
 
-      {/* Special Spotlight: GBM (Glioblastoma) */}
-      {gbmInfo && (
-        <section className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-100 dark:border-emerald-900/60 bg-gradient-to-r from-emerald-50/50 via-white to-teal-50/50 dark:from-emerald-950/20 dark:to-teal-950/20 space-y-6 shadow-lg shadow-emerald-900/5 animate-fade-in-up">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-emerald-600/30 animate-float relative">
-                🧠
-                <span className="absolute -top-1 -right-1 text-base">🌱</span>
+      {/* 2. Stats & News Row (White Background Container) */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-slate-100">
+            
+            {/* Stat 1 */}
+            <div className="flex-1 py-8 px-4 flex flex-col items-center justify-center text-center">
+              <div className="flex items-center gap-2 text-sm font-bold text-slate-500 mb-2">
+                누적 함께하는 환우 <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-400 cursor-pointer">자세히</span>
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
-                    핵심 특화
-                  </span>
-                  <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-                    Grade IV 최고 악성도
-                  </span>
+              <div className="text-4xl font-black text-slate-900">
+                2,450<span className="text-xl font-bold ml-1 text-slate-600">명</span>
+              </div>
+              <p className="text-xs text-slate-400 mt-2 font-medium">교모세포종 1,200명 / 기타 뇌종양 1,250명</p>
+            </div>
+
+            {/* Stat 2 */}
+            <div className="flex-1 py-8 px-4 flex flex-col items-center justify-center text-center">
+              <div className="flex items-center gap-2 text-sm font-bold text-slate-500 mb-2">
+                누적 공유된 희망 이야기 <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-400 cursor-pointer">자세히</span>
+              </div>
+              <div className="text-4xl font-black text-slate-900">
+                6,111<span className="text-xl font-bold ml-1 text-slate-600">건</span>
+              </div>
+              <p className="text-xs text-slate-400 mt-2 font-medium">치료후기 5,774건 / 식단정보 337건</p>
+            </div>
+
+            {/* News List */}
+            <div className="flex-1 py-6 px-8 flex flex-col justify-center">
+              <h3 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2">
+                <span className="text-rose-500 text-sm">News</span> 플랫폼 최신 소식
+              </h3>
+              <div className="space-y-4">
+                {research.slice(0, 2).map((item) => (
+                  <div key={item.id} className="flex gap-3 cursor-pointer group" onClick={() => setActiveTab('research')}>
+                    <div className="w-16 h-12 bg-slate-100 rounded-md overflow-hidden flex-shrink-0">
+                       <div className="w-full h-full bg-emerald-100 flex items-center justify-center text-emerald-500 text-xs font-bold">News</div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-700 group-hover:text-emerald-600 transition-colors line-clamp-1">{item.title}</p>
+                      <p className="text-xs text-slate-400 mt-0.5">{item.date}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Main Content Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 space-y-12">
+        
+        {/* Section Title */}
+        <div className="text-center space-y-2">
+          <h2 className="text-3xl font-black text-slate-900">맞춤형 정보 큐레이션</h2>
+          <p className="text-slate-500 font-medium">진단부터 수술, 재활까지 꼭 필요한 정보를 확인하세요.</p>
+        </div>
+
+        {/* Categories (Flat Design) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+           {[
+            { id: 'gbm', title: '교모세포종(GBM)', sub: '최고 악성도 가이드', icon: HeartPulse, color: 'text-rose-500 bg-rose-50' },
+            { id: 'hospital', title: '병원 및 전문의', sub: '전국 명의 리스트', icon: Building2, color: 'text-cyan-600 bg-cyan-50' },
+            { id: 'stories', title: '희망 이야기', sub: '장기 생존자 후기', icon: MessagesSquare, color: 'text-emerald-500 bg-emerald-50' },
+            { id: 'research', title: '연구/임상시험', sub: '최신 신약 정보', icon: Search, color: 'text-blue-600 bg-blue-50' }
+          ].map((cat) => {
+            const Icon = cat.icon;
+            return (
+              <div 
+                key={cat.id} 
+                onClick={() => setActiveTab(cat.id)}
+                className="bg-white border border-slate-200 hover:border-emerald-400 rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:shadow-lg group"
+              >
+                <div className={`w-14 h-14 rounded-full ${cat.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                   <Icon className="w-6 h-6" />
                 </div>
-                <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
-                  교모세포종 (GBM) 완전 분석
-                </h2>
+                <h3 className="text-lg font-black text-slate-800">{cat.title}</h3>
+                <p className="text-xs text-slate-500 font-medium mt-1">{cat.sub}</p>
               </div>
-            </div>
-            <button
-              onClick={() => setActiveTab('gbm')}
-              className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-md shadow-emerald-600/20 group"
-            >
-              <span>상세 백과 읽기</span>
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            )
+          })}
+        </div>
+
+        {/* Banner ad style */}
+        <div 
+          onClick={() => setActiveTab('hospital')}
+          className="w-full bg-slate-800 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between cursor-pointer hover:bg-slate-900 transition-colors"
+        >
+           <div className="text-white space-y-2 text-center md:text-left">
+              <h2 className="text-2xl font-black">나에게 맞는 뇌종양 전문 병원 찾기</h2>
+              <p className="text-slate-300 text-sm">전국 주요 대학병원의 신경외과 명의 정보를 한눈에 비교하고 확인하세요.</p>
+           </div>
+           <button className="mt-6 md:mt-0 px-6 py-3 bg-teal-500 hover:bg-teal-400 text-white font-bold rounded-xl flex items-center gap-2 transition-colors">
+              병원 정보 보기 <ArrowRight className="w-4 h-4" />
+           </button>
+        </div>
+      </div>
+
+      {/* 4. Floating Right Sidebar */}
+      <div className="fixed right-6 bottom-10 z-40 hidden xl:flex flex-col gap-3">
+         <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden w-20 flex flex-col items-center py-3">
+            <span className="text-[10px] font-bold text-slate-400 mb-2 border-b border-slate-100 pb-2 w-full text-center">Quick</span>
+            
+            <button className="flex flex-col items-center gap-1 p-2 hover:bg-slate-50 w-full group">
+               <MessageCircle className="w-5 h-5 text-yellow-400 group-hover:scale-110 transition-transform" />
+               <span className="text-[10px] text-slate-600 font-medium tracking-tighter">카톡문의</span>
             </button>
-          </div>
+            
+            <button className="flex flex-col items-center gap-1 p-2 hover:bg-slate-50 w-full group border-t border-slate-50 mt-1">
+               <Download className="w-5 h-5 text-teal-500 group-hover:scale-110 transition-transform" />
+               <span className="text-[10px] text-slate-600 font-medium tracking-tighter">앱 설치</span>
+            </button>
+         </div>
 
-          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-            {gbmInfo.summary}
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-900/40 hover:-translate-y-1 hover:shadow-md transition-all">
-              <span className="text-xs font-extrabold text-emerald-600 block mb-1">표준 치료</span>
-              <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">
-                수술 + 방사선 60Gy + 테모졸로마이드(TMZ) + Optune(TTFields)
-              </p>
-            </div>
-            <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-teal-100 dark:border-teal-900/40 hover:-translate-y-1 hover:shadow-md transition-all">
-              <span className="text-xs font-extrabold text-teal-600 block mb-1">핵심 유전자</span>
-              <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">
-                MGMT 프로모터 메틸화 (TMZ 반응성), IDH1/2 변이 유무
-              </p>
-            </div>
-            <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-cyan-100 dark:border-cyan-900/40 hover:-translate-y-1 hover:shadow-md transition-all">
-              <span className="text-xs font-extrabold text-cyan-600 block mb-1">최신 임상</span>
-              <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">
-                BNCT (붕소중성자치료), B세포 면역치료, 줄기세포 유전자치료
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Latest Research & Clinical Trials */}
-      <section className="space-y-4 animate-fade-in-up">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-teal-500 animate-pulse-soft" />
-              <span>최신 연구 & 임상시험 소식</span>
-            </h2>
-            <p className="text-xs text-slate-500 font-medium">희망을 여는 최신 의학 연구 뉴스</p>
-          </div>
-          <button
-            onClick={() => setActiveTab('research')}
-            className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 group"
-          >
-            <span>전체보기</span>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {research.slice(0, 4).map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setActiveTab('research')}
-              className="glass-card bg-white p-5 rounded-2xl cursor-pointer border border-emerald-50 hover:border-teal-300 dark:hover:border-teal-700 hover:shadow-lg hover:shadow-teal-500/10 transition-all space-y-2 group"
-            >
-              <div className="flex items-center justify-between">
-                <span className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full text-white ${item.badgeColor.replace('violet', 'teal').replace('amber', 'emerald').replace('rose', 'cyan')}`}>
-                  {item.badge}
-                </span>
-                <span className="text-[11px] text-slate-400 font-medium">{item.date}</span>
-              </div>
-              <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 line-clamp-1 group-hover:text-teal-700 transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
-                {item.summary}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Top Hospitals Banner */}
-      <section className="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-emerald-100 bg-white/80 shadow-md animate-fade-in-up">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-600 text-white flex items-center justify-center text-xl shadow-md shadow-cyan-600/20 animate-float">
-              🏥
-            </div>
-            <div>
-              <h2 className="text-lg font-black text-slate-900 dark:text-white">
-                국내 뇌종양 다학제 전문 병원 & 의료진
-              </h2>
-              <p className="text-xs text-slate-500 font-medium">서울대·삼성·세브란스·서울성모 등 8개 명의 팀</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setActiveTab('hospital')}
-            className="text-xs font-bold text-cyan-700 dark:text-cyan-400 hover:underline flex items-center gap-1 group"
-          >
-            <span>전체 병원 보기</span>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {hospitals.slice(0, 4).map((hosp) => (
-            <div 
-              key={hosp.id}
-              onClick={() => setActiveTab('hospital')}
-              className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 hover:border-cyan-300 dark:hover:border-cyan-700 cursor-pointer transition-all space-y-1 hover:shadow-md hover:-translate-y-0.5"
-            >
-              <span className={`text-[9px] font-bold px-2 py-0.5 rounded-md text-white ${hosp.badgeColor}`}>
-                {hosp.badge}
-              </span>
-              <h4 className="font-extrabold text-xs text-slate-800 dark:text-white mt-1">{hosp.name}</h4>
-              <p className="text-[10px] text-slate-500 line-clamp-1">{hosp.doctors[0]}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Hope Story Highlight */}
-      <section className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-500 to-green-500 text-white space-y-4 shadow-xl animate-fade-in-up">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl animate-float">🧠🌱</span>
-            <h2 className="text-xl font-black">실제 희망 이야기</h2>
-          </div>
-          <button
-            onClick={() => setActiveTab('stories')}
-            className="px-4 py-2 rounded-xl bg-white/20 backdrop-blur-md hover:bg-white/30 text-white text-xs font-bold transition-all hover:scale-105"
-          >
-            이야기 더보기
-          </button>
-        </div>
-
-        {stories[0] && (
-          <div className="bg-white/10 backdrop-blur-md p-5 rounded-2xl space-y-2 border border-white/20 hover:bg-white/20 transition-colors cursor-pointer" onClick={() => setActiveTab('stories')}>
-            <div className="flex items-center gap-2 text-xs font-bold text-green-100">
-              <span>{stories[0].role}</span>
-              <span>•</span>
-              <span>{stories[0].category}</span>
-            </div>
-            <h3 className="text-lg font-bold leading-snug">{stories[0].title}</h3>
-            <p className="text-xs text-white/90 leading-relaxed line-clamp-3">
-              "{stories[0].summary}"
-            </p>
-          </div>
-        )}
-      </section>
+         <button 
+           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+           className="w-20 h-10 bg-white rounded-xl shadow-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:text-teal-600 hover:bg-slate-50 transition-colors"
+         >
+           <ChevronUp className="w-5 h-5" />
+           <span className="text-xs font-bold ml-1">TOP</span>
+         </button>
+      </div>
 
     </div>
   );
