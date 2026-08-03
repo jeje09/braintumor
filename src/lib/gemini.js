@@ -1,43 +1,72 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
 // API 키를 환경 변수에서 가져옵니다.
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
-let genAI = null;
+let ai = null;
 
 if (apiKey) {
-  genAI = new GoogleGenerativeAI(apiKey);
+  ai = new GoogleGenAI({ apiKey });
 }
 
+// 사용할 모델들의 우선순위 목록 (새로운 키와 구형 키 모두 호환 가능하도록)
+const MODELS_TO_TRY = [
+  "gemini-2.5-flash",
+  "gemini-2.0-flash",
+  "gemini-1.5-flash"
+];
+
 /**
- * File 객체를 Base64 형식의 GenerativePart로 변환하는 헬퍼 함수
+ * File 객체를 Base64 데이터와 MIME 타입으로 변환
  */
-async function fileToGenerativePart(file) {
+async function fileToInlineData(file) {
   const base64EncodedDataPromise = new Promise((resolve) => {
     const reader = new FileReader();
     reader.onloadend = () => resolve(reader.result.split(',')[1]);
     reader.readAsDataURL(file);
   });
   return {
-    inlineData: { data: await base64EncodedDataPromise, mimeType: file.type },
+    inlineData: {
+      data: await base64EncodedDataPromise,
+      mimeType: file.type
+    }
   };
+}
+
+/**
+ * 여러 모델을 순차적으로 시도하는 헬퍼 함수
+ */
+async function generateWithFallback(generateFn) {
+  let lastError = null;
+  
+  for (const modelName of MODELS_TO_TRY) {
+    try {
+      return await generateFn(modelName);
+    } catch (error) {
+      console.warn(`[Gemini SDK] ${modelName} 호출 실패. 다음 모델 시도 중...`, error.message);
+      lastError = error;
+      // 429 Quota Exceeded 에러일 경우 무료 한도가 완전히 막힌 것이므로 빠르게 실패
+      if (error.message && error.message.includes('Quota exceeded') && error.message.includes('limit: 0')) {
+        throw new Error("해당 구글 계정의 무료 한도(Free Tier)가 제한되어 있습니다. 다른 구글 계정으로 새 API 키를 발급받거나 결제를 연동해주세요.");
+      }
+    }
+  }
+  
+  console.error("모든 Gemini 모델 호출에 실패했습니다:", lastError);
+  throw new Error("API 키 권한 문제이거나 지원되는 모델이 없습니다. API 키를 다시 확인해주세요.");
 }
 
 /**
  * 영수증 이미지를 분석하는 함수
  * @param {File} imageFile 
- * @returns {Promise<string>} 분석 결과 (JSON 문자열 또는 텍스트)
+ * @returns {Promise<Object>} 분석 결과 객체
  */
 export async function analyzeMedicalReceipt(imageFile) {
-  if (!genAI) {
+  if (!ai) {
     throw new Error("Gemini API 키가 설정되지 않았습니다. .env 파일에 VITE_GEMINI_API_KEY를 설정해주세요.");
   }
 
-  try {
-    // 가장 최신의 multimodal 모델 사용
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-
-    const prompt = `
+  const prompt = `
 당신은 한국의 의료비 영수증을 분석하는 환자 권리 데이터센터의 AI 어시스턴트입니다.
 업로드된 이미지는 환자의 진료비 계산서/영수증입니다.
 이 영수증의 내용을 분석하여 아래의 구조화된 JSON 포맷으로 데이터를 추출해주세요.
@@ -63,14 +92,25 @@ export async function analyzeMedicalReceipt(imageFile) {
 }
 `;
 
-    const imageParts = [
-      await fileToGenerativePart(imageFile),
-    ];
+  const inlineData = await fileToInlineData(imageFile);
 
-    const result = await model.generateContent([prompt, ...imageParts]);
-    const response = await result.response;
-    let text = response.text();
+  const generateFn = async (modelName) => {
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            { text: prompt },
+            inlineData
+          ]
+        }
+      ]
+    });
     
+    let text = response.text;
+    if (!text) throw new Error("비어있는 응답입니다.");
+
     // JSON 파싱을 위해 마크다운 백틱 제거
     text = text.replace(/```json/g, "").replace(/```/g, "").trim();
     
@@ -80,7 +120,10 @@ export async function analyzeMedicalReceipt(imageFile) {
       console.error("JSON 파싱 에러. 원본 텍스트 반환", text);
       return { rawText: text, error: "JSON 파싱 실패" };
     }
+  };
 
+  try {
+    return await generateWithFallback(generateFn);
   } catch (error) {
     console.error("Error analyzing receipt:", error);
     throw error;
@@ -94,14 +137,11 @@ export async function analyzeMedicalReceipt(imageFile) {
  * @returns {Promise<string>} AI의 답변
  */
 export async function askReceiptQuestion(contextData, question) {
-  if (!genAI) {
+  if (!ai) {
     throw new Error("Gemini API 키가 설정되지 않았습니다.");
   }
 
-  try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-
-    const prompt = `
+  const prompt = `
 당신은 '환자권리 데이터센터'의 친절하고 전문적인 의료비 질문 도우미 AI입니다.
 환자(또는 보호자)가 자신의 진료비 영수증에 대해 질문했습니다.
 절대 병원을 비난하거나 "폭리"와 같은 부정적인 단어를 사용하지 마세요. 
@@ -120,10 +160,16 @@ export async function askReceiptQuestion(contextData, question) {
 친절하고 알기 쉬운 말로, 객관적인 정보를 제공해주세요.
 `;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text();
+  const generateFn = async (modelName) => {
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: prompt
+    });
+    return response.text;
+  };
 
+  try {
+    return await generateWithFallback(generateFn);
   } catch (error) {
     console.error("Error answering question:", error);
     throw error;
