@@ -48,8 +48,8 @@ const INITIAL_BRAIN_TUMORS = [
   },
   {
     id: 3,
-    name: "청신경초종 (전정신경초종)",
-    fullName: "Vestibular Schwannoma (Acoustic Neuroma)",
+    name: "청신경초종 (Vestibular schwannoma)",
+    fullName: "Vestibular Schwannoma",
     grade: "양성 종양",
     incidence: "전체 뇌종양의 약 8%, 10만 명 중 약 1명",
     ageGroup: "30~60대, 성별 차이 적음",
