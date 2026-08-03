@@ -146,9 +146,6 @@ export const Navbar = () => {
                 <Bell className="w-5 h-5" />
               </button>
             </div>
-                <span className="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full border border-white dark:border-slate-950"></span>
-              </button>
-            </div>
 
             {/* Mobile Menu Button */}
             <button
