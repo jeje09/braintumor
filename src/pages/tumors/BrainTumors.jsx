@@ -3,7 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { BookOpen, AlertCircle, CheckCircle2, ChevronRight, Filter } from 'lucide-react';
 
 export const BrainTumors = () => {
-  const { brainTumors, setActiveTab } = useApp();
+  const { brainTumors, setActiveTab, setSelectedDeepTumorId } = useApp();
   const [selectedTumor, setSelectedTumor] = useState(brainTumors[0]);
 
   return (
@@ -70,15 +70,17 @@ export const BrainTumors = () => {
               </div>
             </div>
 
-            {selectedTumor.isSpecial && (
-              <button
-                onClick={() => setActiveTab('gbm')}
-                className="px-5 py-2.5 rounded-xl bg-slate-600 hover:bg-slate-700 text-white font-bold text-base transition-all flex items-center gap-1.5 shadow-md shadow-slate-600/30"
-              >
-                <span>교모세포종 심층 백과로 이동</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            )}
+            {/* Deep Encyclopedia Button for ALL tumors */}
+            <button
+              onClick={() => {
+                setSelectedDeepTumorId(selectedTumor.id);
+                setActiveTab('tumor-deep');
+              }}
+              className="px-5 py-2.5 rounded-xl bg-slate-600 hover:bg-slate-700 text-white font-bold text-base transition-all flex items-center gap-1.5 shadow-md shadow-slate-600/30"
+            >
+              <span>{selectedTumor.name} 심층 백과로 이동</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
 
           {/* Overview */}

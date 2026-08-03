@@ -12,7 +12,6 @@ export const Navbar = () => {
 
   // 메인 네비게이션 항목 (아이콘 제거, 텍스트 중심)
   const mainNavItems = [
-    { id: 'gbm', label: '교모세포종(GBM)' },
     { id: 'tumors', label: '뇌종양 백과' },
     { id: 'research', label: '연구·임상' },
     { id: 'nutrition', label: '면역력 식단' },

@@ -800,6 +800,7 @@ const COMMUNITY_LINKS = [
 ======================================================================= */
 export const AppProvider = ({ children }) => {
   const [activeTab, setActiveTab] = useState('home');
+  const [selectedDeepTumorId, setSelectedDeepTumorId] = useState(1);
 
   const [brainTumors] = useState(INITIAL_BRAIN_TUMORS);
   const [gbmFaqs, setGbmFaqs] = useState(INITIAL_GBM_FAQS);
@@ -858,6 +859,7 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider value={{
       activeTab, setActiveTab,
+      selectedDeepTumorId, setSelectedDeepTumorId,
       brainTumors,
       gbmFaqs,
       research,

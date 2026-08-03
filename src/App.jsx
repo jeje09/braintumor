@@ -4,7 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 
 import { HomePage } from './pages/home/HomePage';
-import { GBMPage } from './pages/gbm/GBMPage';
+import { TumorDeepPage } from './pages/tumors/TumorDeepPage';
 import { BrainTumors } from './pages/tumors/BrainTumors';
 import { Research } from './pages/research/Research';
 import { Nutrition } from './pages/nutrition/Nutrition';
@@ -28,7 +28,7 @@ const MainContent = () => {
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
-      {activeTab === 'gbm'       && <GBMPage />}
+      {activeTab === 'tumor-deep' && <TumorDeepPage />}
       {activeTab === 'tumors'    && <BrainTumors />}
       {activeTab === 'research'  && <Research />}
       {activeTab === 'nutrition' && <Nutrition />}
