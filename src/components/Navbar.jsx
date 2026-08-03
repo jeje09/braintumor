@@ -16,6 +16,7 @@ export const Navbar = () => {
     { id: 'tumors', label: '뇌종양 백과' },
     { id: 'research', label: '연구·임상' },
     { id: 'nutrition', label: '항암 식단' },
+    { id: 'shopping', label: '맞춤 쇼핑' },
     { id: 'hospital', label: '병원·전문의' },
     { id: 'stories', label: '희망 이야기' },
   ];
