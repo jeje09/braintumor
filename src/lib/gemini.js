@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// API 키를 환경 변수에서 가져옵니다.
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+// API 키를 환경 변수에서 가져옵니다. (Vercel 배포 시 편의를 위해 하드코딩된 폴백 추가)
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyCvQNBkF14npueVAXdd8Co4UBRabFOgVCg";
 
 let genAI = null;
 
