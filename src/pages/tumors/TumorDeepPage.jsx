@@ -23,7 +23,7 @@ export const TumorDeepPage = () => {
             {tumorData.heroTitle} <br />
             <span className="text-slate-400">{tumorData.heroSubtitle}</span>
           </h1>
-          <p className="text-slate-300 text-lg sm:text-base leading-relaxed">
+          <p className="text-slate-300 text-lg sm:text-base leading-relaxed whitespace-pre-line">
             {tumorData.heroDesc}
           </p>
         </div>
