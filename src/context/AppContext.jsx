@@ -615,7 +615,7 @@ const INITIAL_HOSPITALS = [
 const INITIAL_PRODUCTS = [
   {
     id: 101,
-    category: "항구역 케어",
+    category: "영양 보충",
     iframeCode: '<iframe src="https://coupa.ng/covddK" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics></iframe>'
   },
   {
@@ -730,7 +730,7 @@ export const AppProvider = ({ children }) => {
   const [youtubeVideos, setYoutubeVideos] = useState(INITIAL_YOUTUBE_VIDEOS);
   const [hospitals] = useState(INITIAL_HOSPITALS);
   const [products, setProducts] = useState(() => {
-    const saved = localStorage.getItem('companion_products_v2');
+    const saved = localStorage.getItem('companion_products_v3');
     return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
   });
   const [stories, setStories] = useState(() => {
@@ -759,7 +759,7 @@ export const AppProvider = ({ children }) => {
   }, [darkMode]);
 
   // Persist products & stories
-  useEffect(() => { localStorage.setItem('companion_products_v2', JSON.stringify(products)); }, [products]);
+  useEffect(() => { localStorage.setItem('companion_products_v3', JSON.stringify(products)); }, [products]);
   useEffect(() => { localStorage.setItem('companion_stories', JSON.stringify(stories)); }, [stories]);
 
   const loginAdmin = (pw) => {
