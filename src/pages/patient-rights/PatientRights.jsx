@@ -16,7 +16,7 @@ export const PatientRights = () => {
         <div className="relative z-10 max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-sm font-medium mb-6 text-blue-100">
             <ShieldCheck className="w-4 h-4" />
-            <span>비난이 아닌 권리 보호를 위해</span>
+            <span>환자 진료비에 대한 정보 제공</span>
           </div>
           
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 leading-tight">
@@ -24,7 +24,6 @@ export const PatientRights = () => {
           </h1>
           
           <p className="text-lg md:text-xl text-indigo-100/90 leading-relaxed font-medium">
-            환자권리 데이터센터는 병원을 평가하는 기관이 아닙니다. <br className="hidden md:block"/>
             환자가 자신의 치료 과정과 의료비를 명확히 이해할 수 있도록 돕는 투명성 플랫폼입니다.
           </p>
           
@@ -54,9 +53,6 @@ export const PatientRights = () => {
               환자와의 신뢰를 최우선으로 생각하는 의료 기관이라면, 데이터센터에 공식적으로 참여하여 환자들과 투명하게 소통할 수 있습니다.
             </p>
           </div>
-          <button className="shrink-0 bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 font-bold px-6 py-3 rounded-lg border border-blue-200 dark:border-blue-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-500 dark:hover:text-white transition-colors">
-            병원 참여 문의하기
-          </button>
         </div>
       </section>
 
