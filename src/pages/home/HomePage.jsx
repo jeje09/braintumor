@@ -1,7 +1,8 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
+import newsData from '../../data/news.json';
 import { 
-  ChevronRight, ArrowRight, HeartPulse, Building2, MessagesSquare, MessageCircle, ChevronUp, Download, Search
+  ChevronRight, ArrowRight, HeartPulse, Building2, MessagesSquare, MessageCircle, ChevronUp, Download, Search, Bell, ExternalLink
 } from 'lucide-react';
 
 export const HomePage = () => {
@@ -90,6 +91,49 @@ export const HomePage = () => {
            <button className="mt-6 md:mt-0 px-6 py-3 bg-teal-500 hover:bg-teal-400 text-white font-bold rounded-xl flex items-center gap-2 transition-colors">
               병원 정보 보기 <ArrowRight className="w-4 h-4" />
            </button>
+        </div>
+
+        {/* 5. Latest News Section (Automated) */}
+        <div className="mt-20 pb-10 space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-900 pb-4">
+            <h2 className="text-2xl font-black text-slate-900">오늘의 의료 신약 및 암 치료 뉴스</h2>
+            <span className="text-sm font-bold text-slate-500 cursor-pointer hover:text-blue-600">더보기 +</span>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {newsData.map((news) => (
+              <a 
+                key={news.id} 
+                href={news.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="w-full h-48 bg-slate-100 relative overflow-hidden border-b border-slate-100">
+                  {news.imageUrl ? (
+                    <img src={news.imageUrl} alt="news thumbnail" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold bg-slate-50">LIVING WITH NEWS</div>
+                  )}
+                </div>
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="text-[18px] font-black text-slate-900 group-hover:text-blue-600 line-clamp-2 leading-snug mb-3">{news.title}</h3>
+                  <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-6 flex-1 font-medium">
+                    {news.description}
+                  </p>
+                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-100">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-md">{news.source || 'LIVING WITH'}</span>
+                      <span className="text-[11px] text-slate-400 font-medium">{news.pubDate}</span>
+                    </div>
+                    <span className="flex items-center gap-1 text-[12px] font-black text-blue-600 group-hover:text-blue-700">
+                      원문보기 <ExternalLink className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 

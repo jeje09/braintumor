@@ -1,0 +1,29 @@
+[
+  {
+    "id": "news-1",
+    "title": "국내 연구진, 뇌종양 교모세포종 발병 기전 규명",
+    "description": "국내 연구진이 난치성 뇌종양인 교모세포종의 새로운 발병 기전을 밝혀내어 신약 개발에 새로운 전기를 마련했습니다. 이번 연구 결과는 국제 학술지 네이처에 게재되었습니다.",
+    "imageUrl": "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?q=80&w=500&auto=format&fit=crop",
+    "link": "https://news.naver.com/",
+    "pubDate": "2026-08-03",
+    "source": "의학신문"
+  },
+  {
+    "id": "news-2",
+    "title": "A병원, 교모세포종 환자 대상 혁신 신약 임상 2상 시작",
+    "description": "최근 FDA 패스트트랙으로 지정된 새로운 표적항암제가 국내 주요 병원에서 임상 2상에 돌입했습니다. 기존 항암제 대비 생존율을 크게 높일 것으로 기대됩니다.",
+    "imageUrl": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=500&auto=format&fit=crop",
+    "link": "https://news.naver.com/",
+    "pubDate": "2026-08-02",
+    "source": "메디칼타임즈"
+  },
+  {
+    "id": "news-3",
+    "title": "뇌종양 수술 후 재활치료, 생존 기간 연장에 도움",
+    "description": "뇌종양 수술 후 체계적인 맞춤형 재활치료를 받은 환자군이 그렇지 않은 환자군에 비해 일상 복귀율과 장기 생존율이 유의미하게 높다는 연구 결과가 나왔습니다.",
+    "imageUrl": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=500&auto=format&fit=crop",
+    "link": "https://news.naver.com/",
+    "pubDate": "2026-08-01",
+    "source": "헬스조선"
+  }
+]
