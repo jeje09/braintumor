@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
-  ChevronRight, ArrowRight, HeartPulse, Building2, MessagesSquare, MessageCircle, ChevronUp, Download, Search, Bell, HeartHandshake
+  ChevronRight, ArrowRight, HeartPulse, Building2, MessagesSquare, MessageCircle, ChevronUp, Download, Search, Bell, HeartHandshake, ShieldCheck
 } from 'lucide-react';
 
 const CAROUSEL_IMAGES = [
@@ -92,7 +92,8 @@ export const HomePage = () => {
             { id: 'nutrition', title: '항암 맞춤 식단', sub: '치료 효과를 높이는 과학적인 영양 관리', icon: Bell, color: 'text-blue-500 bg-blue-50' },
             { id: 'hospital', title: '우수 병원·전문의 찾기', sub: '나에게 맞는 뇌종양 전문 병원 추천', icon: Building2, color: 'text-cyan-600 bg-cyan-50' },
             { id: 'tumors', title: '뇌종양 백과사전', sub: '다양한 뇌종양의 원인, 종류, 증상 정보', icon: MessageCircle, color: 'text-blue-600 bg-blue-50' },
-            { id: 'support', title: '의료비 지원정보', sub: '국가 및 지자체 의료비 혜택 가이드', icon: HeartHandshake, color: 'text-rose-500 bg-rose-50' }
+            { id: 'support', title: '의료비 지원정보', sub: '국가 및 지자체 의료비 혜택 가이드', icon: HeartHandshake, color: 'text-rose-500 bg-rose-50' },
+            { id: 'patient-rights', title: '환자권리 센터', sub: '진료비 영수증 AI 분석 및 투명한 통계', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50' }
           ].map((cat) => {
             const Icon = cat.icon;
             return (

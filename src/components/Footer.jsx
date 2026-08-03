@@ -42,7 +42,7 @@ export const Footer = () => {
               <p className="font-extrabold text-white text-base leading-relaxed">
                 절망하지 마십시오.<br />
                 우리는 암과 싸우기만 하는 사람들이 아니라,<br />
-                암과 함께도 끝까지 삶을 살아내는 사람들입니다.
+                암과 함께 끝까지 삶을 살아내는 사람들입니다.
               </p>
             </div>
           </div>

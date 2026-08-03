@@ -14,6 +14,7 @@ import { CancerShopping } from './pages/shopping/CancerShopping';
 import { Stories } from './pages/stories/Stories';
 import { Admin } from './pages/admin/Admin';
 import { Support } from './pages/support/Support';
+import { PatientRights } from './pages/patient-rights/PatientRights';
 
 const MainContent = () => {
   const { activeTab } = useApp();
@@ -37,6 +38,7 @@ const MainContent = () => {
       {activeTab === 'shopping'  && <CancerShopping />}
       {activeTab === 'stories'   && <Stories />}
       {activeTab === 'support'   && <Support />}
+      {activeTab === 'patient-rights' && <PatientRights />}
       {activeTab === 'admin'     && <Admin />}
     </main>
   );
