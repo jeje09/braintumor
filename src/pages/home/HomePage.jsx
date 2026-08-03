@@ -6,19 +6,10 @@ import {
 
 const CAROUSEL_IMAGES = [
   {
-    url: "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=1600&auto=format&fit=crop",
-    title: "최첨단 뇌종양 수술 및 연구",
-    subtitle: "끊임없는 연구와 임상으로 희망을 찾습니다"
-  },
-  {
-    url: "https://images.unsplash.com/photo-1576091160550-2173ff9e5ee5?q=80&w=1600&auto=format&fit=crop",
-    title: "따뜻한 간호와 환자 중심 케어",
-    subtitle: "환우와 가족의 마음까지 보듬는 든든한 동반자가 되겠습니다"
-  },
-  {
-    url: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?q=80&w=1600&auto=format&fit=crop",
-    title: "혁신적인 뇌종양 신약 임상시험",
-    subtitle: "미래를 여는 새로운 뇌종양 치료 패러다임을 선도합니다"
+    url: "/banner.png",
+    title: "암과 함께 살아가는 삶",
+    subtitle: "최신 치료법 연구에 대한 소식 나눔",
+    description: "환자와 보호자의 몸과 마음의 건강을 위하여"
   }
 ];
 
@@ -61,6 +52,11 @@ export const HomePage = () => {
                 <p className="text-lg md:text-xl font-bold text-slate-200 drop-shadow-md">
                   {slide.subtitle}
                 </p>
+                {slide.description && (
+                  <p className="text-base md:text-lg text-slate-300 drop-shadow-md mt-2">
+                    {slide.description}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -151,10 +147,7 @@ export const HomePage = () => {
                <span className="text-[11px] text-slate-600 font-bold">제휴/의뢰</span>
             </button>
             
-            <button className="flex flex-col items-center justify-center gap-1 py-3.5 bg-[#4aa8d8] hover:bg-blue-500 text-white transition-colors">
-               <Download className="w-4 h-4" />
-               <span className="text-[11px] font-bold">앱 다운로드</span>
-            </button>
+
          </div>
 
          <button 
