@@ -31,7 +31,7 @@ export const BrainTumors = () => {
             <button
               key={t.id}
               onClick={() => setSelectedTumor(t)}
-              className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between h-28 ${
+              className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between min-h-[7.5rem] h-auto gap-2 ${
                 isSelected
                   ? 'bg-sky-600 text-white border-sky-600 shadow-lg shadow-sky-600/30 scale-105'
                   : 'glass-card border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-sky-300'
@@ -39,10 +39,10 @@ export const BrainTumors = () => {
             >
               <span className="text-2xl">{t.icon}</span>
               <div>
-                <span className={`text-lg font-bold block ${isSelected ? 'text-sky-200' : 'text-slate-400'}`}>
+                <span className={`text-xs font-bold block leading-snug mb-1 ${isSelected ? 'text-sky-200' : 'text-slate-400'}`}>
                   {t.grade}
                 </span>
-                <h3 className="font-extrabold text-base line-clamp-1">{t.name}</h3>
+                <h3 className="font-extrabold text-base leading-tight">{t.name}</h3>
               </div>
             </button>
           );
