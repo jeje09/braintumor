@@ -1,10 +1,11 @@
-import React from 'react';
+﻿const fs = require('fs');
+const content = import React from 'react';
 
 export const Footer = () => {
   return (
-    <footer className="w-full bg-[#1c2a38] text-slate-300 py-16 md:py-24 mt-20">
+    <footer className="w-full bg-[#1c2a38] text-slate-300 py-16 md:py-24">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl md:text-3xl font-black text-white mb-16 text-center leading-relaxed tracking-tight">
+        <h2 className="text-2xl md:text-3xl font-black text-white mb-16 text-center leading-relaxed">
           암 때문에 죽는 것이 아니라,<br className="md:hidden" />
           암과 함께 살아가는 길을 찾습니다.
         </h2>
@@ -51,3 +52,5 @@ export const Footer = () => {
     </footer>
   );
 };
+;
+fs.writeFileSync('f:/braintumor/src/components/Footer.jsx', content, 'utf8');

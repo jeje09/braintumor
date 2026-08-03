@@ -112,55 +112,55 @@ export const HomePage = () => {
           })}
         </div>
 
-        {/* Poem Section */}
-        <div className="w-full bg-white rounded-[32px] p-10 md:p-16 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col items-center text-center mt-12 relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-0 left-0 w-32 h-32 bg-slate-50 rounded-br-full z-0"></div>
-          <div className="absolute bottom-0 right-0 w-48 h-48 bg-slate-50 rounded-tl-full z-0"></div>
-          
-          <h2 className="relative z-10 text-2xl md:text-3xl font-black text-slate-800 mb-12 tracking-tight">
-            암 때문에 죽는 것이 아니라, <br className="md:hidden" />암과 함께 살아가는 길을 찾습니다.
-          </h2>
-
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 text-left max-w-4xl w-full">
-            {/* Left Column */}
-            <div className="space-y-6 text-slate-600 font-medium leading-loose break-keep text-[15px]">
-              <p>
-                모든 암세포를 하나도 남김없이 찾아내 없앨 수 있다면 가장 좋겠습니다.<br />
-                그러나 그것이 언제나 가능한 것은 아닙니다.
-              </p>
-              <p>
-                그래서 우리는 또 다른 길을 선택합니다.<br />
-                암과 끝없는 전쟁만 하는 것이 아니라,<br />
-                몸과 마음을 지키며 오늘을 살아가는 길입니다.
-              </p>
-              <p>
-                때로는 어르고, 때로는 달래며,<br />
-                조용히 공존할 수 있다면 그것 또한 삶의 지혜입니다.
-              </p>
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-6 text-slate-600 font-medium leading-loose break-keep text-[15px]">
-              <p>
-                암은 내 삶의 전부가 아닙니다.<br />
-                암은 내 이름도, 내 꿈도, 내 사랑도 될 수 없습니다.
-              </p>
-              <p>
-                오늘도 웃을 이유를 찾고,<br />
-                사랑하는 사람과 함께하며,<br />
-                희망을 잃지 않는다면 우리는 이미 잘 살아가고 있는 것입니다.
-              </p>
-              <div className="pt-6 border-t border-slate-200 mt-2">
-                <p className="font-extrabold text-slate-800 text-base leading-relaxed">
-                  절망하지 마십시오.<br />
-                  우리는 암과 싸우기만 하는 사람들이 아니라,<br />
-                  암과 함께도 끝까지 삶을 살아내는 사람들입니다.
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* Banner ad style */}
+        <div 
+          onClick={() => setActiveTab('hospital')}
+          className="w-full bg-slate-800 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between cursor-pointer hover:bg-slate-900 transition-colors"
+        >
+           <div className="text-white space-y-2 text-center md:text-left">
+              <h2 className="text-2xl font-black">나에게 맞는 뇌종양 전문 병원 찾기</h2>
+              <p className="text-slate-300 text-sm">전국 주요 대학병원의 신경외과 명의 정보를 한눈에 비교하고 확인하세요.</p>
+           </div>
+           <button className="mt-6 md:mt-0 px-6 py-3 bg-teal-500 hover:bg-teal-400 text-white font-bold rounded-xl flex items-center gap-2 transition-colors">
+              병원 정보 보기 <ArrowRight className="w-4 h-4" />
+           </button>
         </div>
+      </div>
+
+      {/* 4. Floating Right Sidebar */}
+      <div className="fixed right-6 bottom-10 z-40 hidden xl:flex flex-col w-[90px]">
+         <div className="bg-white shadow-[0_4px_20px_rgb(0,0,0,0.08)] border border-slate-200 flex flex-col text-center divide-y divide-slate-100 rounded-t-xl">
+            <div className="py-4 bg-white rounded-t-xl">
+              <span className="text-[11px] font-bold text-slate-600 block mb-1">최근 본 공고</span>
+              <span className="text-[10px] text-slate-400 block mt-3">로그인<br/>해주세요.</span>
+            </div>
+            
+            <div className="py-4 flex flex-col items-center bg-white">
+              <span className="text-[10px] text-slate-500 font-bold mb-1">고객센터</span>
+              <span className="text-sm font-black text-slate-800 leading-none">1644-3511</span>
+              <span className="text-[9px] text-slate-400 mt-1">8:00~20:00</span>
+            </div>
+            
+            <button className="flex flex-col items-center justify-center gap-1 py-3.5 bg-[#FEE500] hover:bg-[#F4DC00] transition-colors">
+               <MessageCircle className="w-4 h-4 text-slate-900 fill-slate-900" />
+               <span className="text-[11px] text-slate-900 font-bold">카톡문의</span>
+            </button>
+            
+            <button className="flex flex-col items-center justify-center gap-1 py-3.5 bg-white hover:bg-slate-50 transition-colors">
+               <Building2 className="w-4 h-4 text-slate-600" />
+               <span className="text-[11px] text-slate-600 font-bold">제휴/의뢰</span>
+            </button>
+            
+
+         </div>
+
+         <button 
+           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+           className="w-full mt-2 py-2 bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition-colors rounded-b-xl"
+         >
+           <span className="text-xs font-bold mr-1">TOP</span>
+           <ChevronUp className="w-4 h-4" />
+         </button>
       </div>
 
     </div>
