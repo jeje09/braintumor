@@ -71,9 +71,22 @@ export const Hospitals = () => {
                     <span>주요 전문의</span>
                   </strong>
                   <ul className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-                    {hosp.doctors.map((doc, idx) => (
-                      <li key={idx}>• {doc}</li>
-                    ))}
+                    {hosp.doctors.map((doc, idx) => {
+                      const isObj = typeof doc === 'object' && doc !== null;
+                      const name = isObj ? doc.name : doc;
+                      const url = isObj ? doc.url : "";
+                      return (
+                        <li key={idx}>
+                          • {url ? (
+                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline hover:font-bold" onClick={(e) => e.stopPropagation()}>
+                              {name}
+                            </a>
+                          ) : (
+                            name
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
 

@@ -477,16 +477,20 @@ const INITIAL_HOSPITALS = [
     dept: "신경외과 · 뇌종양클리닉",
     address: "서울 종로구 대학로 101",
     phone: "02-2072-2114",
-    website: "https://www.snuh.org",
+    website: "https://www.snuh.org/reservation/meddept/NS/mainIntro.do",
     specialties: ["교모세포종", "수막종", "뇌전이", "각성 수술", "5-ALA 형광 수술"],
     features: ["다학제 뇌종양 컨퍼런스", "임상시험 활발", "형광 유도 수술", "신경항법장치"],
-    doctors: ["백선하 교수 (뇌종양 전문)", "조병규 교수 (뇌종양)"],
+    doctors: [
+      { name: "박철기 교수", url: "https://www.snuh.org/blog/01104/philosophy.do" },
+      { name: "백선하 교수", url: "" },
+      { name: "조병규 교수", url: "" }
+    ],
     rating: 5,
     badge: "TOP",
     badgeColor: "bg-amber-500",
     reservationTip: "인터넷 예약: snuh.org. 신규 환자 뇌종양 클리닉 예약 권장. 대기 2~3주 소요.",
     clinicalTrials: true,
-    img: "https://images.unsplash.com/photo-1587351021759-3e566b3db4f1?auto=format&fit=crop&w=600&q=80"
+    img: "/snuh.png"
   },
   {
     id: 2,
@@ -497,7 +501,12 @@ const INITIAL_HOSPITALS = [
     website: "https://www.samsunghospital.com",
     specialties: ["교모세포종", "핍지교종", "뇌전이", "양성자 치료", "정밀 의료"],
     features: ["뇌종양센터 운영", "양성자 치료 센터", "정밀의료 파이프라인", "다학제 회의"],
-    doctors: ["남도현 교수 (뇌종양 전문)", "설호준 교수 (뇌종양)", "공두식 교수"],
+    doctors: [
+      { name: "최정원 교수", url: "https://www.samsunghospital.com/m/smc/reservation/common/doctorProfile.do?DR_NO=1819" },
+      { name: "남도현 교수", url: "" },
+      { name: "설호준 교수", url: "" },
+      { name: "공두식 교수", url: "" }
+    ],
     rating: 5,
     badge: "추천",
     badgeColor: "bg-violet-500",
