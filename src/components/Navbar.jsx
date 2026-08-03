@@ -33,12 +33,9 @@ export const Navbar = () => {
       <header className="w-full bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
         
         {/* Top Utility Bar (아주 얇은 상단 바) */}
-        <div className="border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-end text-sm text-slate-500 font-medium">
+        <div className="border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-end text-sm text-slate-600 dark:text-slate-400 font-medium">
             <div className="flex items-center gap-4">
-
-              <span className="hidden sm:inline-block cursor-pointer hover:text-blue-700 transition-colors">고객센터</span>
-              <div className="w-px h-3 bg-slate-200 dark:bg-slate-700"></div>
               
               {isAdmin && (
                 <>
