@@ -94,7 +94,7 @@ export const ImageDropzone = ({ value, onChange, label = "이미지 등록 (URL 
           <button
             type="button"
             onClick={() => onChange('')}
-            className="absolute top-3 right-3 p-2 bg-rose-600 text-white rounded-full opacity-90 group-hover:opacity-100 transition-opacity shadow-lg"
+            className="absolute top-3 right-3 p-2 bg-slate-600 text-white rounded-full opacity-90 group-hover:opacity-100 transition-opacity shadow-lg"
             title="이미지 삭제/재선택"
           >
             <X className="w-4 h-4" />

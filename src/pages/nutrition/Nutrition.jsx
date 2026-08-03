@@ -75,13 +75,13 @@ export const Nutrition = () => {
                 </div>
 
                 <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-                  <strong className="text-indigo-600 dark:text-indigo-400 block mb-0.5">섭취 팁</strong>
+                  <strong className="text-blue-600 dark:text-blue-400 block mb-0.5">섭취 팁</strong>
                   <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{item.howToEat}</p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 text-[11px] text-rose-600 dark:text-rose-400 font-medium">
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 text-[11px] text-slate-600 dark:text-slate-400 font-medium">
               ⚠️ 주의사항: {item.caution}
             </div>
           </div>

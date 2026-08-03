@@ -9,9 +9,9 @@ export const PerfumeStory = () => {
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-3 relative overflow-hidden bg-gradient-to-r from-purple-900/10 via-pink-900/10 to-indigo-900/10">
+      <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-3 relative overflow-hidden bg-gradient-to-r from-teal-900/10 via-pink-900/10 to-blue-900/10">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl shadow-sm">
+          <div className="w-12 h-12 rounded-2xl bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl shadow-sm">
             🌸
           </div>
           <div>
@@ -31,7 +31,7 @@ export const PerfumeStory = () => {
           <div
             key={perfume.id}
             onClick={() => setSelectedPerfume(perfume)}
-            className="glass-card rounded-3xl overflow-hidden group cursor-pointer hover:shadow-2xl hover:border-purple-300 dark:hover:border-purple-600 transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between"
+            className="glass-card rounded-3xl overflow-hidden group cursor-pointer hover:shadow-2xl hover:border-teal-300 dark:hover:border-teal-600 transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between"
           >
             <div>
               <div className="relative h-56 overflow-hidden">
@@ -40,17 +40,17 @@ export const PerfumeStory = () => {
                   alt={perfume.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
+                <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
                   천연 에센셜 블렌딩
                 </div>
               </div>
 
               <div className="p-6 space-y-3">
-                <div className="flex items-center gap-1 text-xs text-purple-600 dark:text-purple-400 font-bold">
+                <div className="flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400 font-bold">
                   <Wind className="w-3.5 h-3.5" />
                   <span>노트: {perfume.notes}</span>
                 </div>
-                <h3 className="font-extrabold text-xl text-slate-800 dark:text-slate-100 group-hover:text-purple-600 transition-colors">
+                <h3 className="font-extrabold text-xl text-slate-800 dark:text-slate-100 group-hover:text-teal-600 transition-colors">
                   {perfume.name}
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
@@ -59,8 +59,8 @@ export const PerfumeStory = () => {
               </div>
             </div>
 
-            <div className="px-6 pb-6 pt-2 bg-purple-50/40 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800">
-              <span className="text-[11px] font-extrabold text-purple-700 dark:text-purple-300 block truncate">
+            <div className="px-6 pb-6 pt-2 bg-teal-50/40 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800">
+              <span className="text-[11px] font-extrabold text-teal-700 dark:text-teal-300 block truncate">
                 💡 추천 시기: {perfume.mood}
               </span>
             </div>
@@ -71,7 +71,7 @@ export const PerfumeStory = () => {
       {/* Perfume Modal */}
       {selectedPerfume && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl border border-purple-100 dark:border-slate-800 p-6 sm:p-8 space-y-5 relative">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl border border-teal-100 dark:border-slate-800 p-6 sm:p-8 space-y-5 relative">
             <button
               onClick={() => setSelectedPerfume(null)}
               className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition-colors"
@@ -79,7 +79,7 @@ export const PerfumeStory = () => {
               ✕
             </button>
 
-            <span className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-xs font-bold rounded-full">
+            <span className="inline-block px-3 py-1 bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-300 text-xs font-bold rounded-full">
               아로마테라피 테이스팅
             </span>
 
@@ -94,7 +94,7 @@ export const PerfumeStory = () => {
             />
 
             <div className="space-y-2">
-              <span className="text-xs font-bold text-purple-600 dark:text-purple-400 block">
+              <span className="text-xs font-bold text-teal-600 dark:text-teal-400 block">
                 대표 향 노트: {selectedPerfume.notes}
               </span>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -102,14 +102,14 @@ export const PerfumeStory = () => {
               </p>
             </div>
 
-            <div className="bg-purple-50 dark:bg-slate-800 p-4 rounded-2xl text-xs font-bold text-purple-900 dark:text-purple-200 border border-purple-100 dark:border-slate-700">
+            <div className="bg-teal-50 dark:bg-slate-800 p-4 rounded-2xl text-xs font-bold text-teal-900 dark:text-teal-200 border border-teal-100 dark:border-slate-700">
               ✨ 추천 힐링 무드: {selectedPerfume.mood}
             </div>
 
             <div className="flex justify-end pt-2">
               <button
                 onClick={() => setSelectedPerfume(null)}
-                className="px-6 py-2.5 bg-purple-600 text-white font-bold rounded-xl shadow-md hover:bg-purple-700 transition-all"
+                className="px-6 py-2.5 bg-teal-600 text-white font-bold rounded-xl shadow-md hover:bg-teal-700 transition-all"
               >
                 확인 및 닫기
               </button>

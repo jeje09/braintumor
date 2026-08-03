@@ -16,7 +16,7 @@ export const HealthStory = () => {
   const categoryColors = {
     '자연치유': 'bg-emerald-600',
     '건강습관': 'bg-teal-600',
-    '수면건강': 'bg-indigo-600',
+    '수면건강': 'bg-blue-600',
   };
 
   const stats = [

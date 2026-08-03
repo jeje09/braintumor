@@ -18,10 +18,10 @@ const INITIAL_BRAIN_TUMORS = [
     newTreatments: ["면역세포치료 (B세포 활성화 전략)", "붕소중성자포획치료 (BNCT)", "줄기세포 기반 유전자치료", "항체약물접합체 (ADC)", "개인 맞춤 신생항원 백신"],
     prognosis: "중앙생존기간 약 14~16개월 (Stupp Protocol 기준), 장기생존자 약 5~10%",
     keyMarkers: ["MGMT 프로모터 메틸화 (예후 양호)", "IDH 변이 (IDH-wildtype이 더 공격적)", "EGFR 증폭", "TERT 프로모터 변이"],
-    color: "rose",
-    colorBg: "bg-rose-50 dark:bg-rose-950/30",
-    colorBorder: "border-rose-200 dark:border-rose-800",
-    colorBadge: "bg-rose-600",
+    color: "slate",
+    colorBg: "bg-slate-50 dark:bg-slate-950/30",
+    colorBorder: "border-slate-200 dark:border-slate-800",
+    colorBadge: "bg-slate-600",
     icon: "🧠",
     isSpecial: true,
     summary: "뇌종양 중 가장 악성도가 높고 치료가 어렵지만, 최신 연구와 임상시험에서 희망적 결과가 계속 나오고 있습니다."
@@ -98,10 +98,10 @@ const INITIAL_BRAIN_TUMORS = [
     newTreatments: ["보로라닙 (IDH 억제제)", "이데카브타진 면역치료"],
     prognosis: "IDH 돌연변이 + 1p/19q 동시결실 시 예후 매우 좋음 (중앙생존기간 10~15년 이상 보고)",
     keyMarkers: ["IDH1/2 변이 (예후 양호 인자)", "1p/19q 동시결실 (핍지교종 확진·예후 양호)", "TERT 프로모터 변이"],
-    color: "indigo",
-    colorBg: "bg-indigo-50 dark:bg-indigo-950/30",
-    colorBorder: "border-indigo-200 dark:border-indigo-800",
-    colorBadge: "bg-indigo-600",
+    color: "blue",
+    colorBg: "bg-blue-50 dark:bg-blue-950/30",
+    colorBorder: "border-blue-200 dark:border-blue-800",
+    colorBadge: "bg-blue-600",
     icon: "🔬",
     isSpecial: false,
     summary: "특정 유전자 변이(IDH·1p/19q) 보유 시 신경교종 중 예후가 가장 좋은 종류."
@@ -118,10 +118,10 @@ const INITIAL_BRAIN_TUMORS = [
     newTreatments: ["오시트레오티드·파시레오타이드 (소마토스타틴 유사체)", "테모졸로마이드 (공격성 선종)"],
     prognosis: "대부분 양호. 호르몬 정상화와 시력 보존 가능. 수술 성공률 높음.",
     keyMarkers: ["기능성 여부 (호르몬 분비 여부)", "크기 (미세선종 <1cm vs 거대선종 ≥1cm)", "해면정맥동 침범 여부"],
-    color: "purple",
-    colorBg: "bg-purple-50 dark:bg-purple-950/30",
-    colorBorder: "border-purple-200 dark:border-purple-800",
-    colorBadge: "bg-purple-600",
+    color: "teal",
+    colorBg: "bg-teal-50 dark:bg-teal-950/30",
+    colorBorder: "border-teal-200 dark:border-teal-800",
+    colorBadge: "bg-teal-600",
     icon: "🧬",
     isSpecial: false,
     summary: "호르몬 이상 증상으로 발견되는 경우 많음. 내시경 수술 기법 발달로 치료 성과 우수."
@@ -192,7 +192,7 @@ const INITIAL_RESEARCH = [
     source: "KAIST 이흥규 교수 연구팀",
     category: "기초 연구",
     badge: "주목",
-    badgeColor: "bg-violet-500",
+    badgeColor: "bg-sky-500",
     summary: "기존 T세포 중심 면역치료가 GBM에서 효과가 낮았던 이유가 밝혀졌습니다. B세포를 함께 활성화하는 새로운 전략으로 면역치료 효과를 극대화하는 연구가 주목받고 있습니다. 코를 통해 뇌로 직접 약물을 전달하는 비강 투여 면역세포치료 연구도 병행 중입니다.",
     link: "https://www.nature.com",
     isHot: true
@@ -216,7 +216,7 @@ const INITIAL_RESEARCH = [
     source: "서울성모병원 신경외과",
     category: "신기술",
     badge: "혁신",
-    badgeColor: "bg-indigo-500",
+    badgeColor: "bg-blue-500",
     summary: "코를 통해 뇌로 직접 면역세포를 전달하는 혁신적 약물전달 플랫폼이 개발 중입니다. 혈뇌장벽(BBB)을 우회하는 새로운 접근법으로, GBM 치료의 핵심 난제인 약물 전달 문제 해결에 주목받고 있습니다.",
     link: "https://www.cmcseoul.or.kr",
     isHot: false
@@ -293,7 +293,7 @@ const INITIAL_NUTRITION = [
     howToEat: "매일 한 줌(100g) 이상 섭취. 신선 또는 냉동 블루베리, 아사이베리, 체리, 딸기 등",
     caution: "당도 있으므로 혈당 관리 중인 환자는 양 조절. 항암 중에는 세척 철저",
     evidence: "★★★☆☆",
-    color: "purple"
+    color: "teal"
   },
   {
     id: 5,
@@ -503,30 +503,33 @@ const INITIAL_HOSPITALS = [
     features: ["뇌종양센터 운영", "양성자 치료 센터", "정밀의료 파이프라인", "다학제 회의"],
     doctors: [
       { name: "최정원 교수", url: "https://www.samsunghospital.com/m/smc/reservation/common/doctorProfile.do?DR_NO=1819" },
-      { name: "남도현 교수", url: "" },
-      { name: "설호준 교수", url: "" },
-      { name: "공두식 교수", url: "" }
+      { name: "설호준 교수", url: "https://www.samsunghospital.com/m/smc/reservation/common/doctorProfile.do?DR_NO=846" },
+      { name: "남도현 교수", url: "http://www.samsunghospital.com/home/reservation/common/doctorProfile.do?DR_NO=361" },
+      { name: "공두식 교수", url: "http://www.samsunghospital.com/home/reservation/common/doctorProfile.do?DR_NO=362" }
     ],
     rating: 5,
     badge: "추천",
-    badgeColor: "bg-violet-500",
+    badgeColor: "bg-sky-500",
     reservationTip: "삼성서울병원 홈페이지 또는 1599-3114. 뇌종양센터 신규 초진 예약 가능.",
     clinicalTrials: true,
     img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80"
   },
   {
     id: 3,
-    name: "세브란스병원 (연세대)",
+    name: "신촌세브란스병원 (연세대)",
     dept: "신경외과 · 뇌종양클리닉",
     address: "서울 서대문구 연세로 50-1",
     phone: "1599-1004",
     website: "https://www.severance.or.kr",
     specialties: ["교모세포종", "청신경초종", "수막종", "감마나이프", "로봇 수술"],
     features: ["감마나이프 수술 전통", "로봇 보조 수술", "해외 환자 진료", "글로벌 임상"],
-    doctors: ["노태훈 교수 (뇌종양)", "조병석 교수", "박혜란 교수 (신경종양내과)"],
+    doctors: [
+      { name: "장종희 교수", url: "https://sev.severance.healthcare/sev/doctor/doctor-view.do?empNo=eXVoczIwMjBAKUApNMcDi3sSFP5aVa7PDBFIMIXUAXEzqXBPWz9fybYwSNA%3D" },
+      { name: "김의현 교수", url: "https://sev.severance.healthcare/sev/doctor/doctor-view.do?empNo=eXVoczIwMjBAKUApMuAmi0QPFPtyVa%2FPDRdJN47v4xq2qVmk1rkkQL8FHGg%3D" }
+    ],
     rating: 5,
     badge: "Top3",
-    badgeColor: "bg-indigo-500",
+    badgeColor: "bg-blue-500",
     reservationTip: "1599-1004 또는 홈페이지. 감마나이프 치료 국내 최다 경험 보유.",
     clinicalTrials: true,
     img: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=600&q=80"
@@ -540,7 +543,11 @@ const INITIAL_HOSPITALS = [
     website: "https://www.amc.seoul.kr",
     specialties: ["교모세포종", "뇌하수체종양", "두개저종양", "뇌전이"],
     features: ["다학제 종양위원회", "대용량 임상 경험", "재활 의학 연계", "신경심리 평가"],
-    doctors: ["임영진 교수 (신경외과)", "이정균 교수", "강현 교수"],
+    doctors: [
+      { name: "김정훈 교수", url: "https://www.amc.seoul.kr/asan/staff/base/staffBaseInfoDetail.do?drEmpId=RDlqbC9aMWtEN0dDU0RCSjU3bkNHUT09" },
+      { name: "조영현 교수", url: "https://www.amc.seoul.kr/asan/staff/base/staffBaseInfoDetail.do?drEmpId=TWg3Nnk3a3BwZEVkZk9wdXBuNkpodz09" },
+      { name: "김영훈 교수", url: "https://www.amc.seoul.kr/asan/staff/base/staffBaseInfoDetail.do?drEmpId=cTU0NU5MWTRtRXovdXo3Skl6S1Mydz09&searchHpCd=D031" }
+    ],
     rating: 5,
     badge: "국내 최대",
     badgeColor: "bg-blue-500",
@@ -577,7 +584,7 @@ const INITIAL_HOSPITALS = [
     doctors: ["조경기 교수 (뇌종양, 줄기세포치료)", "임재준 교수"],
     rating: 4,
     badge: "임상 선도",
-    badgeColor: "bg-rose-500",
+    badgeColor: "bg-slate-500",
     reservationTip: "031-780-5000. MSC11FCD 줄기세포 유전자치료 임상시험 참여 가능. 재발 환자 문의 추천.",
     clinicalTrials: true,
     img: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80"
@@ -616,6 +623,44 @@ const INITIAL_HOSPITALS = [
     clinicalTrials: true,
     img: "https://images.unsplash.com/photo-1626315869436-d6781ba69d6e?auto=format&fit=crop&w=600&q=80"
   },
+  {
+    id: 9,
+    name: "강남세브란스병원",
+    dept: "신경외과 · 뇌종양센터",
+    address: "서울 강남구 언주로 211",
+    phone: "1599-6114",
+    website: "https://gs.severance.healthcare",
+    specialties: ["교모세포종", "뇌전이", "두개저종양"],
+    features: ["다학제 진료", "최신 방사선 치료", "정밀 의료"],
+    doctors: [
+      { name: "박현호 교수", url: "https://gs.severance.healthcare/gs/doctor/doctor-view.do?empNo=eXVoczIwMjBAKUApM%2BkzikETFPtOVaDJDRVKNKOjRf6dmNLT%2FfO4RM%2FPzjI%3D" }
+    ],
+    rating: 4,
+    badge: "다학제",
+    badgeColor: "bg-blue-500",
+    reservationTip: "1599-6114 또는 홈페이지를 통해 예약 가능합니다.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id: 10,
+    name: "카톨릭대학교 성빈센트병원",
+    dept: "신경외과",
+    address: "경기 수원시 팔달구 중부대로 93",
+    phone: "1577-8588",
+    website: "https://www.cmcvincent.or.kr",
+    specialties: ["뇌종양", "신경종양", "교모세포종"],
+    features: ["지역 거점 병원", "최첨단 수술실", "환자 중심 케어"],
+    doctors: [
+      { name: "안스데반 교수", url: "https://www.cmcvincent.or.kr/page/doctor/207/D0001432" }
+    ],
+    rating: 4,
+    badge: "경기 남부 거점",
+    badgeColor: "bg-teal-500",
+    reservationTip: "1577-8588 또는 홈페이지를 통해 예약 가능합니다.",
+    clinicalTrials: true,
+    img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=600&q=80"
+  }
 ];
 
 /* =======================================================================

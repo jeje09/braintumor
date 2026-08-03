@@ -38,7 +38,7 @@ export const Admin = () => {
       <div className="max-w-md mx-auto py-16">
         <div className="glass-card p-8 rounded-3xl space-y-6 border border-slate-200 dark:border-slate-800 shadow-2xl">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-violet-600 text-white flex items-center justify-center mx-auto text-xl shadow-lg shadow-violet-600/30">
+            <div className="w-12 h-12 rounded-2xl bg-sky-600 text-white flex items-center justify-center mx-auto text-xl shadow-lg shadow-sky-600/30">
               <Lock className="w-6 h-6" />
             </div>
             <h2 className="text-2xl font-black text-slate-900 dark:text-white">관리자 로그인</h2>
@@ -56,12 +56,12 @@ export const Admin = () => {
                 placeholder="비밀번호 입력 (기본: 1234!)"
                 className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white text-sm"
               />
-              {errorMsg && <p className="text-xs text-rose-500 mt-1">{errorMsg}</p>}
+              {errorMsg && <p className="text-xs text-slate-500 mt-1">{errorMsg}</p>}
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-extrabold text-xs shadow-md transition-all"
+              className="w-full py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-xs shadow-md transition-all"
             >
               로그인
             </button>
@@ -95,9 +95,9 @@ export const Admin = () => {
       </div>
 
       {/* Add Product Section */}
-      <section className="glass-card p-6 rounded-3xl space-y-4 border border-violet-100 dark:border-slate-800">
+      <section className="glass-card p-6 rounded-3xl space-y-4 border border-sky-100 dark:border-slate-800">
         <h3 className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <Plus className="w-4 h-4 text-violet-600" />
+          <Plus className="w-4 h-4 text-sky-600" />
           <span>신규 상품 추가</span>
         </h3>
 
@@ -131,7 +131,7 @@ export const Admin = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-extrabold text-xs shadow-md"
+              className="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-xs shadow-md"
             >
               상품 등록하기
             </button>
@@ -151,7 +151,7 @@ export const Admin = () => {
               </div>
               <button
                 onClick={() => deleteProduct(prod.id)}
-                className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors"
+                className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-950 transition-colors"
                 title="삭제"
               >
                 <Trash2 className="w-4 h-4" />
@@ -173,7 +173,7 @@ export const Admin = () => {
               </div>
               <button
                 onClick={() => deleteStory(st.id)}
-                className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 transition-colors"
+                className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-950 transition-colors"
                 title="삭제"
               >
                 <Trash2 className="w-4 h-4" />

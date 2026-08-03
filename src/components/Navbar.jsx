@@ -42,7 +42,7 @@ export const Navbar = () => {
               
               {isAdmin && (
                 <>
-                  <button onClick={() => handleNavClick('admin')} className="text-rose-600 font-bold flex items-center gap-1 hover:underline">
+                  <button onClick={() => handleNavClick('admin')} className="text-slate-600 font-bold flex items-center gap-1 hover:underline">
                     <Lock className="w-3 h-3" /> 관리자페이지
                   </button>
                   <div className="w-px h-3 bg-slate-200 dark:bg-slate-700"></div>

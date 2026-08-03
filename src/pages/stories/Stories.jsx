@@ -36,7 +36,7 @@ export const Stories = () => {
       <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-xs font-bold">
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            <Heart className="w-3.5 h-3.5 text-slate-500 fill-slate-500" />
             <span>서로에게 힘이 되는 이야기</span>
           </div>
           <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
@@ -79,7 +79,7 @@ export const Stories = () => {
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
                 <span>{st.author}</span>
                 <span>•</span>
-                <span className="text-violet-600 dark:text-violet-400 font-bold">{st.role}</span>
+                <span className="text-sky-600 dark:text-sky-400 font-bold">{st.role}</span>
               </div>
 
               <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">
@@ -90,9 +90,9 @@ export const Stories = () => {
             <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <button
                 onClick={(e) => { e.stopPropagation(); likeStory(st.id); }}
-                className="flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-rose-500 transition-colors"
+                className="flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-500 transition-colors"
               >
-                <ThumbsUp className="w-4 h-4 text-rose-500" />
+                <ThumbsUp className="w-4 h-4 text-slate-500" />
                 <span>희망 공감 {st.likes || 0}</span>
               </button>
 

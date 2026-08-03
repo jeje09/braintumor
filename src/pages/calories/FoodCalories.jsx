@@ -90,7 +90,7 @@ export const FoodCalories = () => {
           {mealPlan.length > 0 && (
             <button
               onClick={() => setMealPlan([])}
-              className="text-xs text-rose-500 hover:underline font-bold"
+              className="text-xs text-slate-500 hover:underline font-bold"
             >
               식단 초기화
             </button>
@@ -114,7 +114,7 @@ export const FoodCalories = () => {
                   <span className="text-amber-600 dark:text-amber-400">({item.calories} kcal)</span>
                   <button
                     onClick={() => removeFromMealPlan(item.planId)}
-                    className="text-slate-400 hover:text-rose-500 transition-colors"
+                    className="text-slate-400 hover:text-slate-500 transition-colors"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -136,7 +136,7 @@ export const FoodCalories = () => {
                 <span className="text-[10px] opacity-80 font-bold block">탄수화물</span>
                 <span className="text-lg font-black">{totalCarbs.toFixed(1)} g</span>
               </div>
-              <div className="bg-purple-500 text-white p-3 rounded-2xl text-center shadow-md">
+              <div className="bg-teal-500 text-white p-3 rounded-2xl text-center shadow-md">
                 <span className="text-[10px] opacity-80 font-bold block">지방</span>
                 <span className="text-lg font-black">{totalFat.toFixed(1)} g</span>
               </div>

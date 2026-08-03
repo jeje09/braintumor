@@ -87,7 +87,7 @@ export const Research = () => {
               </h2>
 
               <div className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
-                <ShieldCheck className="w-3.5 h-3.5 text-violet-500" />
+                <ShieldCheck className="w-3.5 h-3.5 text-sky-500" />
                 <span>{item.source}</span>
               </div>
 
@@ -104,7 +104,7 @@ export const Research = () => {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline"
+                className="inline-flex items-center gap-1 text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline"
               >
                 <span>관련 기관/원문 확인</span>
                 <ExternalLink className="w-3.5 h-3.5" />

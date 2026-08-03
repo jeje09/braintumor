@@ -185,7 +185,7 @@ export const CheckoutModal = () => {
               className={`w-full py-4 rounded-2xl font-bold text-white shadow-xl transition-all transform active:scale-95 ${
                 selectedGateway === 'paytap'
                   ? 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-emerald-600/30'
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-blue-600/30'
+                  : 'bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-blue-600/30'
               }`}
             >
               {isProcessing ? (

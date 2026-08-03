@@ -15,7 +15,7 @@ export const Shopping = () => {
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-3 relative overflow-hidden bg-gradient-to-r from-pink-900/10 via-rose-900/10 to-amber-900/10">
+      <div className="glass-card p-6 sm:p-8 rounded-3xl space-y-3 relative overflow-hidden bg-gradient-to-r from-pink-900/10 via-slate-900/10 to-amber-900/10">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-950 text-pink-600 dark:text-pink-400 flex items-center justify-center text-2xl shadow-sm">
             🛍️

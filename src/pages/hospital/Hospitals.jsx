@@ -11,7 +11,7 @@ export const Hospitals = () => {
       
       {/* Header */}
       <section className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 text-xs font-bold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 text-xs font-bold">
           <Hospital className="w-3.5 h-3.5" />
           <span>다학제 뇌종양 센터</span>
         </div>
@@ -29,7 +29,7 @@ export const Hospitals = () => {
           <article
             key={hosp.id}
             onClick={() => setSelectedHospital(hosp)}
-            className="glass-card rounded-3xl overflow-hidden group cursor-pointer hover:shadow-2xl hover:border-indigo-300 transition-all duration-300 flex flex-col justify-between border border-slate-200 dark:border-slate-800"
+            className="glass-card rounded-3xl overflow-hidden group cursor-pointer hover:shadow-2xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between border border-slate-200 dark:border-slate-800"
           >
             <div>
               {/* Image Header */}
@@ -55,18 +55,18 @@ export const Hospitals = () => {
               <div className="p-5 space-y-3">
                 <div className="space-y-1 text-xs text-slate-600 dark:text-slate-400">
                   <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />
+                    <MapPin className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
                     <span className="line-clamp-1">{hosp.address}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0" />
+                    <Phone className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
                     <span>{hosp.phone}</span>
                   </div>
                 </div>
 
                 {/* Main Doctors */}
-                <div className="p-3 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/40 space-y-1">
-                  <strong className="text-[11px] font-extrabold text-indigo-700 dark:text-indigo-300 flex items-center gap-1">
+                <div className="p-3 rounded-xl bg-blue-50/50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/40 space-y-1">
+                  <strong className="text-[11px] font-extrabold text-blue-700 dark:text-blue-300 flex items-center gap-1">
                     <UserCheck className="w-3.5 h-3.5" />
                     <span>주요 전문의</span>
                   </strong>
@@ -78,7 +78,7 @@ export const Hospitals = () => {
                       return (
                         <li key={idx}>
                           • {url ? (
-                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline hover:font-bold" onClick={(e) => e.stopPropagation()}>
+                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline hover:font-bold" onClick={(e) => e.stopPropagation()}>
                               {name}
                             </a>
                           ) : (
@@ -108,7 +108,7 @@ export const Hospitals = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20"
+                className="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-md shadow-blue-600/20"
               >
                 <span>공식 예약 사이트 방문</span>
                 <ExternalLink className="w-3.5 h-3.5" />

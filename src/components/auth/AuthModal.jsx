@@ -83,7 +83,7 @@ export const AuthModal = ({ isOpen, onClose }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="이메일 주소"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-violet-500 text-slate-900 dark:text-white"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-sky-500 text-slate-900 dark:text-white"
                   required
                 />
               </div>
@@ -95,7 +95,7 @@ export const AuthModal = ({ isOpen, onClose }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="비밀번호"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-violet-500 text-slate-900 dark:text-white"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border-none focus:ring-2 focus:ring-sky-500 text-slate-900 dark:text-white"
                   required
                 />
               </div>
@@ -104,7 +104,7 @@ export const AuthModal = ({ isOpen, onClose }) => {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold transition-colors disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold transition-colors disabled:opacity-50"
             >
               {loading ? '처리 중...' : (isLogin ? '이메일로 로그인' : '가입하기')}
             </button>
@@ -142,7 +142,7 @@ export const AuthModal = ({ isOpen, onClose }) => {
             {isLogin ? "계정이 없으신가요? " : "이미 계정이 있으신가요? "}
             <button 
               onClick={() => setIsLogin(!isLogin)}
-              className="font-bold text-violet-600 dark:text-violet-400 hover:underline"
+              className="font-bold text-sky-600 dark:text-sky-400 hover:underline"
             >
               {isLogin ? '회원가입' : '로그인'}
             </button>

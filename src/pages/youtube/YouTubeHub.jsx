@@ -17,7 +17,7 @@ export const YouTubeHub = () => {
       
       {/* Header */}
       <section className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-xs font-bold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-300 text-xs font-bold">
           <Youtube className="w-3.5 h-3.5" />
           <span>의료진 검증 영상</span>
         </div>
@@ -37,8 +37,8 @@ export const YouTubeHub = () => {
             onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               selectedCategory === cat
-                ? 'bg-rose-600 text-white shadow-md shadow-rose-600/30 scale-105'
-                : 'glass-card text-slate-600 dark:text-slate-300 hover:bg-rose-50 dark:hover:bg-slate-800'
+                ? 'bg-slate-600 text-white shadow-md shadow-slate-600/30 scale-105'
+                : 'glass-card text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
           >
             {cat}
@@ -62,7 +62,7 @@ export const YouTubeHub = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-rose-600/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-full bg-slate-600/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                     <Play className="w-5 h-5 ml-0.5 fill-white" />
                   </div>
                 </div>
@@ -71,7 +71,7 @@ export const YouTubeHub = () => {
                   {video.duration}
                 </span>
 
-                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-rose-600 text-white text-[10px] font-bold shadow-md">
+                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-600 text-white text-[10px] font-bold shadow-md">
                   {video.category}
                 </span>
               </div>
@@ -82,7 +82,7 @@ export const YouTubeHub = () => {
                   <span>{video.channelIcon} {video.channel}</span>
                 </div>
 
-                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-rose-600 transition-colors line-clamp-2 leading-snug">
+                <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-slate-600 transition-colors line-clamp-2 leading-snug">
                   {video.title}
                 </h3>
 
@@ -107,9 +107,9 @@ export const YouTubeHub = () => {
                 href={video.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/60 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-950/60 text-slate-700 dark:text-slate-300 hover:text-slate-600 dark:hover:text-slate-400 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
               >
-                <Youtube className="w-4 h-4 text-rose-600" />
+                <Youtube className="w-4 h-4 text-slate-600" />
                 <span>유튜브에서 시청하기</span>
                 <ExternalLink className="w-3 h-3 text-slate-400" />
               </a>

@@ -17,7 +17,7 @@ export const CancerShopping = () => {
       
       {/* Header */}
       <section className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-100 text-violet-800 dark:bg-violet-950 dark:text-violet-300 text-xs font-bold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300 text-xs font-bold">
           <ShoppingBag className="w-3.5 h-3.5" />
           <span>환우 & 보호자 동행 쇼핑</span>
         </div>
@@ -37,8 +37,8 @@ export const CancerShopping = () => {
             onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
               selectedCategory === cat
-                ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30 scale-105'
-                : 'glass-card text-slate-600 dark:text-slate-300 hover:bg-violet-50 dark:hover:bg-slate-800'
+                ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105'
+                : 'glass-card text-slate-600 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800'
             }`}
           >
             {cat}
@@ -70,7 +70,7 @@ export const CancerShopping = () => {
                 상품 준비 중
               </div>
             )}
-            <span className="mt-4 text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 px-3 py-1 rounded-full uppercase tracking-wider block">
+            <span className="mt-4 text-[11px] font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-900/30 px-3 py-1 rounded-full uppercase tracking-wider block">
               {prod.category}
             </span>
           </div>

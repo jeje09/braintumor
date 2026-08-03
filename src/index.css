@@ -10,10 +10,10 @@
 @layer utilities {
   /* Glass morphism cards */
   .glass-card {
-    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-violet-100 dark:border-slate-800 shadow-xl shadow-violet-500/5;
+    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-sky-100 dark:border-slate-800 shadow-xl shadow-sky-500/5;
   }
   .glass-nav {
-    @apply bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg border-b border-violet-100/60 dark:border-slate-800/80;
+    @apply bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg border-b border-sky-100/60 dark:border-slate-800/80;
   }
 
   /* Gradient utilities */
@@ -174,15 +174,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 /* Prose content */
-.prose-hope p { margin-bottom: 0.9em; line-height: 1.85; }
-.prose-hope strong { color: #10b981; font-weight: 700; }
+.pslate-hope p { margin-bottom: 0.9em; line-height: 1.85; }
+.pslate-hope strong { color: #10b981; font-weight: 700; }
 
 /* Status badge styles */
 .badge-active {
   @apply bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300;
 }
 .badge-research {
-  @apply bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300;
+  @apply bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300;
 }
 .badge-clinical {
   @apply bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300;
