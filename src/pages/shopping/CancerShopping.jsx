@@ -6,7 +6,16 @@ export const CancerShopping = () => {
   const { products } = useApp();
   const [selectedCategory, setSelectedCategory] = useState('전체');
 
-  const categories = ['전체', '항구역 케어', '케어 용품', '영양 보충', '도서·마음'];
+  const categories = ['전체', '편안한 휴식', '바른 영양', '안전한 이동', '뷰티·위생', '생활 편의'];
+
+  const categoryDescriptions = {
+    '전체': '항암 치료와 요양 생활의 질을 높여주는 맞춤형 필수품들입니다.',
+    '편안한 휴식': '가구 및 침구류 — 안정적인 상체 거치 및 편안한 수면 자세 유지용',
+    '바른 영양': '식사 대용 및 영양 보충식 — 기력 저하 시 균형 잡힌 영양 공급 및 식사 대용',
+    '안전한 이동': '거동 및 실내외 보행 보조 — 낙상 사고 예방 및 안전한 일상 이동 보조',
+    '뷰티·위생': '항암 케어 및 위생 용품 — 항암 치료기 두피 보호 및 민감해진 피부 위생 관리용',
+    '생활 편의': '병동 및 재택 요양 꿀템 — 환자와 보호자의 수고를 덜어주는 일상적인 필수 편의 용품'
+  };
 
   const filteredProducts = selectedCategory === '전체'
     ? products
@@ -35,7 +44,7 @@ export const CancerShopping = () => {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
+            className={`px-4 py-2 rounded-xl text-base font-bold transition-all whitespace-nowrap ${
               selectedCategory === cat
                 ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30 scale-105'
                 : 'glass-card text-slate-600 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800'
@@ -44,6 +53,14 @@ export const CancerShopping = () => {
             {cat}
           </button>
         ))}
+      </div>
+
+      {/* Selected Category Description */}
+      <div className="bg-sky-50/50 dark:bg-sky-900/10 border border-sky-100 dark:border-sky-800/50 rounded-2xl p-4 flex items-start gap-3">
+        <Info className="w-5 h-5 text-sky-600 dark:text-sky-400 shrink-0 mt-0.5" />
+        <p className="text-base font-medium text-slate-700 dark:text-slate-300">
+          {categoryDescriptions[selectedCategory]}
+        </p>
       </div>
 
       {/* Legal Notice */}
