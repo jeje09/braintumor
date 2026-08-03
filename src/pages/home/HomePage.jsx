@@ -103,7 +103,7 @@ export const HomePage = () => {
               >
                 <div className="flex flex-col text-left space-y-1 pr-4">
                   <h3 className="text-[22px] font-black text-slate-800 group-hover:text-blue-600 transition-colors">{cat.title}</h3>
-                  <p className="text-[13px] text-slate-500 font-medium leading-tight">{cat.sub}</p>
+                  <p className="text-base text-slate-500 font-medium leading-tight">{cat.sub}</p>
                 </div>
                 <div className={`w-16 h-16 flex-shrink-0 rounded-full ${cat.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
                    <Icon className="w-8 h-8" />
@@ -120,7 +120,7 @@ export const HomePage = () => {
         >
            <div className="text-white space-y-2 text-center md:text-left">
               <h2 className="text-2xl font-black">나에게 맞는 뇌종양 전문 병원 찾기</h2>
-              <p className="text-slate-300 text-sm">전국 주요 대학병원의 신경외과 명의 정보를 한눈에 비교하고 확인하세요.</p>
+              <p className="text-slate-300 text-base">전국 주요 대학병원의 신경외과 명의 정보를 한눈에 비교하고 확인하세요.</p>
            </div>
            <button className="mt-6 md:mt-0 px-6 py-3 bg-teal-500 hover:bg-teal-400 text-white font-bold rounded-xl flex items-center gap-2 transition-colors">
               병원 정보 보기 <ArrowRight className="w-4 h-4" />

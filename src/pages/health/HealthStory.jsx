@@ -37,7 +37,7 @@ export const HealthStory = () => {
 
         <div className="relative z-10 space-y-6">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold text-emerald-100 border border-white/20">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-sm font-bold text-emerald-100 border border-white/20">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span>쭈니의 자연치유 컬렉션 · 2026 Edition</span>
           </div>
@@ -48,7 +48,7 @@ export const HealthStory = () => {
               몸과 마음의 자생력을 높이는<br />
               <span className="text-amber-300">자연치유 힐링 이야기</span>
             </h1>
-            <p className="text-emerald-50 text-sm sm:text-base leading-relaxed opacity-90 max-w-xl">
+            <p className="text-emerald-50 text-base sm:text-base leading-relaxed opacity-90 max-w-xl">
               의약품에만 의존하지 않는 건강한 습관, 천연 음식과 면역력 테라피로 삶의 균형을 되찾으세요.
               과학적으로 검증된 자연치유 정보를 매주 업데이트합니다.
             </p>
@@ -82,7 +82,7 @@ export const HealthStory = () => {
               >
                 <div className="text-2xl mb-1">{stat.icon}</div>
                 <div className="text-xl font-black text-white">{stat.value}</div>
-                <div className="text-[10px] text-emerald-100 font-semibold mt-0.5">{stat.label}</div>
+                <div className="text-sm text-emerald-100 font-semibold mt-0.5">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -91,12 +91,12 @@ export const HealthStory = () => {
 
       {/* Category Filter */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 whitespace-nowrap mr-1">카테고리:</span>
+        <span className="text-sm font-bold text-slate-500 dark:text-slate-400 whitespace-nowrap mr-1">카테고리:</span>
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+            className={`px-4 py-2 rounded-xl text-sm sm:text-base font-bold transition-all whitespace-nowrap ${
               selectedCategory === cat
                 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 scale-105'
                 : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-800'
@@ -104,13 +104,13 @@ export const HealthStory = () => {
           >
             {cat}
             {cat !== '전체' && (
-              <span className="ml-1.5 text-[10px] opacity-70">
+              <span className="ml-1.5 text-sm opacity-70">
                 ({healthStories.filter(s => s.category === cat).length})
               </span>
             )}
           </button>
         ))}
-        <span className="ml-auto text-xs text-slate-400 whitespace-nowrap">
+        <span className="ml-auto text-sm text-slate-400 whitespace-nowrap">
           {filteredStories.length}개 아티클
         </span>
       </div>
@@ -136,12 +136,12 @@ export const HealthStory = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
               {/* Category Badge */}
-              <div className={`absolute top-3 left-3 ${categoryColors[story.category] || 'bg-emerald-600'} backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md`}>
+              <div className={`absolute top-3 left-3 ${categoryColors[story.category] || 'bg-emerald-600'} backdrop-blur-md text-white text-sm font-bold px-3 py-1 rounded-full shadow-md`}>
                 {story.category}
               </div>
 
               {/* Read time */}
-              <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-lg flex items-center gap-1">
+              <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-sm font-bold px-2 py-1 rounded-lg flex items-center gap-1">
                 <Clock className="w-3 h-3" />
                 {story.readTime}
               </div>
@@ -150,7 +150,7 @@ export const HealthStory = () => {
             {/* Content */}
             <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
               <div className="space-y-2.5">
-                <div className="flex items-center gap-2 text-xs text-slate-400">
+                <div className="flex items-center gap-2 text-sm text-slate-400">
                   <span className="flex items-center gap-1">
                     <BookOpen className="w-3 h-3" />
                     {story.date}
@@ -159,12 +159,12 @@ export const HealthStory = () => {
                 <h2 className="font-bold text-lg text-slate-800 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2 leading-snug">
                   {story.title}
                 </h2>
-                <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed">
+                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed">
                   {story.summary}
                 </p>
               </div>
 
-              <div className="pt-2 flex items-center justify-between text-xs font-bold text-emerald-600 dark:text-emerald-400 border-t border-slate-100 dark:border-slate-800">
+              <div className="pt-2 flex items-center justify-between text-sm font-bold text-emerald-600 dark:text-emerald-400 border-t border-slate-100 dark:border-slate-800">
                 <span>자세히 읽기</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -181,7 +181,7 @@ export const HealthStory = () => {
           </div>
           <div>
             <h3 className="font-extrabold text-lg text-slate-800 dark:text-slate-100">오늘의 자연치유 핵심 팁</h3>
-            <p className="text-xs text-slate-500">매일 실천 가능한 소소한 힐링 습관</p>
+            <p className="text-sm text-slate-500">매일 실천 가능한 소소한 힐링 습관</p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -192,8 +192,8 @@ export const HealthStory = () => {
           ].map((tip, i) => (
             <div key={i} className="bg-white/70 dark:bg-slate-800/70 rounded-2xl p-4 space-y-2 border border-emerald-50 dark:border-slate-700">
               <span className="text-3xl">{tip.icon}</span>
-              <h4 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{tip.title}</h4>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{tip.desc}</p>
+              <h4 className="font-extrabold text-base text-slate-800 dark:text-slate-100">{tip.title}</h4>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{tip.desc}</p>
             </div>
           ))}
         </div>
@@ -217,14 +217,14 @@ export const HealthStory = () => {
               >
                 <X className="w-5 h-5" />
               </button>
-              <div className={`absolute bottom-4 left-4 ${categoryColors[selectedStory.category] || 'bg-emerald-600'} text-white text-xs font-bold px-3 py-1 rounded-full`}>
+              <div className={`absolute bottom-4 left-4 ${categoryColors[selectedStory.category] || 'bg-emerald-600'} text-white text-sm font-bold px-3 py-1 rounded-full`}>
                 {selectedStory.category}
               </div>
             </div>
 
             {/* Modal Body */}
             <div className="p-6 sm:p-8 space-y-5">
-              <div className="flex items-center gap-3 text-xs text-slate-400">
+              <div className="flex items-center gap-3 text-sm text-slate-400">
                 <span>{selectedStory.date}</span>
                 <span>•</span>
                 <span className="flex items-center gap-1">
@@ -239,13 +239,13 @@ export const HealthStory = () => {
 
               {/* Summary Box */}
               <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-100 dark:border-emerald-900/50">
-                <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300 leading-relaxed">
+                <p className="text-base font-semibold text-emerald-800 dark:text-emerald-300 leading-relaxed">
                   💡 "{selectedStory.summary}"
                 </p>
               </div>
 
               {/* Content */}
-              <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line space-y-3">
+              <div className="text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line space-y-3">
                 {selectedStory.content}
               </div>
 
@@ -253,13 +253,13 @@ export const HealthStory = () => {
               <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => setActiveTab('shopping')}
-                  className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-all text-sm"
+                  className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-all text-base"
                 >
                   관련 웰니스 제품 보기
                 </button>
                 <button
                   onClick={() => setSelectedStory(null)}
-                  className="flex-1 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-2xl transition-all text-sm"
+                  className="flex-1 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-2xl transition-all text-base"
                 >
                   닫기
                 </button>

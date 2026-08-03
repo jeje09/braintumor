@@ -18,7 +18,7 @@ export const PerfumeStory = () => {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
               천연 아로마 & 향수 이야기
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-0.5">
               자연의 향기로 자율 신경계를 이완하고 마인드 밸런스를 되찾는 웰니스 향수 컬렉션.
             </p>
           </div>
@@ -40,27 +40,27 @@ export const PerfumeStory = () => {
                   alt={perfume.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
+                <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-md text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">
                   천연 에센셜 블렌딩
                 </div>
               </div>
 
               <div className="p-6 space-y-3">
-                <div className="flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400 font-bold">
+                <div className="flex items-center gap-1 text-sm text-teal-600 dark:text-teal-400 font-bold">
                   <Wind className="w-3.5 h-3.5" />
                   <span>노트: {perfume.notes}</span>
                 </div>
                 <h3 className="font-extrabold text-xl text-slate-800 dark:text-slate-100 group-hover:text-teal-600 transition-colors">
                   {perfume.name}
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
                   {perfume.description}
                 </p>
               </div>
             </div>
 
             <div className="px-6 pb-6 pt-2 bg-teal-50/40 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800">
-              <span className="text-[11px] font-extrabold text-teal-700 dark:text-teal-300 block truncate">
+              <span className="text-sm font-extrabold text-teal-700 dark:text-teal-300 block truncate">
                 💡 추천 시기: {perfume.mood}
               </span>
             </div>
@@ -79,7 +79,7 @@ export const PerfumeStory = () => {
               ✕
             </button>
 
-            <span className="inline-block px-3 py-1 bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-300 text-xs font-bold rounded-full">
+            <span className="inline-block px-3 py-1 bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-300 text-sm font-bold rounded-full">
               아로마테라피 테이스팅
             </span>
 
@@ -94,15 +94,15 @@ export const PerfumeStory = () => {
             />
 
             <div className="space-y-2">
-              <span className="text-xs font-bold text-teal-600 dark:text-teal-400 block">
+              <span className="text-sm font-bold text-teal-600 dark:text-teal-400 block">
                 대표 향 노트: {selectedPerfume.notes}
               </span>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 {selectedPerfume.description}
               </p>
             </div>
 
-            <div className="bg-teal-50 dark:bg-slate-800 p-4 rounded-2xl text-xs font-bold text-teal-900 dark:text-teal-200 border border-teal-100 dark:border-slate-700">
+            <div className="bg-teal-50 dark:bg-slate-800 p-4 rounded-2xl text-sm font-bold text-teal-900 dark:text-teal-200 border border-teal-100 dark:border-slate-700">
               ✨ 추천 힐링 무드: {selectedPerfume.mood}
             </div>
 

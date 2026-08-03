@@ -24,7 +24,7 @@ export const Shopping = () => {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
               쭈니의 힐링 웰니스 쇼핑몰
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-0.5">
               관리자가 직접 선별한 검증된 100% 유기농 자연치유 제품 및 아로마 테라피 상품.
             </p>
           </div>
@@ -36,7 +36,7 @@ export const Shopping = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              className={`px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
                 selectedCategory === cat
                   ? 'bg-pink-600 text-white shadow-md shadow-pink-600/30'
                   : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-pink-50'
@@ -63,11 +63,11 @@ export const Shopping = () => {
                   alt={product.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-lg">
+                <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-sm font-bold px-2.5 py-1 rounded-lg">
                   {product.category}
                 </div>
                 {product.isBest && (
-                  <div className="absolute top-3 right-3 bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
+                  <div className="absolute top-3 right-3 bg-amber-500 text-white text-sm font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
                     <Star className="w-3 h-3 fill-current" />
                     <span>베스트</span>
                   </div>
@@ -79,7 +79,7 @@ export const Shopping = () => {
                 <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors leading-snug line-clamp-2">
                   {product.title}
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                   {product.description}
                 </p>
 
@@ -89,7 +89,7 @@ export const Shopping = () => {
                     {product.price.toLocaleString()}원
                   </span>
                   {product.originalPrice && (
-                    <span className="text-xs text-slate-400 line-through">
+                    <span className="text-sm text-slate-400 line-through">
                       {product.originalPrice.toLocaleString()}원
                     </span>
                   )}
@@ -102,14 +102,14 @@ export const Shopping = () => {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => openCheckout(product, 'paytap')}
-                  className="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                  className="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-extrabold rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
                 >
                   <CreditCard className="w-3.5 h-3.5" />
                   <span>Paytap 결제</span>
                 </button>
                 <button
                   onClick={() => openCheckout(product, 'kcp')}
-                  className="py-2.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                  className="py-2.5 px-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-extrabold rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
                 >
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>KCP 결제</span>

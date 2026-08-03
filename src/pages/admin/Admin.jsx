@@ -42,26 +42,26 @@ export const Admin = () => {
               <Lock className="w-6 h-6" />
             </div>
             <h2 className="text-2xl font-black text-slate-900 dark:text-white">관리자 로그인</h2>
-            <p className="text-xs text-slate-500">사이트 데이터 관리를 위한 비밀번호를 입력하세요.</p>
+            <p className="text-sm text-slate-500">사이트 데이터 관리를 위한 비밀번호를 입력하세요.</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">비밀번호</label>
+              <label className="text-sm font-bold text-slate-700 dark:text-slate-300 block mb-1">비밀번호</label>
               <input
                 type="password"
                 required
                 value={inputPw}
                 onChange={(e) => setInputPw(e.target.value)}
                 placeholder="비밀번호 입력 (기본: 1234!)"
-                className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white text-sm"
+                className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white text-base"
               />
-              {errorMsg && <p className="text-xs text-slate-500 mt-1">{errorMsg}</p>}
+              {errorMsg && <p className="text-sm text-slate-500 mt-1">{errorMsg}</p>}
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-xs shadow-md transition-all"
+              className="w-full py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-sm shadow-md transition-all"
             >
               로그인
             </button>
@@ -77,7 +77,7 @@ export const Admin = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+          <span className="text-sm font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
             관리자 인증됨
           </span>
           <h1 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
@@ -87,7 +87,7 @@ export const Admin = () => {
 
         <button
           onClick={logoutAdmin}
-          className="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 hover:bg-slate-300 transition-colors"
+          className="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-bold flex items-center gap-1.5 hover:bg-slate-300 transition-colors"
         >
           <LogOut className="w-3.5 h-3.5" />
           <span>로그아웃</span>
@@ -101,7 +101,7 @@ export const Admin = () => {
           <span>신규 상품 추가</span>
         </h3>
 
-        <form onSubmit={handleAddProduct} className="grid grid-cols-1 gap-4 text-xs">
+        <form onSubmit={handleAddProduct} className="grid grid-cols-1 gap-4 text-sm">
           <div>
             <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">카테고리</label>
             <select
@@ -131,7 +131,7 @@ export const Admin = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-xs shadow-md"
+              className="px-6 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-sm shadow-md"
             >
               상품 등록하기
             </button>
@@ -144,10 +144,10 @@ export const Admin = () => {
         <h3 className="font-extrabold text-base text-slate-900 dark:text-white">등록된 상품 목록 ({products.length}개)</h3>
         <div className="space-y-2">
           {products.map((prod) => (
-            <div key={prod.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+            <div key={prod.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-slate-800 dark:text-white">[{prod.category}]</span>
-                <span className="text-slate-500 font-mono text-[10px] truncate max-w-[200px]">{prod.iframeCode || '빈 상품'}</span>
+                <span className="text-slate-500 font-mono text-sm truncate max-w-[200px]">{prod.iframeCode || '빈 상품'}</span>
               </div>
               <button
                 onClick={() => deleteProduct(prod.id)}
@@ -166,7 +166,7 @@ export const Admin = () => {
         <h3 className="font-extrabold text-base text-slate-900 dark:text-white">등록된 희망 이야기 목록 ({stories.length}개)</h3>
         <div className="space-y-2">
           {stories.map((st) => (
-            <div key={st.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+            <div key={st.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
                 <span className="font-bold text-slate-800 dark:text-white line-clamp-1">{st.title}</span>
                 <span className="text-slate-400">({st.author})</span>

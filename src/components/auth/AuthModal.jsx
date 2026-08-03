@@ -63,13 +63,13 @@ export const AuthModal = ({ isOpen, onClose }) => {
             <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
               {isLogin ? '환영합니다' : '회원가입'}
             </h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-base text-slate-500 dark:text-slate-400">
               뇌종양 환우와 가족들을 위한 희망의 공간
             </p>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm text-center">
+            <div className="mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-base text-center">
               {error}
             </div>
           )}
@@ -114,7 +114,7 @@ export const AuthModal = ({ isOpen, onClose }) => {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-200 dark:border-slate-800"></div>
             </div>
-            <div className="relative flex justify-center text-sm">
+            <div className="relative flex justify-center text-base">
               <span className="px-4 bg-white dark:bg-slate-900 text-slate-500">또는</span>
             </div>
           </div>
@@ -138,7 +138,7 @@ export const AuthModal = ({ isOpen, onClose }) => {
             </button>
           </div>
 
-          <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
+          <p className="mt-8 text-center text-base text-slate-600 dark:text-slate-400">
             {isLogin ? "계정이 없으신가요? " : "이미 계정이 있으신가요? "}
             <button 
               onClick={() => setIsLogin(!isLogin)}

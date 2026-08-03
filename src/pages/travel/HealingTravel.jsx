@@ -18,7 +18,7 @@ export const HealingTravel = () => {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
               전국 힐링 여행지 & 청정 숲
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-0.5">
               피톤치드와 자연의 정기로 심신의 스트레스를 해소하는 프리미엄 웰니스 여행 추천.
             </p>
           </div>
@@ -40,30 +40,30 @@ export const HealingTravel = () => {
                   alt={spot.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
+                <div className="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-md text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">
                   {spot.tag}
                 </div>
-                <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-amber-300 text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
+                <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-amber-300 text-sm font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5" />
                   <span>{spot.bestSeason} 추천</span>
                 </div>
               </div>
 
               <div className="p-6 space-y-3">
-                <div className="flex items-center gap-1.5 text-xs text-teal-600 dark:text-teal-400 font-bold">
+                <div className="flex items-center gap-1.5 text-sm text-teal-600 dark:text-teal-400 font-bold">
                   <MapPin className="w-4 h-4" />
                   <span>{spot.location}</span>
                 </div>
                 <h3 className="font-extrabold text-xl text-slate-800 dark:text-slate-100 group-hover:text-teal-600 transition-colors">
                   {spot.name}
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
                   {spot.description}
                 </p>
               </div>
             </div>
 
-            <div className="px-6 pb-6 pt-2 flex items-center justify-between text-xs font-bold text-teal-600 dark:text-teal-400 border-t border-slate-100 dark:border-slate-800">
+            <div className="px-6 pb-6 pt-2 flex items-center justify-between text-sm font-bold text-teal-600 dark:text-teal-400 border-t border-slate-100 dark:border-slate-800">
               <span>코스 상세 보기</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -82,7 +82,7 @@ export const HealingTravel = () => {
               ✕
             </button>
 
-            <div className="flex items-center gap-2 text-xs font-bold text-teal-600 bg-teal-50 dark:bg-teal-950 px-3 py-1 rounded-full w-fit">
+            <div className="flex items-center gap-2 text-sm font-bold text-teal-600 bg-teal-50 dark:bg-teal-950 px-3 py-1 rounded-full w-fit">
               <MapPin className="w-3.5 h-3.5" />
               <span>{selectedSpot.location}</span>
             </div>
@@ -97,11 +97,11 @@ export const HealingTravel = () => {
               className="w-full h-64 object-cover rounded-2xl shadow-md"
             />
 
-            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
               {selectedSpot.description}
             </p>
 
-            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-2xl flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-300">
+            <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-2xl flex items-center justify-between text-sm font-bold text-slate-600 dark:text-slate-300">
               <span>권장 방문 시기: {selectedSpot.bestSeason}</span>
               <span className="text-teal-600 dark:text-teal-400"># 피톤치드 100% 힐링</span>
             </div>

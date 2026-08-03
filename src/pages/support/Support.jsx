@@ -7,14 +7,14 @@ export const Support = () => {
       
       {/* Header */}
       <section className="space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-xs font-bold">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-sm font-bold">
           <HeartHandshake className="w-3.5 h-3.5" />
           <span>의료비 지원 가이드</span>
         </div>
         <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
           뇌종양 환자 국가·지자체 의료비 지원
         </h1>
-        <p className="text-sm text-slate-500 max-w-2xl leading-relaxed">
+        <p className="text-base text-slate-500 max-w-2xl leading-relaxed">
           뇌종양과 같은 중증 질환은 치료 과정에서 막대한 비용이 발생할 수 있습니다. 환자와 보호자의 부담을 덜어주는 핵심 지원 제도를 정리했습니다.
         </p>
       </section>
@@ -25,10 +25,10 @@ export const Support = () => {
           <ShieldAlert className="w-6 h-6 text-red-600" />
           <span>사설 실손의료보험(실비) 중복 보상 불가 안내</span>
         </div>
-        <p className="text-sm text-red-700 dark:text-red-200 leading-relaxed font-medium">
+        <p className="text-base text-red-700 dark:text-red-200 leading-relaxed font-medium">
           <strong>매우 주의하세요:</strong> '재난적 의료비 지원' 및 '보건소 암환자 의료비 지원' 등 대다수의 국가/지자체 현금 지원 제도는 개인적으로 가입한 <strong>사설 실손보험금(실비)과 중복으로 지급되지 않습니다.</strong>
         </p>
-        <div className="p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-red-100 dark:border-red-900/30 text-sm text-slate-700 dark:text-slate-300 space-y-3">
+        <div className="p-4 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-red-100 dark:border-red-900/30 text-base text-slate-700 dark:text-slate-300 space-y-3">
           <p>• 사설 보험에서 이미 보상받은 금액은 국가 지원금 산정 시 <strong>전액 차감</strong>됩니다.</p>
           <p>• 사설 보험 보장 한도가 남아있음에도 불구하고 국가 지원을 먼저 받은 경우, 추후 보험사에서 해당 금액만큼 공제하고 지급하거나 환수를 요구할 수 있습니다.</p>
           <p className="font-bold text-red-600 dark:text-red-400">결론: 본인의 실손보험 보장 범위와 한도를 먼저 정확히 파악한 후, 한도를 초과하거나 보장되지 않는 비급여 항목에 대해서만 국가 지원(재난적 의료비 등)을 신청하는 것이 올바른 순서입니다.</p>
@@ -46,12 +46,12 @@ export const Support = () => {
             </div>
             <div className="space-y-4 flex-1">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">1. 중증질환자 산정특례 제도</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 진료비 부담이 큰 중증질환(암, 뇌혈관질환 등)에 대해 환자가 부담하는 진료비(급여 항목)를 대폭 낮춰주는 건강보험공단의 핵심 제도입니다. 뇌종양 확진 시 병원에서 즉시 등록을 도와줍니다.
               </p>
               
               <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
-                <table className="w-full text-sm text-left border-collapse">
+                <table className="w-full text-base text-left border-collapse">
                   <thead>
                     <tr className="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                       <th className="p-4 border-b border-r border-slate-200 dark:border-slate-700 font-bold w-1/4">구분</th>
@@ -89,12 +89,12 @@ export const Support = () => {
             </div>
             <div className="space-y-4 flex-1">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">2. 본인부담상한제</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 과도한 의료비로 인한 가계의 경제적 부담을 덜어주기 위해 1년간(1월 1일 ~ 12월 31일) 환자가 부담한 건강보험 본인부담금이 개인별 상한액을 초과하는 경우, 그 초과 금액을 국민건강보험공단에서 부담(환급)하는 제도입니다.
               </p>
               
               <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
-                <table className="w-full text-sm text-left border-collapse">
+                <table className="w-full text-base text-left border-collapse">
                   <thead>
                     <tr className="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                       <th className="p-4 border-b border-r border-slate-200 dark:border-slate-700 font-bold w-1/3">소득 분위</th>
@@ -117,7 +117,7 @@ export const Support = () => {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-slate-500 mt-2">
+              <p className="text-sm text-slate-500 mt-2">
                 * 위 금액은 예시이며 매년 건강보험료 정산에 따라 확정됩니다. 비급여, 선별급여, 2~3인실 입원료 등은 상한액 계산에서 제외됩니다.
               </p>
             </div>
@@ -132,11 +132,11 @@ export const Support = () => {
             </div>
             <div className="space-y-4 flex-1">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">3. 재난적 의료비 지원사업</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 소득수준 대비 과도한 의료비(비급여 등)가 발생한 가구의 경제적 파탄을 막기 위해 <strong>비급여를 포함한 의료비</strong>의 일부를 국가가 지원합니다. (국민건강보험공단 지사 신청)
               </p>
               
-              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
                 <li><strong>지원 대상:</strong> 기준중위소득 100% 이하 및 의료비 부담이 연소득의 일정 비율을 초과한 자</li>
                 <li><strong>지원 내용:</strong> 소득 구간에 따라 본인부담 의료비(건강보험 적용 제외 비급여 등)의 50~80% 지원</li>
                 <li><strong>지원 한도:</strong> 연간 최대 5천만 원 한도 (필요시 개별 심사를 거쳐 추가 지원 가능)</li>
@@ -154,11 +154,11 @@ export const Support = () => {
             </div>
             <div className="space-y-4 flex-1">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">4. 보건소 암환자 의료비 지원</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 저소득층 암환자가 치료를 포기하지 않도록 주민등록지 관할 보건소에서 의료비를 지원하는 제도입니다.
               </p>
               
-              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
                 <li><strong>의료급여수급자 및 차상위계층:</strong> 연간 최대 300만 원 한도로 연속 최장 3년 지원 (급여/비급여 구분 없이 지원)</li>
                 <li><strong>건강보험가입자:</strong> 2021년 7월 1일 기준 변경. 기준 충족 시 일부 예외적 한시 지원. (상세 내역은 관할 보건소 문의 필수)</li>
                 <li><strong>신청 방법:</strong> 환자 주민등록지 관할 보건소 직접 방문 상담 및 신청</li>
@@ -175,11 +175,11 @@ export const Support = () => {
             </div>
             <div className="space-y-4 flex-1">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">5. 성인 암 환자 의료비 지원사업 (보건복지부)</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 만 18세 이상의 저소득층 암 환자를 대상으로 의료급여수급자 및 차상위 본인부담경감대상자에게 의료비를 지원하는 국가 사업입니다.
               </p>
               
-              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
                 <li><strong>지원 대상:</strong> 의료급여수급자 및 차상위 본인부담경감대상자 중 만 18세 이상 암환자 (당연 선정)</li>
                 <li><strong>지원 암종:</strong> 뇌종양을 포함한 전체 암종</li>
                 <li><strong>지원 금액 및 기간:</strong> 급여·비급여 구분 없이, <strong>연간 최대 300만 원</strong> (3년간 연속 지원)</li>
@@ -197,13 +197,13 @@ export const Support = () => {
             <div className="space-y-4 flex-1">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white">6. 경기도형 긴급복지지원 (의료비 및 간병비)</h3>
-                <a href="https://housing.gg.go.kr/html/24404.do" target="_blank" rel="noopener noreferrer" className="text-[11px] font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 transition-colors">상세보기 ↗</a>
+                <a href="https://housing.gg.go.kr/html/24404.do" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 transition-colors">상세보기 ↗</a>
               </div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 갑작스러운 위기 상황(중한 질병 등)으로 생계 유지가 곤란한 경기도민을 위해 의료비와 간병비를 신속하게 지원하는 제도입니다.
               </p>
               
-              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
                 <li><strong>지원 대상:</strong> 중한 질병 또는 부상으로 발생한 의료비를 감당하기 어려운 위기 가구 (소득 및 재산 기준 충족 시)</li>
                 <li><strong>의료비 지원:</strong> 각종 검사, 치료 등 당장 필요한 의료 서비스 비용 지원 (통상 최대 300만 원 범위 내)</li>
                 <li><strong>간병비 지원:</strong> 간병이 필수적이나 비용 부담으로 간병인을 구하지 못하는 경우 일부 간병 비용 지원</li>
@@ -221,18 +221,18 @@ export const Support = () => {
             </div>
             <div className="space-y-4 flex-1">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">7. 경기도 간병 SOS 프로젝트</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 저소득층 어르신의 간병비 부담을 덜어주는 경기도의 대표적인 간병인 지원 사업입니다. (2026년 기준 16개 시·군 시행 중)
               </p>
               
-              <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
                 <li><strong>지원 대상:</strong> 경기도 내 참여 16개 시·군에 주민등록이 된 만 65세 이상 저소득 어르신</li>
                 <li><strong>소득 기준:</strong> 기초생활수급자(생계·주거·의료급여) 및 차상위계층(장애인, 본인부담경감 등)</li>
                 <li><strong>지원 금액:</strong> 1인당 <strong>연간 최대 120만 원</strong> (횟수 제한 없음)</li>
                 <li><strong>입원 요건:</strong> 상해 또는 질병으로 병원급 의료기관 이상에 입원하여 간병 서비스를 받은 경우</li>
                 <li><strong>신청 방법:</strong> 매년 1월 ~ 12월, 거주지 관할 읍·면·동 행정복지센터(주민센터) 접수</li>
               </ul>
-              <p className="text-xs text-pink-600 dark:text-pink-400 mt-2 font-medium">
+              <p className="text-sm text-pink-600 dark:text-pink-400 mt-2 font-medium">
                 * 세부 해당 지역 및 참여 시·군은 관할 지자체나 경기도청 공고문 확인이 필요합니다.
               </p>
             </div>

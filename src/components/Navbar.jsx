@@ -35,7 +35,7 @@ export const Navbar = () => {
         
         {/* Top Utility Bar (아주 얇은 상단 바) */}
         <div className="border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-end text-[11px] text-slate-500 font-medium">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-end text-sm text-slate-500 font-medium">
             <div className="flex items-center gap-4">
 
               <span className="hidden sm:inline-block cursor-pointer hover:text-blue-700 transition-colors">고객센터</span>
@@ -144,7 +144,7 @@ export const Navbar = () => {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-6 py-4 text-left text-sm font-bold border-b border-slate-50 dark:border-slate-900 ${
+                  className={`px-6 py-4 text-left text-base font-bold border-b border-slate-50 dark:border-slate-900 ${
                     activeTab === item.id ? 'text-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/20' : 'text-slate-700 dark:text-slate-300'
                   }`}
                 >

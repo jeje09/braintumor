@@ -41,7 +41,7 @@ export const FoodCalories = () => {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
               음식 칼로리 & 영양 가이드
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-0.5">
               올바른 자이언트 뉴트리션 식이요법으로 칼로리와 3대 영양소를 조화롭게 관리하세요.
             </p>
           </div>
@@ -56,7 +56,7 @@ export const FoodCalories = () => {
               placeholder="음식 이름 검색 (예: 닭가슴살, 현미밥, 아보카도)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm"
             />
           </div>
 
@@ -65,7 +65,7 @@ export const FoodCalories = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                className={`px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
                   selectedCategory === cat
                     ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
                     : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-amber-50'
@@ -90,7 +90,7 @@ export const FoodCalories = () => {
           {mealPlan.length > 0 && (
             <button
               onClick={() => setMealPlan([])}
-              className="text-xs text-slate-500 hover:underline font-bold"
+              className="text-sm text-slate-500 hover:underline font-bold"
             >
               식단 초기화
             </button>
@@ -98,7 +98,7 @@ export const FoodCalories = () => {
         </div>
 
         {mealPlan.length === 0 ? (
-          <p className="text-xs text-slate-400 text-center py-4">
+          <p className="text-sm text-slate-400 text-center py-4">
             아래 음식 카드의 <Plus className="inline w-3.5 h-3.5" /> 버튼을 눌러 나의 오늘 식단에 추가해보세요.
           </p>
         ) : (
@@ -107,7 +107,7 @@ export const FoodCalories = () => {
               {mealPlan.map((item) => (
                 <div
                   key={item.planId}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-amber-200 dark:border-slate-700 text-xs font-bold shadow-sm"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-amber-200 dark:border-slate-700 text-sm font-bold shadow-sm"
                 >
                   <span>{item.icon}</span>
                   <span>{item.name}</span>
@@ -125,19 +125,19 @@ export const FoodCalories = () => {
             {/* Total Nutrients Dashboard */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-amber-100 dark:border-slate-800">
               <div className="bg-amber-500 text-white p-3 rounded-2xl text-center shadow-md">
-                <span className="text-[10px] opacity-80 font-bold block">총 칼로리</span>
+                <span className="text-sm opacity-80 font-bold block">총 칼로리</span>
                 <span className="text-lg font-black">{totalCalories.toLocaleString()} kcal</span>
               </div>
               <div className="bg-emerald-500 text-white p-3 rounded-2xl text-center shadow-md">
-                <span className="text-[10px] opacity-80 font-bold block">단백질</span>
+                <span className="text-sm opacity-80 font-bold block">단백질</span>
                 <span className="text-lg font-black">{totalProtein.toFixed(1)} g</span>
               </div>
               <div className="bg-teal-500 text-white p-3 rounded-2xl text-center shadow-md">
-                <span className="text-[10px] opacity-80 font-bold block">탄수화물</span>
+                <span className="text-sm opacity-80 font-bold block">탄수화물</span>
                 <span className="text-lg font-black">{totalCarbs.toFixed(1)} g</span>
               </div>
               <div className="bg-teal-500 text-white p-3 rounded-2xl text-center shadow-md">
-                <span className="text-[10px] opacity-80 font-bold block">지방</span>
+                <span className="text-sm opacity-80 font-bold block">지방</span>
                 <span className="text-lg font-black">{totalFat.toFixed(1)} g</span>
               </div>
             </div>
@@ -159,7 +159,7 @@ export const FoodCalories = () => {
                     {food.icon}
                   </span>
                   <div>
-                    <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-md">
+                    <span className="text-sm font-bold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-md">
                       {food.category}
                     </span>
                     <h4 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mt-0.5">
@@ -170,34 +170,34 @@ export const FoodCalories = () => {
               </div>
 
               {/* Calories & Macros Grid */}
-              <div className="grid grid-cols-4 gap-2 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl text-center text-xs">
+              <div className="grid grid-cols-4 gap-2 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl text-center text-sm">
                 <div>
-                  <span className="text-[10px] text-slate-400 block">열량</span>
+                  <span className="text-sm text-slate-400 block">열량</span>
                   <span className="font-extrabold text-amber-600 dark:text-amber-400">{food.calories}kcal</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400 block">단백질</span>
+                  <span className="text-sm text-slate-400 block">단백질</span>
                   <span className="font-bold text-slate-700 dark:text-slate-200">{food.protein}g</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400 block">탄수화물</span>
+                  <span className="text-sm text-slate-400 block">탄수화물</span>
                   <span className="font-bold text-slate-700 dark:text-slate-200">{food.carbs}g</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-400 block">지방</span>
+                  <span className="text-sm text-slate-400 block">지방</span>
                   <span className="font-bold text-slate-700 dark:text-slate-200">{food.fat}g</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
+              <div className="flex items-center gap-1.5 text-sm text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
                 <Info className="w-3.5 h-3.5 shrink-0" />
-                <span className="text-[11px] font-medium leading-tight">{food.healthTip}</span>
+                <span className="text-sm font-medium leading-tight">{food.healthTip}</span>
               </div>
             </div>
 
             <button
               onClick={() => addToMealPlan(food)}
-              className="w-full py-2.5 bg-slate-900 dark:bg-slate-100 hover:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-900 font-extrabold rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs shadow-md"
+              className="w-full py-2.5 bg-slate-900 dark:bg-slate-100 hover:bg-amber-500 dark:hover:bg-amber-400 text-white dark:text-slate-900 font-extrabold rounded-xl transition-all flex items-center justify-center gap-1.5 text-sm shadow-md"
             >
               <Plus className="w-4 h-4" />
               <span>식단표에 추가하기</span>

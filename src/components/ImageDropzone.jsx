@@ -52,12 +52,12 @@ export const ImageDropzone = ({ value, onChange, label = "이미지 등록 (URL 
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300">
           {label}
         </label>
         
         {/* Toggle Mode */}
-        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-[11px] font-bold">
+        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-sm font-bold">
           <button
             type="button"
             onClick={() => setMode('drop')}
@@ -99,7 +99,7 @@ export const ImageDropzone = ({ value, onChange, label = "이미지 등록 (URL 
           >
             <X className="w-4 h-4" />
           </button>
-          <div className="absolute bottom-3 left-3 bg-emerald-600/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
+          <div className="absolute bottom-3 left-3 bg-emerald-600/90 text-white text-sm font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
             <CheckCircle className="w-3 h-3" />
             <span>이미지 탑재 완료</span>
           </div>
@@ -129,10 +129,10 @@ export const ImageDropzone = ({ value, onChange, label = "이미지 등록 (URL 
                 <UploadCloud className="w-6 h-6 animate-pulse" />
               </div>
               <div>
-                <p className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                <p className="text-sm font-extrabold text-slate-800 dark:text-slate-200">
                   이미지 파일(.jpg, .png, .webp)을 이 영역으로 드래그하거나 클릭하여 선택하세요
                 </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">
+                <p className="text-sm text-slate-400 mt-0.5">
                   마우스 드래그 앤 드롭 지원
                 </p>
               </div>
@@ -145,7 +145,7 @@ export const ImageDropzone = ({ value, onChange, label = "이미지 등록 (URL 
                 placeholder="https://images.unsplash.com/..."
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           )}

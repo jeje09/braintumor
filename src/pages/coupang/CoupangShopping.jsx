@@ -30,7 +30,7 @@ export const CoupangShopping = () => {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
               쿠팡 파트너스 웰니스 쇼핑 갤러리
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-0.5">
               쿠팡 로켓배송 최저가로 만나는 엄선된 건강 자이언트 유기농 상품 라인업.
             </p>
           </div>
@@ -42,7 +42,7 @@ export const CoupangShopping = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              className={`px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
                 selectedCategory === cat
                   ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
                   : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-amber-50'
@@ -69,11 +69,11 @@ export const CoupangShopping = () => {
                   alt={product.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-3 left-3 bg-amber-600/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-lg">
+                <div className="absolute top-3 left-3 bg-amber-600/90 backdrop-blur-md text-white text-sm font-bold px-2.5 py-1 rounded-lg">
                   {product.category}
                 </div>
                 {product.isBest && (
-                  <div className="absolute top-3 right-3 bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
+                  <div className="absolute top-3 right-3 bg-amber-500 text-white text-sm font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
                     <Star className="w-3 h-3 fill-current" />
                     <span>로켓추천</span>
                   </div>
@@ -85,7 +85,7 @@ export const CoupangShopping = () => {
                 <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-snug line-clamp-2">
                   {product.title}
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                   {product.description}
                 </p>
 
@@ -95,14 +95,14 @@ export const CoupangShopping = () => {
                     {product.price.toLocaleString()}원
                   </span>
                   {product.originalPrice && (
-                    <span className="text-xs text-slate-400 line-through">
+                    <span className="text-sm text-slate-400 line-through">
                       {product.originalPrice.toLocaleString()}원
                     </span>
                   )}
                 </div>
 
                 {/* Micro Notice */}
-                <p className="text-[10px] text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 p-1.5 rounded-lg font-medium">
+                <p className="text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-slate-800 p-1.5 rounded-lg font-medium">
                   ※ 쿠팡 파트너스 활동 수수료 지급 대상 상품
                 </p>
               </div>
@@ -114,7 +114,7 @@ export const CoupangShopping = () => {
                 href={product.coupangLink || 'https://partners.coupang.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-extrabold rounded-2xl shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-2 transform active:scale-95"
+                className="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-sm font-extrabold rounded-2xl shadow-lg shadow-amber-500/25 transition-all flex items-center justify-center gap-2 transform active:scale-95"
               >
                 <span>쿠팡에서 최저가 구매하기</span>
                 <ExternalLink className="w-4 h-4" />
@@ -125,7 +125,7 @@ export const CoupangShopping = () => {
       </div>
 
       {/* Bottom Notice */}
-      <div className="text-center py-6 text-xs sm:text-sm text-amber-900 dark:text-amber-300 font-black bg-amber-50 dark:bg-slate-900/60 rounded-2xl border border-amber-200 dark:border-slate-800">
+      <div className="text-center py-6 text-sm sm:text-base text-amber-900 dark:text-amber-300 font-black bg-amber-50 dark:bg-slate-900/60 rounded-2xl border border-amber-200 dark:border-slate-800">
         이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
       </div>
     </div>
