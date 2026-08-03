@@ -12,13 +12,17 @@ export const Nutrition = () => {
       <section className="space-y-4">
         <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-base font-bold">
           <Activity className="w-4 h-4" />
-          <span>항암 영양 가이드</span>
+          <span>면역력 식단 가이드</span>
         </div>
         <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-          항암 영양 식단 & 식품 백과
+          면역력 영양 식단 & 식품 백과
         </h1>
-        <p className="text-base text-slate-500 max-w-2xl leading-relaxed font-medium">
-          항암 치료 중에는 특정 '기적의 식품'보다 균형 잡힌 영양 섭취와 구역감 관리가 가장 중요합니다. 뇌 보호와 항염증에 도움되는 식품 가이드입니다.
+        <p className="text-base text-slate-500 max-w-2xl leading-relaxed font-medium whitespace-pre-wrap">
+          치료 중에는 특정 음식 하나가 병을 낫게 하는 것은 아닙니다. 가장 중요한 것은 균형 잡힌 영양을 충분히 섭취하여 체력을 유지하고, 면역 기능을 돕고, 치료를 잘 견딜 수 있는 몸 상태를 만드는 것입니다.
+
+이 식품 백과는 치료 중 자주 권장되는 식품들의 영양학적 특징과 섭취 방법을 소개합니다. 각 식품이 제공하는 단백질, 비타민, 미네랄, 식이섬유, 건강한 지방 등을 이해하고 자신의 몸 상태에 맞는 식단을 계획하는 데 도움이 되도록 구성했습니다.
+
+식사는 몸을 회복시키는 가장 기본적인 치료입니다. 다양한 식품을 골고루 섭취하고, 충분한 수분과 단백질을 함께 보충하는 것이 건강한 회복의 첫걸음입니다.
         </p>
       </section>
 
@@ -26,16 +30,16 @@ export const Nutrition = () => {
       <section className="p-6 rounded-3xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 space-y-4">
         <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-extrabold text-base">
           <ShieldAlert className="w-6 h-6 text-amber-600" />
-          <span>항암 치료 중 필수 섭취 원칙 3가지</span>
+          <span>면역력 저하 시 필수 섭취 원칙 3가지</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-base text-amber-900 dark:text-amber-200 leading-relaxed font-medium">
           <div className="p-4 bg-white/70 dark:bg-slate-900/70 rounded-2xl border border-amber-100 dark:border-amber-900/30">
             <strong className="block text-amber-700 dark:text-amber-400 mb-2 text-base">1. 날음식 완전 금지</strong>
-            항암 중 면역세포 감소로 날생선, 날고기, 날달걀은 감염 위험. 반드시 완전 익혀서 섭취.
+            면역세포 감소로 날생선, 날고기, 날달걀은 감염 위험. 반드시 완전 익혀서 섭취.
           </div>
           <div className="p-4 bg-white/70 dark:bg-slate-900/70 rounded-2xl border border-amber-100 dark:border-amber-900/30">
             <strong className="block text-amber-700 dark:text-amber-400 mb-2 text-base">2. 엑기스·농축액 주의</strong>
-            홍삼, 즙, 건강보조제 농축액은 간 수치를 높여 항암제 투여가 중단될 수 있음. 의사 상담 필수.
+            홍삼, 즙, 건강보조제 농축액은 간 수치를 높여 건강에 무리가 갈 수 있음. 전문의 상담 필수.
           </div>
           <div className="p-4 bg-white/70 dark:bg-slate-900/70 rounded-2xl border border-amber-100 dark:border-amber-900/30">
             <strong className="block text-amber-700 dark:text-amber-400 mb-2 text-base">3. 소량씩 자주 섭취</strong>

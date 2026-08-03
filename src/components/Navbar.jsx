@@ -15,7 +15,7 @@ export const Navbar = () => {
     { id: 'gbm', label: '교모세포종(GBM)' },
     { id: 'tumors', label: '뇌종양 백과' },
     { id: 'research', label: '연구·임상' },
-    { id: 'nutrition', label: '항암 식단' },
+    { id: 'nutrition', label: '면역력 식단' },
     { id: 'shopping', label: '맞춤 쇼핑' },
     { id: 'hospital', label: '병원·전문의' },
     { id: 'support', label: '의료비 지원' },
