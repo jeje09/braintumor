@@ -615,88 +615,34 @@ const INITIAL_HOSPITALS = [
 const INITIAL_PRODUCTS = [
   {
     id: 101,
-    title: "항구역 생강 캔디 (Chemo Ginger Candy) 100g",
-    price: 12000,
-    originalPrice: 15000,
     category: "항구역 케어",
-    icon: "🫚",
-    image: "https://images.unsplash.com/photo-1582560475093-ba66accbc424?auto=format&fit=crop&w=800&q=80",
-    description: "항암 치료 중 가장 힘든 구역감 완화에 임상적으로 효과가 입증된 천연 생강 성분 캔디. 생강 추출물 500mg 고함량 함유.",
-    doctorNote: "항구역제와 병용 가능. 담당 의사 확인 후 사용 권장.",
-    tag: "추천",
-    link: "https://coupang.com",
-    isBest: true
+    iframeCode: '<iframe src="https://coupa.ng/covddK" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics></iframe>'
   },
   {
     id: 102,
-    title: "부드러운 기능성 항암 두건 세트 (3종)",
-    price: 28000,
-    originalPrice: 38000,
     category: "케어 용품",
-    icon: "🎀",
-    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=800&q=80",
-    description: "항암 치료로 인한 탈모 시 사용하는 부드러운 대나무 섬유 두건. 두피 자극 최소화 설계, 통기성 우수. 색상 3종 세트.",
-    doctorNote: "두피 보호용. 수술 상처 부위는 의료진 안내 따라 착용",
-    tag: "인기",
-    link: "https://coupang.com",
-    isBest: true
+    iframeCode: ''
   },
   {
     id: 103,
-    title: "오메가-3 고함량 EPA·DHA (90캡슐, 3개월분)",
-    price: 32000,
-    originalPrice: 42000,
     category: "영양 보충",
-    icon: "🐟",
-    image: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=800&q=80",
-    description: "뇌 신경세포 보호와 항염증에 도움. EPA 500mg + DHA 250mg 고함량. 어유 유래 정제 오메가-3. 중금속 검사 완료.",
-    doctorNote: "⚠️ 수술 2주 전 반드시 중단. 항응고제 복용자 담당의 상담 필수",
-    tag: "의사확인필요",
-    link: "https://coupang.com",
-    isBest: false
+    iframeCode: ''
   },
   {
     id: 104,
-    title: "체온 조절 항암 케어 가운 (입원·외래용)",
-    price: 35000,
-    originalPrice: 45000,
     category: "케어 용품",
-    icon: "👘",
-    image: "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=800&q=80",
-    description: "항암 치료 중 체온 조절이 어려운 환자를 위한 특수 소재 가운. 앞트임 디자인으로 링거·포트 삽입 시 편리. 세탁기 세탁 가능.",
-    doctorNote: "항균·항정전기 소재. 입원 시 병원 가운 대신 사용 가능.",
-    tag: "실용",
-    link: "https://coupang.com",
-    isBest: true
+    iframeCode: ''
   },
   {
     id: 105,
-    title: "고단백 항암 영양 쉐이크 (단백질 30g, 14포)",
-    price: 45000,
-    originalPrice: 58000,
     category: "영양 보충",
-    icon: "🥤",
-    image: "https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=800&q=80",
-    description: "항암 치료 중 식욕 부진·체중 감소 환자를 위한 고단백 영양 쉐이크. 1포당 단백질 30g, 칼로리 300kcal. 인공 감미료 무첨가.",
-    doctorNote: "임상영양사 권장 제품. 신장 기능 저하 환자는 단백질 섭취량 조절 필요.",
-    tag: "임상영양사 추천",
-    link: "https://coupang.com",
-    isBest: false
+    iframeCode: ''
   },
   {
     id: 106,
-    title: "「암을 넘어 일상으로」 - 뇌종양 환자·보호자 완벽 가이드북",
-    price: 18000,
-    originalPrice: 22000,
     category: "도서·마음",
-    icon: "📚",
-    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=800&q=80",
-    description: "뇌종양 진단 후 치료 선택, 병원 동행, 일상 관리, 마음 돌봄까지. 환자와 보호자 모두를 위한 실전 가이드. 대한뇌종양협회 감수.",
-    doctorNote: "의학 정보 참고용. 치료 결정은 반드시 담당 의사와 상의.",
-    tag: "필독서",
-    link: "https://coupang.com",
-    isBest: true
-  },
+    iframeCode: ''
+  }
 ];
 
 /* =======================================================================
@@ -784,7 +730,7 @@ export const AppProvider = ({ children }) => {
   const [youtubeVideos, setYoutubeVideos] = useState(INITIAL_YOUTUBE_VIDEOS);
   const [hospitals] = useState(INITIAL_HOSPITALS);
   const [products, setProducts] = useState(() => {
-    const saved = localStorage.getItem('companion_products');
+    const saved = localStorage.getItem('companion_products_v2');
     return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
   });
   const [stories, setStories] = useState(() => {
@@ -813,7 +759,7 @@ export const AppProvider = ({ children }) => {
   }, [darkMode]);
 
   // Persist products & stories
-  useEffect(() => { localStorage.setItem('companion_products', JSON.stringify(products)); }, [products]);
+  useEffect(() => { localStorage.setItem('companion_products_v2', JSON.stringify(products)); }, [products]);
   useEffect(() => { localStorage.setItem('companion_stories', JSON.stringify(stories)); }, [stories]);
 
   const loginAdmin = (pw) => {

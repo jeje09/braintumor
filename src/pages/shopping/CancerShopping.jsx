@@ -51,70 +51,21 @@ export const CancerShopping = () => {
         {filteredProducts.map((prod) => (
           <div
             key={prod.id}
-            className="glass-card rounded-3xl overflow-hidden group border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-2xl transition-all duration-300"
+            className="flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-300"
           >
-            <div>
-              {/* Image */}
-              <div className="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-900">
-                <img
-                  src={prod.image}
-                  alt={prod.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <span className="absolute top-3 left-3 text-3xl p-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl shadow-md">
-                  {prod.icon}
-                </span>
-
-                <span className="absolute top-3 right-3 text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-violet-600 text-white shadow-md">
-                  {prod.tag}
-                </span>
+            {prod.iframeCode ? (
+              <div 
+                className="w-full flex items-center justify-center"
+                dangerouslySetInnerHTML={{ __html: prod.iframeCode }} 
+              />
+            ) : (
+              <div className="w-[120px] h-[240px] bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 text-xs text-center p-4">
+                상품 준비 중
               </div>
-
-              {/* Content */}
-              <div className="p-5 space-y-3">
-                <div>
-                  <span className="text-[10px] font-bold text-violet-600 dark:text-violet-400 uppercase tracking-wider block">
-                    {prod.category}
-                  </span>
-                  <h3 className="font-extrabold text-base text-slate-900 dark:text-white mt-0.5 line-clamp-1">
-                    {prod.title}
-                  </h3>
-                </div>
-
-                <div className="flex items-baseline gap-2">
-                  <span className="text-xl font-black text-rose-600 dark:text-rose-400">
-                    {prod.price.toLocaleString()}원
-                  </span>
-                  {prod.originalPrice && (
-                    <span className="text-xs text-slate-400 line-through">
-                      {prod.originalPrice.toLocaleString()}원
-                    </span>
-                  )}
-                </div>
-
-                <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
-                  {prod.description}
-                </p>
-
-                {/* Doctor Note */}
-                <div className="p-3 rounded-xl bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900/40 text-[11px] text-violet-800 dark:text-violet-300 font-medium">
-                  💡 {prod.doctorNote}
-                </div>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div className="p-5 pt-0">
-              <a
-                href={prod.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-extrabold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-md shadow-violet-600/30"
-              >
-                <span>최저가 구매 링크 이동</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </div>
+            )}
+            <span className="mt-4 text-[11px] font-bold text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 px-3 py-1 rounded-full uppercase tracking-wider block">
+              {prod.category}
+            </span>
           </div>
         ))}
       </div>

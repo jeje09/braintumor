@@ -13,8 +13,7 @@ export const Admin = () => {
   const [errorMsg, setErrorMsg] = useState('');
 
   const [newProd, setNewProd] = useState({
-    title: '', price: 20000, category: '케어 용품', icon: '🎗️',
-    description: '', doctorNote: '', tag: '추천', link: 'https://coupang.com'
+    category: '항구역 케어', iframeCode: ''
   });
 
   const handleLogin = (e) => {
@@ -29,13 +28,9 @@ export const Admin = () => {
 
   const handleAddProduct = (e) => {
     e.preventDefault();
-    if (!newProd.title) return;
-    addProduct({
-      ...newProd,
-      price: Number(newProd.price),
-      image: "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=800&q=80"
-    });
-    setNewProd({ title: '', price: 20000, category: '케어 용품', icon: '🎗️', description: '', doctorNote: '', tag: '추천', link: 'https://coupang.com' });
+    if (!newProd.iframeCode) return;
+    addProduct({ ...newProd });
+    setNewProd({ category: '항구역 케어', iframeCode: '' });
   };
 
   if (!isAdminAuthenticated) {
@@ -106,29 +101,7 @@ export const Admin = () => {
           <span>신규 상품 추가</span>
         </h3>
 
-        <form onSubmit={handleAddProduct} className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <div>
-            <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">상품명</label>
-            <input
-              type="text"
-              required
-              value={newProd.title}
-              onChange={(e) => setNewProd({...newProd, title: e.target.value})}
-              className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">가격 (원)</label>
-            <input
-              type="number"
-              required
-              value={newProd.price}
-              onChange={(e) => setNewProd({...newProd, price: e.target.value})}
-              className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
-            />
-          </div>
-
+        <form onSubmit={handleAddProduct} className="grid grid-cols-1 gap-4 text-xs">
           <div>
             <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">카테고리</label>
             <select
@@ -144,27 +117,18 @@ export const Admin = () => {
           </div>
 
           <div>
-            <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">의사 참고사항</label>
-            <input
-              type="text"
-              value={newProd.doctorNote}
-              onChange={(e) => setNewProd({...newProd, doctorNote: e.target.value})}
-              placeholder="예: 의사 상담 후 섭취"
-              className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
-            />
-          </div>
-
-          <div className="sm:col-span-2">
-            <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">상품 설명</label>
+            <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">쇼핑 아이템 Iframe 코드</label>
             <textarea
-              rows={2}
-              value={newProd.description}
-              onChange={(e) => setNewProd({...newProd, description: e.target.value})}
-              className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
+              rows={4}
+              required
+              value={newProd.iframeCode}
+              onChange={(e) => setNewProd({...newProd, iframeCode: e.target.value})}
+              placeholder='예: <iframe src="https://coupa.ng/..." width="120" height="240" ...></iframe>'
+              className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
             />
           </div>
 
-          <div className="sm:col-span-2 flex justify-end">
+          <div className="flex justify-end">
             <button
               type="submit"
               className="px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-extrabold text-xs shadow-md"
@@ -182,9 +146,8 @@ export const Admin = () => {
           {products.map((prod) => (
             <div key={prod.id} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
-                <span>{prod.icon}</span>
-                <span className="font-bold text-slate-800 dark:text-white">{prod.title}</span>
-                <span className="text-slate-400">({prod.price.toLocaleString()}원)</span>
+                <span className="font-bold text-slate-800 dark:text-white">[{prod.category}]</span>
+                <span className="text-slate-500 font-mono text-[10px] truncate max-w-[200px]">{prod.iframeCode || '빈 상품'}</span>
               </div>
               <button
                 onClick={() => deleteProduct(prod.id)}
