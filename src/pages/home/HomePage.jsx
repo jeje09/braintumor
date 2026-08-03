@@ -1,48 +1,82 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
   ChevronRight, ArrowRight, HeartPulse, Building2, MessagesSquare, MessageCircle, ChevronUp, Download, Search, Bell
 } from 'lucide-react';
 
+const CAROUSEL_IMAGES = [
+  {
+    url: "https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=1600&auto=format&fit=crop",
+    title: "최첨단 뇌종양 수술 및 연구",
+    subtitle: "끊임없는 연구와 임상으로 희망을 찾습니다"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1576091160550-2173ff9e5ee5?q=80&w=1600&auto=format&fit=crop",
+    title: "따뜻한 간호와 환자 중심 케어",
+    subtitle: "환우와 가족의 마음까지 보듬는 든든한 동반자가 되겠습니다"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?q=80&w=1600&auto=format&fit=crop",
+    title: "혁신적인 뇌종양 신약 임상시험",
+    subtitle: "미래를 여는 새로운 뇌종양 치료 패러다임을 선도합니다"
+  }
+];
+
 export const HomePage = () => {
   const { setActiveTab, brainTumors, research, hospitals, stories } = useApp();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % CAROUSEL_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
   const gbmInfo = brainTumors.find(t => t.isSpecial);
 
   return (
     <div className="relative w-full bg-slate-50 dark:bg-slate-950 pb-20">
       
-      {/* 1. Full-width Hero Banner (MEDI25 Style) */}
-      <section className="relative w-full bg-[#e8f0fe] dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative h-[420px] flex items-center justify-center text-center">
-          
-          <div className="z-10 space-y-6 pb-20">
-            <h1 className="text-4xl md:text-5xl lg:text-[54px] font-black leading-tight tracking-tight text-[#1E3A8A] dark:text-white">
-              건강한 생활,<br />
-              리빙위드 헬스케어와 함께!
-            </h1>
-            <p className="text-lg md:text-xl font-bold text-slate-600 dark:text-slate-300">
-              리빙위드의 다양한 헬스케어 서비스를 경험해보세요
-            </p>
+      {/* 1. Full-width Hero Carousel */}
+      <section className="relative w-full h-[420px] md:h-[500px] overflow-hidden bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        {CAROUSEL_IMAGES.map((slide, index) => (
+          <div 
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            }`}
+          >
+            <img 
+              src={slide.url} 
+              alt={slide.title} 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-slate-900/60 mix-blend-multiply"></div>
+            
+            <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
+              <div className="space-y-4 max-w-2xl transform translate-y-4">
+                <h1 className="text-4xl md:text-5xl lg:text-[54px] font-black text-white leading-tight tracking-tight drop-shadow-lg">
+                  {slide.title}
+                </h1>
+                <p className="text-lg md:text-xl font-bold text-slate-200 drop-shadow-md">
+                  {slide.subtitle}
+                </p>
+              </div>
+            </div>
           </div>
-
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-48 flex items-end justify-center gap-4 opacity-95">
-             <div className="w-1/3 max-w-[200px] h-[80%] bg-white rounded-t-3xl shadow-xl border border-b-0 border-slate-200 flex flex-col items-center p-4">
-                <div className="w-16 h-16 bg-blue-100 rounded-full mb-3 flex items-center justify-center"><HeartPulse className="w-8 h-8 text-blue-500" /></div>
-                <div className="w-full h-2 bg-slate-100 rounded-full mb-2"></div>
-                <div className="w-2/3 h-2 bg-slate-100 rounded-full"></div>
-             </div>
-             <div className="w-1/3 max-w-[240px] h-full bg-white rounded-t-3xl shadow-2xl border border-b-0 border-slate-200 flex flex-col items-center p-4 z-10 relative">
-                <div className="absolute -top-6 w-[80%] bg-slate-800 text-white text-xs py-2 px-3 rounded-xl shadow-lg">복용약 알림 설정 완료!</div>
-                <div className="w-20 h-2 bg-slate-200 rounded-full mb-6 mt-2"></div>
-                <div className="w-full h-16 bg-blue-50 rounded-2xl border border-blue-100 mb-4 flex items-center justify-center"><Bell className="w-6 h-6 text-blue-400" /></div>
-                <div className="w-full h-12 bg-slate-50 rounded-xl"></div>
-             </div>
-             <div className="w-1/3 max-w-[200px] h-[80%] bg-white rounded-t-3xl shadow-xl border border-b-0 border-slate-200 flex flex-col items-center p-4">
-                <div className="w-16 h-16 bg-rose-100 rounded-full mb-3 flex items-center justify-center"><Building2 className="w-8 h-8 text-rose-500" /></div>
-                <div className="w-full h-2 bg-slate-100 rounded-full mb-2"></div>
-                <div className="w-2/3 h-2 bg-slate-100 rounded-full"></div>
-             </div>
-          </div>
+        ))}
+        
+        {/* Slide Indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
+          {CAROUSEL_IMAGES.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide ? 'bg-white scale-125' : 'bg-white/40 hover:bg-white/70'
+              }`}
+            />
+          ))}
         </div>
       </section>
 
@@ -52,12 +86,12 @@ export const HomePage = () => {
         {/* Categories (Flat Design Grid like MEDI25) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
            {[
-            { id: 'gbm', title: '교모세포종(GBM)', sub: '간편인증으로 내 의료기록 확인', icon: HeartPulse, color: 'text-rose-500 bg-rose-50' },
-            { id: 'research', title: '임상시험 AI 매칭', sub: '건강검진 결과 통한 임상시험 자동 매칭', icon: Search, color: 'text-slate-600 bg-slate-100' },
-            { id: 'stories', title: '나의 건강나이', sub: '회원님의 건강나이가 궁금하신가요?', icon: MessagesSquare, color: 'text-emerald-500 bg-emerald-50' },
-            { id: 'nutrition', title: '복용약 알림', sub: '약 챙겨먹도록 알림 설정', icon: Bell, color: 'text-indigo-500 bg-indigo-50' },
-            { id: 'hospital', title: '병원/약국 찾기', sub: '내 주변 병원, 약국 한 눈에 보기', icon: Building2, color: 'text-cyan-600 bg-cyan-50' },
-            { id: 'tumors', title: 'FAQ', sub: '헬스케어 서비스가 궁금하신가요?', icon: MessageCircle, color: 'text-blue-600 bg-blue-50' }
+            { id: 'gbm', title: '교모세포종(GBM)', sub: '가장 악성인 뇌종양의 원인과 최신 치료법', icon: HeartPulse, color: 'text-rose-500 bg-rose-50' },
+            { id: 'research', title: '최신 연구·임상시험', sub: '전 세계 최신 신약 및 임상시험 동향', icon: Search, color: 'text-slate-600 bg-slate-100' },
+            { id: 'stories', title: '환우 희망 이야기', sub: '뇌종양을 이겨내는 기적 같은 이야기들', icon: MessagesSquare, color: 'text-emerald-500 bg-emerald-50' },
+            { id: 'nutrition', title: '항암 맞춤 식단', sub: '치료 효과를 높이는 과학적인 영양 관리', icon: Bell, color: 'text-indigo-500 bg-indigo-50' },
+            { id: 'hospital', title: '우수 병원·전문의 찾기', sub: '나에게 맞는 뇌종양 전문 병원 추천', icon: Building2, color: 'text-cyan-600 bg-cyan-50' },
+            { id: 'tumors', title: '뇌종양 백과사전', sub: '다양한 뇌종양의 원인, 종류, 증상 정보', icon: MessageCircle, color: 'text-blue-600 bg-blue-50' }
           ].map((cat) => {
             const Icon = cat.icon;
             return (
