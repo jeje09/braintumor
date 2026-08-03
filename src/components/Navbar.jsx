@@ -22,7 +22,6 @@ export const Navbar = () => {
     { id: 'hospital', label: '병원·전문의', icon: Hospital },
     { id: 'shopping', label: '동행 쇼핑', icon: ShoppingBag },
     { id: 'stories', label: '희망 이야기', icon: MessageSquare },
-    { id: 'admin', label: '관리자', icon: Lock },
   ];
 
   const handleNavClick = (id) => {
@@ -63,9 +62,20 @@ export const Navbar = () => {
 
             {/* Right actions */}
             <div className="flex items-center gap-2">
-              {/* Auth Button */}
+              {/* Auth Button & Admin Button */}
               {user ? (
                 <div className="flex items-center gap-2 mr-2">
+                  {/* Admin Button */}
+                  {(user.email === 'jeje09@gmail.com' || user.email === 'admin@test.com' || user.email?.includes('admin')) && (
+                    <button
+                      onClick={() => handleNavClick('admin')}
+                      className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-50 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors mr-1 border border-rose-100 dark:border-rose-800"
+                    >
+                      <Lock className="w-3.5 h-3.5" />
+                      <span className="text-xs font-bold">관리자</span>
+                    </button>
+                  )}
+                  
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 hidden sm:flex">
                     <User className="w-4 h-4" />
                     <span className="text-xs font-bold truncate max-w-[100px]">
