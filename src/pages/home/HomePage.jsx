@@ -6,10 +6,19 @@ import {
 
 const CAROUSEL_IMAGES = [
   {
-    url: "/banner.png",
+    url: "/banner_surgery.png",
     title: "암과 함께 살아가는 삶",
-    subtitle: "최신 치료법 연구에 대한 소식 나눔",
-    description: "환자와 보호자의 몸과 마음의 건강을 위하여"
+    subtitle: "혁신적인 수술과 첨단 의료 기술로 새로운 희망을 찾아갑니다"
+  },
+  {
+    url: "/banner_lab.png",
+    title: "최신 치료법 연구에 대한 소식 나눔",
+    subtitle: "가장 앞선 뇌종양 신약 개발과 임상시험 정보를 공유합니다"
+  },
+  {
+    url: "/banner_patient.png",
+    title: "환자와 보호자의 몸과 마음의 건강을 위하여",
+    subtitle: "치료의 모든 여정을 함께하며 따뜻한 돌봄과 지지를 제공합니다"
   }
 ];
 
@@ -46,17 +55,12 @@ export const HomePage = () => {
             
             <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
               <div className="space-y-4 max-w-2xl transform translate-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-[54px] font-black text-white leading-tight tracking-tight drop-shadow-lg">
+                <h1 className="text-4xl md:text-5xl lg:text-[54px] font-black text-white leading-tight tracking-tight drop-shadow-lg break-keep">
                   {slide.title}
                 </h1>
-                <p className="text-lg md:text-xl font-bold text-slate-200 drop-shadow-md">
+                <p className="text-lg md:text-xl font-bold text-slate-200 drop-shadow-md break-keep">
                   {slide.subtitle}
                 </p>
-                {slide.description && (
-                  <p className="text-base md:text-lg text-slate-300 drop-shadow-md mt-2">
-                    {slide.description}
-                  </p>
-                )}
               </div>
             </div>
           </div>
