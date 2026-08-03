@@ -18,6 +18,7 @@ export const Navbar = () => {
     { id: 'nutrition', label: '항암 식단' },
     { id: 'shopping', label: '맞춤 쇼핑' },
     { id: 'hospital', label: '병원·전문의' },
+    { id: 'support', label: '의료비 지원' },
     { id: 'stories', label: '희망 이야기' },
   ];
 

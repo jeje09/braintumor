@@ -13,6 +13,7 @@ import { Hospitals } from './pages/hospital/Hospitals';
 import { CancerShopping } from './pages/shopping/CancerShopping';
 import { Stories } from './pages/stories/Stories';
 import { Admin } from './pages/admin/Admin';
+import { Support } from './pages/support/Support';
 
 const MainContent = () => {
   const { activeTab } = useApp();
@@ -35,6 +36,7 @@ const MainContent = () => {
       {activeTab === 'hospital'  && <Hospitals />}
       {activeTab === 'shopping'  && <CancerShopping />}
       {activeTab === 'stories'   && <Stories />}
+      {activeTab === 'support'   && <Support />}
       {activeTab === 'admin'     && <Admin />}
     </main>
   );
