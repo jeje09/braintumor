@@ -615,7 +615,9 @@ const INITIAL_HOSPITALS = [
     website: "https://www.gilhospital.com",
     specialties: ["BNCT (붕소중성자포획치료)", "재발성 GBM", "방사선 수술"],
     features: ["BNCT 임상 2상 진행", "재발성 GBM 전문 임상", "첨단 방사선 치료"],
-    doctors: ["이기택 교수 (신경외과, BNCT 연구)"],
+    doctors: [
+      { name: "이기택 교수", url: "https://www.gilhospital.com/doctor?p_p_id=searchDoctor_WAR_bookingHomepageportlet&p_p_lifecycle=0&p_p_col_id=column-1&p_p_col_count=1&_searchDoctor_WAR_bookingHomepageportlet_action=view_message&_searchDoctor_WAR_bookingHomepageportlet_doctorId=54615" }
+    ],
     rating: 4,
     badge: "BNCT",
     badgeColor: "bg-amber-600",
