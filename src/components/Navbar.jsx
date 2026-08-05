@@ -111,7 +111,7 @@ export const Navbar = () => {
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
-                    className={`text-[15px] font-bold transition-colors hover:text-blue-700 ${
+                    className={`text-[17px] font-black transition-colors hover:text-blue-700 ${
                       isActive ? 'text-blue-700' : 'text-slate-800 dark:text-slate-200'
                     }`}
                   >

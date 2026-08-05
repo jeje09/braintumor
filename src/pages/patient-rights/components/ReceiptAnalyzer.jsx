@@ -147,7 +147,7 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
           hospital_name: cleanData.basicInfo.병원명,
           disease_name: cleanData.basicInfo.병명,
           period: cleanData.basicInfo.입원기간,
-          total_amount: Number(cleanData.basicInfo.진료비총액?.replace(/,/g, '')) || null,
+          total_amount: Number(String(cleanData.basicInfo.진료비총액 || '').replace(/,/g, '')) || null,
           raw_data: cleanData
         }]);
 
