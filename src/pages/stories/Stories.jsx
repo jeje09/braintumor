@@ -1,239 +1,278 @@
-import React, { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { MessageSquare, Heart, ThumbsUp, Plus, CheckCircle2, ShieldCheck, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../context/AuthContext';
+import { MessageSquare, Heart, ThumbsUp, Plus, X, Search, ShieldCheck, User } from 'lucide-react';
+
+const DISEASES = [
+  '교모세포종', '성상세포종', '뇌수막종', '신경초종', '뇌하수체선종',
+  '수모세포종', '배아세포종', '두개인두종', '뇌실막종', '희소돌기교세포종',
+  '전이성 뇌종양', '그외 뇌종양'
+];
+
+const BOARDS = [
+  { id: '우리들의 이야기', icon: <MessageSquare className="w-4 h-4" /> },
+  { id: '질의응답', icon: <Search className="w-4 h-4" /> },
+  { id: '정보나눔', icon: <Heart className="w-4 h-4" /> },
+  { id: '응원합니다', icon: <ThumbsUp className="w-4 h-4" /> }
+];
 
 export const Stories = () => {
-  const { stories, addStory, likeStory } = useApp();
-  const [selectedStory, setSelectedStory] = useState(null);
+  const { user, profile } = useAuth();
+  const [activeBoard, setActiveBoard] = useState('우리들의 이야기');
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Modals
   const [isWriteOpen, setIsWriteOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
 
+  // Write Form
   const [formData, setFormData] = useState({
+    category: DISEASES[0],
     title: '',
-    author: '',
-    role: 'GBM 환자',
-    category: '장기 생존',
-    summary: '',
-    content: '',
-    tags: 'GBM, 희망, 투병'
+    content: ''
   });
 
-  const handleSubmit = (e) => {
+  const fetchPosts = async () => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('posts')
+        .select(`
+          *,
+          profiles:author_id (nickname, role)
+        `)
+        .eq('board_type', activeBoard)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setPosts(data || []);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, [activeBoard]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.content) return;
-    addStory({
-      ...formData,
-      image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=800&q=80",
-      tags: formData.tags.split(',').map(t => t.trim())
-    });
-    setIsWriteOpen(false);
-    setFormData({ title: '', author: '', role: 'GBM 환자', category: '장기 생존', summary: '', content: '', tags: 'GBM, 희망' });
+    if (!user || !profile) {
+      alert("로그인 및 프로필 설정이 필요합니다.");
+      return;
+    }
+
+    const isCategoryRequired = ['우리들의 이야기', '질의응답'].includes(activeBoard);
+    
+    try {
+      const { error } = await supabase.from('posts').insert({
+        board_type: activeBoard,
+        category: isCategoryRequired ? formData.category : null,
+        title: formData.title,
+        content: formData.content,
+        author_id: user.id
+      });
+
+      if (error) throw error;
+      
+      setIsWriteOpen(false);
+      setFormData({ category: DISEASES[0], title: '', content: '' });
+      fetchPosts(); // Refresh list
+    } catch (e) {
+      console.error(e);
+      alert('게시글 등록에 실패했습니다.');
+    }
+  };
+
+  const handleLike = async (postId, currentLikes) => {
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    // 간단한 좋아요 증가 (실제로는 likes 테이블을 별도로 관리하는 것이 좋음)
+    const { error } = await supabase
+      .from('posts')
+      .update({ likes_count: (currentLikes || 0) + 1 })
+      .eq('id', postId);
+      
+    if (!error) {
+      setPosts(posts.map(p => p.id === postId ? { ...p, likes_count: (p.likes_count || 0) + 1 } : p));
+      if (selectedPost && selectedPost.id === postId) {
+        setSelectedPost({ ...selectedPost, likes_count: (selectedPost.likes_count || 0) + 1 });
+      }
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const d = new Date(dateString);
+    return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
   };
 
   return (
-    <div className="space-y-10 pb-16">
+    <div className="space-y-8 pb-16">
       
       {/* Header */}
       <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-sm font-bold">
-            <Heart className="w-3.5 h-3.5 text-slate-500 fill-slate-500" />
-            <span>서로에게 힘이 되는 이야기</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 text-sm font-bold">
+            <Heart className="w-3.5 h-3.5" />
+            <span>함께 나누는 희망과 정보</span>
           </div>
           <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-            희망 이야기 & 투병 수기
+            통합 커뮤니티
           </h1>
           <p className="text-sm text-slate-500 max-w-xl">
-            교모세포종 7년 장기 생존자부터 환자 곁을 지키는 보호자 이야기까지. 혼자가 아님을 확인하세요.
+            환자와 보호자가 함께 모여 아픔을 나누고, 소중한 정보와 응원을 공유하는 공간입니다.
           </p>
         </div>
 
         <button
-          onClick={() => setIsWriteOpen(true)}
-          className="px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-sm shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2 whitespace-nowrap"
+          onClick={() => {
+            if (!user || !profile) {
+              alert("먼저 로그인 및 역할을 설정해주세요.");
+              return;
+            }
+            setIsWriteOpen(true);
+          }}
+          className="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm shadow-lg shadow-indigo-500/20 transition-all flex items-center gap-2 whitespace-nowrap"
         >
           <Plus className="w-4 h-4" />
-          <span>희망 이야기 나누기</span>
+          <span>{activeBoard}에 글쓰기</span>
         </button>
       </section>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {stories.map((st) => (
-          <article
-            key={st.id}
-            onClick={() => setSelectedStory(st)}
-            className="glass-card p-6 rounded-3xl cursor-pointer hover:shadow-2xl border border-amber-100 dark:border-slate-800 transition-all duration-300 space-y-4 flex flex-col justify-between"
+      {/* Board Tabs */}
+      <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-2">
+        {BOARDS.map(board => (
+          <button
+            key={board.id}
+            onClick={() => setActiveBoard(board.id)}
+            className={`flex items-center gap-2 px-5 py-3 rounded-full font-bold text-sm transition-all whitespace-nowrap ${
+              activeBoard === board.id 
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-md' 
+                : 'bg-white dark:bg-slate-800 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+            }`}
           >
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                  {st.category}
-                </span>
-                <span className="text-sm text-slate-400">{st.date}</span>
-              </div>
-
-              <h3 className="text-lg font-black text-slate-900 dark:text-white leading-snug hover:text-amber-600 transition-colors">
-                {st.title}
-              </h3>
-
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-500">
-                <span>{st.author}</span>
-                <span>•</span>
-                <span className="text-sky-600 dark:text-sky-400 font-bold">{st.role}</span>
-              </div>
-
-              <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">
-                "{st.summary}"
-              </p>
-            </div>
-
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <button
-                onClick={(e) => { e.stopPropagation(); likeStory(st.id); }}
-                className="flex items-center gap-1.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-slate-500 transition-colors"
-              >
-                <ThumbsUp className="w-4 h-4 text-slate-500" />
-                <span>희망 공감 {st.likes || 0}</span>
-              </button>
-
-              <span className="text-sm font-bold text-amber-600 dark:text-amber-400">
-                자세히 읽기 →
-              </span>
-            </div>
-          </article>
+            {board.icon}
+            {board.id}
+          </button>
         ))}
       </div>
 
-      {/* Story Detail Modal */}
-      {selectedStory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-scale-in">
-          <div className="bg-white dark:bg-slate-900 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-8 space-y-5 border border-slate-200 dark:border-slate-800 relative shadow-2xl">
-            <button
-              onClick={() => setSelectedStory(null)}
-              className="absolute top-5 right-5 p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition-colors text-slate-500"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="space-y-2">
-              <span className="text-sm font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                {selectedStory.category}
-              </span>
-              <h2 className="text-2xl font-black text-slate-900 dark:text-white leading-snug">
-                {selectedStory.title}
-              </h2>
-              <p className="text-sm text-slate-400">
-                {selectedStory.author} ({selectedStory.role}) · {selectedStory.date}
-              </p>
-            </div>
-
-            <div className="p-4 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-900/50 text-sm font-medium text-amber-900 dark:text-amber-200 leading-relaxed">
-              💡 "{selectedStory.summary}"
-            </div>
-
-            <div className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line space-y-3">
-              {selectedStory.content}
-            </div>
-
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-              <button
-                onClick={() => setSelectedStory(null)}
-                className="px-6 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-bold hover:bg-slate-200 transition-colors"
-              >
-                닫기
-              </button>
-            </div>
+      {/* Post List */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+        {isLoading ? (
+          <div className="py-20 flex justify-center text-slate-400">로딩 중...</div>
+        ) : posts.length === 0 ? (
+          <div className="py-20 text-center text-slate-500">
+            아직 등록된 게시글이 없습니다. 첫 번째 글을 남겨주세요!
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="divide-y divide-slate-100 dark:divide-slate-800/50">
+            {posts.map(post => (
+              <div 
+                key={post.id}
+                onClick={() => setSelectedPost(post)}
+                className="p-5 sm:p-6 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors flex flex-col sm:flex-row gap-4 sm:items-center justify-between group"
+              >
+                <div className="space-y-2 flex-1">
+                  <div className="flex items-center gap-2">
+                    {post.category && (
+                      <span className="px-2.5 py-1 text-xs font-bold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 rounded-md">
+                        {post.category}
+                      </span>
+                    )}
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      {post.title}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-slate-500 line-clamp-1">{post.content}</p>
+                </div>
+                
+                <div className="flex items-center gap-4 text-sm text-slate-500 sm:text-right shrink-0">
+                  <div className="flex items-center gap-1.5 font-medium bg-slate-50 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-700">
+                    {post.profiles?.role === '환자' ? <User className="w-3.5 h-3.5 text-blue-500" /> : <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />}
+                    <span className="text-slate-700 dark:text-slate-300">{post.profiles?.nickname || '익명'}</span>
+                    <span className="text-xs text-slate-400 ml-1">({post.profiles?.role})</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="flex items-center gap-1"><ThumbsUp className="w-3.5 h-3.5" /> {post.likes_count || 0}</span>
+                    <span>{formatDate(post.created_at)}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
-      {/* Write Story Modal */}
+      {/* Write Modal */}
       {isWriteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-scale-in">
-          <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-3xl p-6 sm:p-8 space-y-4 border border-slate-200 dark:border-slate-800 relative shadow-2xl">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-black text-slate-900 dark:text-white">희망 이야기 등록</h3>
+          <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl p-6 sm:p-8 space-y-5 border border-slate-200 dark:border-slate-800 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+              <h3 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <Plus className="w-5 h-5 text-indigo-500" /> {activeBoard} 글쓰기
+              </h3>
               <button type="button" onClick={() => setIsWriteOpen(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3 text-sm">
+            <div className="space-y-4">
+              {['우리들의 이야기', '질의응답'].includes(activeBoard) && (
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">말머리 (질환 선택)</label>
+                  <select
+                    required
+                    value={formData.category}
+                    onChange={(e) => setFormData({...formData, category: e.target.value})}
+                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  >
+                    {DISEASES.map(d => <option key={d} value={d}>{d}</option>)}
+                  </select>
+                </div>
+              )}
+
               <div>
-                <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">제목</label>
+                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">제목</label>
                 <input
                   type="text"
                   required
                   value={formData.title}
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  placeholder="예: 교모세포종 진단 후 3년, 일상을 되찾은 이야기"
-                  className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">작성자 (익명 가능)</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.author}
-                    onChange={(e) => setFormData({...formData, author: e.target.value})}
-                    placeholder="예: 이○○ (50대)"
-                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">구분</label>
-                  <select
-                    value={formData.role}
-                    onChange={(e) => setFormData({...formData, role: e.target.value})}
-                    className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
-                  >
-                    <option value="GBM 환자">GBM 환자</option>
-                    <option value="뇌종양 환자">뇌종양 환자</option>
-                    <option value="보호자">보호자</option>
-                    <option value="의료진/전문의">의료진/전문의</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">한 줄 요약</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.summary}
-                  onChange={(e) => setFormData({...formData, summary: e.target.value})}
-                  placeholder="이야기의 핵심 요약을 작성해 주세요."
-                  className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
+                  placeholder="제목을 입력하세요"
+                  className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">상세 이야기</label>
+                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">내용</label>
                 <textarea
                   required
-                  rows={5}
+                  rows={8}
                   value={formData.content}
                   onChange={(e) => setFormData({...formData, content: e.target.value})}
-                  placeholder="비슷한 길을 걷는 환우와 보호자들에게 전하고 싶은 용기와 정보를 적어주세요."
-                  className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
+                  placeholder="따뜻한 마음으로 소통해주세요."
+                  className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
                 />
               </div>
             </div>
 
-            <div className="pt-2 flex justify-end gap-2">
+            <div className="pt-4 flex justify-end gap-2 border-t border-slate-100 dark:border-slate-800">
               <button
                 type="button"
                 onClick={() => setIsWriteOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-bold"
+                className="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-bold"
               >
                 취소
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-sm font-extrabold shadow-md"
+                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-black shadow-md"
               >
                 등록하기
               </button>
@@ -242,6 +281,60 @@ export const Stories = () => {
         </div>
       )}
 
+      {/* Post Detail Modal */}
+      {selectedPost && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-scale-in">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-8 space-y-6 border border-slate-200 dark:border-slate-800 relative shadow-2xl">
+            <button
+              onClick={() => setSelectedPost(null)}
+              className="absolute top-6 right-6 p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition-colors text-slate-500"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="space-y-3 pr-12 border-b border-slate-100 dark:border-slate-800 pb-6">
+              {selectedPost.category && (
+                <span className="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold">
+                  {selectedPost.category}
+                </span>
+              )}
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white leading-snug">
+                {selectedPost.title}
+              </h2>
+              
+              <div className="flex items-center gap-3 text-sm">
+                <div className="flex items-center gap-1.5 font-bold text-slate-700 dark:text-slate-300">
+                  {selectedPost.profiles?.role === '환자' ? <User className="w-4 h-4 text-blue-500" /> : <ShieldCheck className="w-4 h-4 text-emerald-500" />}
+                  {selectedPost.profiles?.nickname || '익명'} 
+                  <span className="text-slate-400 font-medium">({selectedPost.profiles?.role})</span>
+                </div>
+                <span className="text-slate-300 dark:text-slate-600">|</span>
+                <span className="text-slate-500">{formatDate(selectedPost.created_at)}</span>
+              </div>
+            </div>
+
+            <div className="text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line min-h-[200px]">
+              {selectedPost.content}
+            </div>
+
+            <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <button
+                onClick={() => handleLike(selectedPost.id, selectedPost.likes_count)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 dark:bg-pink-900/20 dark:hover:bg-pink-900/40 transition-colors font-bold text-sm border border-pink-100 dark:border-pink-900/50"
+              >
+                <Heart className="w-4 h-4" /> 공감 {selectedPost.likes_count || 0}
+              </button>
+
+              <button
+                onClick={() => setSelectedPost(null)}
+                className="px-6 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-bold hover:bg-slate-200 transition-colors"
+              >
+                목록으로
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

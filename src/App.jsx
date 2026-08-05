@@ -16,6 +16,8 @@ import { Admin } from './pages/admin/Admin';
 import { Support } from './pages/support/Support';
 import { PatientRights } from './pages/patient-rights/PatientRights';
 
+import { RoleSetupModal } from './components/RoleSetupModal';
+
 const MainContent = () => {
   const { activeTab } = useApp();
   
@@ -50,6 +52,7 @@ export default function App() {
       <AppProvider>
         <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
           <Navbar />
+          <RoleSetupModal />
           <div className="flex-1">
             <MainContent />
           </div>
