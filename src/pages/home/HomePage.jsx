@@ -7,7 +7,7 @@ import {
 const CAROUSEL_IMAGES = [
   {
     url: "/banner_community_kr.png",
-    title: "암과 함께 살아가는 삶",
+    title: "뇌종양과 함께 살아가는 삶",
     subtitle: "환자와 보호자가 서로를 지지하고 격려하는 따뜻한 공동체입니다."
   },
   {
