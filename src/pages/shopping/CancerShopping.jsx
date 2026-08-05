@@ -9,7 +9,7 @@ export const CancerShopping = () => {
   const categories = ['전체', '편안한 휴식', '바른 영양', '안전한 이동', '뷰티·위생', '생활 편의'];
 
   const categoryDescriptions = {
-    '전체': '항암 치료와 요양 생활의 질을 높여주는 맞춤형 필수품들입니다.',
+    '전체': '뇌종양 환우분들의 일상 속 편안함과 영양을 든든하게 채워주는 건강 용품들입니다.',
     '편안한 휴식': '가구 및 침구류 — 안정적인 상체 거치 및 편안한 수면 자세 유지용',
     '바른 영양': '식사 대용 및 영양 보충식 — 기력 저하 시 균형 잡힌 영양 공급 및 식사 대용',
     '안전한 이동': '거동 및 실내외 보행 보조 — 낙상 사고 예방 및 안전한 일상 이동 보조',
@@ -31,10 +31,10 @@ export const CancerShopping = () => {
           <span>환우 & 보호자 동행 쇼핑</span>
         </div>
         <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-          항암 케어 필수품 & 엄선 웰니스 용품
+          환우 맞춤 영양 & 건강 웰니스 용품
         </h1>
         <p className="text-sm text-slate-500 max-w-2xl leading-relaxed">
-          항암 구역감 완화 생강 캔디부터 부드러운 항암 두건, 오메가-3, 특수 체온 가이드까지. 환자의 편안함과 영양을 돕는 필수 케어 제품입니다.
+          뇌종양 환우분들을 위한 프리미엄 영양식, 건강 보조제, 면역력 증진 식품 및 일상의 편안함을 돕는 맞춤형 건강 용품들을 엄선했습니다.
         </p>
       </section>
 
