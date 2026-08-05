@@ -48,6 +48,37 @@ export const Nutrition = () => {
         </div>
       </section>
 
+      {/* Coupang Partners Banner */}
+      <section className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 border border-blue-100 dark:border-blue-900/50 flex flex-col md:flex-row items-center gap-6 justify-between hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+        {/* Decorative background element */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl"></div>
+        
+        <div className="flex flex-col sm:flex-row items-center sm:items-start md:items-center gap-6 z-10 text-center sm:text-left">
+          <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm shrink-0 flex items-center justify-center">
+            <img 
+              src="https://image10.coupangcdn.com/image/coupang/common/logo_coupang_w350.png" 
+              alt="Coupang" 
+              className="w-32 h-auto object-contain"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">건강한 식재료, 로켓배송으로 빠르고 신선하게!</h3>
+            <p className="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+              이곳을 통해서 쿠팡에서 물품을 구매하시면 <strong className="text-blue-600 dark:text-blue-400">사이트 운영비를 후원</strong>하실 수 있습니다. (추가 비용 없음)
+            </p>
+          </div>
+        </div>
+        
+        <a 
+          href="https://link.coupang.com/a/fYFHJwXmcC" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="shrink-0 px-8 py-4 bg-[#0073E9] hover:bg-[#005bb5] text-white font-bold rounded-2xl shadow-lg transition-all hover:scale-105 active:scale-95 w-full md:w-auto text-center z-10 flex items-center justify-center gap-2 text-lg"
+        >
+          <span>쿠팡에서 쇼핑하기</span>
+        </a>
+      </section>
+
       {/* Food Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {nutrition.map((item) => (
