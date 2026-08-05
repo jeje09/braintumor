@@ -130,14 +130,66 @@ export const Support = () => {
           </div>
         </div>
 
-        {/* 3. 재난적 의료비 */}
+        {/* 3. 성인 암 환자 의료비 지원사업 */}
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-teal-50 dark:bg-teal-900/30 rounded-2xl shrink-0">
+              <Stethoscope className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            </div>
+            <div className="space-y-4 flex-1">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">3. 성인 암 환자 의료비 지원사업 (보건복지부)</h3>
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                만 18세 이상의 저소득층 암 환자를 대상으로 의료급여수급자 및 차상위 본인부담경감대상자에게 의료비를 지원하는 국가 사업입니다.
+              </p>
+              <p className="text-sm font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg inline-block mt-1">
+                🏢 담당 기관: 보건복지부 및 관할 보건소
+              </p>
+              
+              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+                <li><strong>지원 대상:</strong> 의료급여수급자 및 차상위 본인부담경감대상자 중 만 18세 이상 암환자 (당연 선정)</li>
+                <li><strong>지원 암종:</strong> 뇌종양을 포함한 전체 암종</li>
+                <li><strong>지원 금액 및 기간:</strong> 급여·비급여 구분 없이, <strong>연간 최대 300만 원</strong> (3년간 연속 지원)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. 긴급복지지원 */}
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-2xl shrink-0">
+              <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div className="space-y-4 flex-1">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">4. 긴급복지지원</h3>
+                <a href="https://www.bokjiro.go.kr" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-full hover:bg-purple-100 transition-colors">상세보기 ↗</a>
+              </div>
+              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                갑작스러운 위기 상황(중한 질병, 주소득자 실직 등)으로 생계 유지가 곤란한 저소득 가구에 생계·의료·주거비 등을 <strong>선지원 후 심사</strong> 방식으로 신속하게 지원하는 제도입니다.
+              </p>
+              <p className="text-sm font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg inline-block mt-1">
+                🏢 담당 기관: 관할 시·군·구청, 행정복지센터 방문 또는 보건복지상담센터(129)
+              </p>
+              
+              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
+                <li><strong>선정 기준:</strong> 기준 중위소득 75% 이하, 재산 및 금융재산 기준(4인가구 약 1,210만원 이하) 동시 충족</li>
+                <li><strong>의료지원:</strong> 300만 원 이내 (각종 검사 및 치료비, 최대 2회 지원)</li>
+                <li><strong>생계지원:</strong> 1인가구 78만 원 / 4인가구 199만 원 (통상 3개월)</li>
+                <li><strong>기타지원:</strong> 주거지원(최대 12회), 동절기 연료비, 해산/장제비 등</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 5. 재난적 의료비 */}
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
           <div className="flex items-start gap-4">
             <div className="p-3 bg-rose-50 dark:bg-rose-900/30 rounded-2xl shrink-0">
               <AlertTriangle className="w-6 h-6 text-rose-600 dark:text-rose-400" />
             </div>
             <div className="space-y-4 flex-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">3. 재난적 의료비 지원사업</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">5. 재난적 의료비 지원사업</h3>
               <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 소득수준 대비 과도한 의료비(비급여 등)가 발생한 가구의 경제적 파탄을 막기 위해 <strong>비급여를 포함한 의료비</strong>의 일부를 국가가 지원합니다. (국민건강보험공단 지사 신청)
               </p>
@@ -150,54 +202,6 @@ export const Support = () => {
                 <li><strong>지원 내용:</strong> 소득 구간에 따라 본인부담 의료비(건강보험 적용 제외 비급여 등)의 50~80% 지원</li>
                 <li><strong>지원 한도:</strong> 연간 최대 5천만 원 한도 (필요시 개별 심사를 거쳐 추가 지원 가능)</li>
                 <li className="text-rose-600 dark:text-rose-400 font-bold">주의사항: 실손보험 등 민간 보험에서 수령(예정)인 금액은 전액 공제 후 지원됩니다.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* 4. 보건소 암환자 의료비 */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-2xl shrink-0">
-              <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-            </div>
-            <div className="space-y-4 flex-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">4. 보건소 암환자 의료비 지원</h3>
-              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
-                저소득층 암환자가 치료를 포기하지 않도록 주민등록지 관할 보건소에서 의료비를 지원하는 제도입니다.
-              </p>
-              <p className="text-sm font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg inline-block mt-1">
-                🏢 담당 기관: 각 시·군·구 관할 보건소
-              </p>
-              
-              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
-                <li><strong>의료급여수급자 및 차상위계층:</strong> 연간 최대 300만 원 한도로 연속 최장 3년 지원 (급여/비급여 구분 없이 지원)</li>
-                <li><strong>건강보험가입자:</strong> 2021년 7월 1일 기준 변경. 기준 충족 시 일부 예외적 한시 지원. (상세 내역은 관할 보건소 문의 필수)</li>
-                <li><strong>신청 방법:</strong> 환자 주민등록지 관할 보건소 직접 방문 상담 및 신청</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* 5. 성인 암 환자 의료비 지원사업 */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-teal-50 dark:bg-teal-900/30 rounded-2xl shrink-0">
-              <Stethoscope className="w-6 h-6 text-teal-600 dark:text-teal-400" />
-            </div>
-            <div className="space-y-4 flex-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">5. 성인 암 환자 의료비 지원사업 (보건복지부)</h3>
-              <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
-                만 18세 이상의 저소득층 암 환자를 대상으로 의료급여수급자 및 차상위 본인부담경감대상자에게 의료비를 지원하는 국가 사업입니다.
-              </p>
-              <p className="text-sm font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg inline-block mt-1">
-                🏢 담당 기관: 보건복지부 및 관할 보건소
-              </p>
-              
-              <ul className="list-disc list-inside text-base text-slate-600 dark:text-slate-300 space-y-2 ml-2">
-                <li><strong>지원 대상:</strong> 의료급여수급자 및 차상위 본인부담경감대상자 중 만 18세 이상 암환자 (당연 선정)</li>
-                <li><strong>지원 암종:</strong> 뇌종양을 포함한 전체 암종</li>
-                <li><strong>지원 금액 및 기간:</strong> 급여·비급여 구분 없이, <strong>연간 최대 300만 원</strong> (3년간 연속 지원)</li>
               </ul>
             </div>
           </div>
