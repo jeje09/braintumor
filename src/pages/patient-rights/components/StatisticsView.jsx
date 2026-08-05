@@ -31,6 +31,20 @@ export const StatisticsView = ({ analyzedReceipt }) => {
 
   const currentDisease = analyzedReceipt?.basicInfo?.병명 || '뇌종양';
 
+  const diseaseBreakdown = useMemo(() => {
+    if (receipts.length === 0) return [];
+    
+    const counts = {};
+    receipts.forEach(r => {
+      const name = r.disease_name?.trim() || '미상';
+      counts[name] = (counts[name] || 0) + 1;
+    });
+
+    return Object.entries(counts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [receipts]);
+
   const stats = useMemo(() => {
     if (receipts.length === 0) return null;
 
@@ -231,6 +245,19 @@ export const StatisticsView = ({ analyzedReceipt }) => {
       </div>
 
       <div className="p-6 md:p-8">
+        {diseaseBreakdown && diseaseBreakdown.length > 0 && (
+          <div className="mb-8 pb-6 border-b border-slate-200 dark:border-slate-700">
+            <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 mb-3">전체 질환별 누적 등록 현황</h3>
+            <div className="flex flex-wrap gap-2">
+              {diseaseBreakdown.map((item, idx) => (
+                <div key={idx} className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-lg text-sm font-bold border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-1.5">
+                  {item.name} <span className="text-indigo-600 dark:text-indigo-400 font-black">[{item.count}명]</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-12 text-slate-400">
             <Loader2 className="w-8 h-8 animate-spin mb-4 text-indigo-500" />

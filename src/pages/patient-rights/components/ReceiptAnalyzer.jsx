@@ -157,6 +157,15 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
   };
 
   const handleSave = async () => {
+    if (!formData.basicInfo.병원명 || !formData.basicInfo.병원명.trim()) {
+      setError('병원명을 반드시 입력해주세요.');
+      return;
+    }
+    if (!formData.basicInfo.병명 || !formData.basicInfo.병명.trim()) {
+      setError('병명(진단명)을 반드시 입력해주세요.');
+      return;
+    }
+
     setIsSaving(true);
     setError('');
     setSaveSuccess(false);
