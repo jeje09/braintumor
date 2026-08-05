@@ -54,9 +54,20 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
     }
   };
 
-  const parseNumberOrEmpty = (val) => {
+  const formatNumberWithCommas = (value) => {
+    if (!value) return '';
+    const numberStr = String(value).replace(/[^\d]/g, '');
+    if (!numberStr) return '';
+    return Number(numberStr).toLocaleString('ko-KR');
+  };
+
+  const parseNumberOrEmpty = (val, isMoney = false) => {
     if (val === null || val === undefined || val === '') return '';
-    return String(val);
+    const strVal = String(val);
+    if (isMoney) {
+      return formatNumberWithCommas(strVal);
+    }
+    return strVal;
   };
 
   const handleAnalyze = async () => {
@@ -75,9 +86,10 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
         const newForm = JSON.parse(JSON.stringify(initialFormState));
         
         if (result.basicInfo) {
+          const moneyFields = ['진료비총액', '본인부담금총액', '공단부담금총액', '전액본인부담금총액', '비급여총액'];
           Object.keys(newForm.basicInfo).forEach(key => {
             if (result.basicInfo[key] !== undefined) {
-              newForm.basicInfo[key] = parseNumberOrEmpty(result.basicInfo[key]);
+              newForm.basicInfo[key] = parseNumberOrEmpty(result.basicInfo[key], moneyFields.includes(key));
             }
           });
         }
@@ -85,10 +97,10 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
         if (result.items && Array.isArray(result.items)) {
           newForm.items = result.items.map(item => ({
             name: item.name || '',
-            본인부담금: parseNumberOrEmpty(item.본인부담금),
-            공단부담금: parseNumberOrEmpty(item.공단부담금),
-            전액본인부담금: parseNumberOrEmpty(item.전액본인부담금),
-            비급여: parseNumberOrEmpty(item.비급여)
+            본인부담금: parseNumberOrEmpty(item.본인부담금, true),
+            공단부담금: parseNumberOrEmpty(item.공단부담금, true),
+            전액본인부담금: parseNumberOrEmpty(item.전액본인부담금, true),
+            비급여: parseNumberOrEmpty(item.비급여, true)
           }));
         }
 
@@ -103,16 +115,28 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
   };
 
   const handleBasicInfoChange = (key, value) => {
+    const moneyFields = ['진료비총액', '본인부담금총액', '공단부담금총액', '전액본인부담금총액', '비급여총액'];
+    let finalValue = value;
+    if (moneyFields.includes(key)) {
+      finalValue = formatNumberWithCommas(value);
+    }
+    
     setFormData(prev => ({
       ...prev,
-      basicInfo: { ...prev.basicInfo, [key]: value }
+      basicInfo: { ...prev.basicInfo, [key]: finalValue }
     }));
     setSaveSuccess(false);
   };
 
   const handleItemChange = (index, field, value) => {
+    const moneyFields = ['본인부담금', '공단부담금', '전액본인부담금', '비급여'];
+    let finalValue = value;
+    if (moneyFields.includes(field)) {
+      finalValue = formatNumberWithCommas(value);
+    }
+
     const newItems = [...formData.items];
-    newItems[index] = { ...newItems[index], [field]: value };
+    newItems[index] = { ...newItems[index], [field]: finalValue };
     setFormData(prev => ({ ...prev, items: newItems }));
     setSaveSuccess(false);
   };
