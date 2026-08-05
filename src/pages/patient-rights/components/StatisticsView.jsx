@@ -37,6 +37,7 @@ export const StatisticsView = ({ analyzedReceipt }) => {
     const counts = {};
     receipts.forEach(r => {
       const name = r.disease_name?.trim() || '미상';
+      if (name.toLowerCase() === 'test' || name === '테스트') return; // 'test' 항목 제외
       counts[name] = (counts[name] || 0) + 1;
     });
 
