@@ -6,6 +6,7 @@ import { supabase } from '../../../lib/supabase';
 // 빈 항목 템플릿
 const emptyItemTemplate = {
   name: '',
+  group: '기본항목',
   본인부담금: '',
   공단부담금: '',
   전액본인부담금: '',
@@ -97,6 +98,7 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
         if (result.items && Array.isArray(result.items)) {
           newForm.items = result.items.map(item => ({
             name: item.name || '',
+            group: item.group && item.group.includes('선택') ? '선택항목' : '기본항목',
             본인부담금: parseNumberOrEmpty(item.본인부담금, true),
             공단부담금: parseNumberOrEmpty(item.공단부담금, true),
             전액본인부담금: parseNumberOrEmpty(item.전액본인부담금, true),
@@ -141,10 +143,10 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
     setSaveSuccess(false);
   };
 
-  const addItemRow = () => {
+  const addItemRow = (groupName = '기본항목') => {
     setFormData(prev => ({
       ...prev,
-      items: [...prev.items, { ...emptyItemTemplate }]
+      items: [...prev.items, { ...emptyItemTemplate, group: groupName }]
     }));
   };
 
@@ -159,7 +161,7 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
     setError('');
     setSaveSuccess(false);
     try {
-      // 빈 항목 제거 (이름이 없거나 모든 금액이 없는 경우)
+      // 빈 항목 제거
       const cleanData = JSON.parse(JSON.stringify(formData));
       cleanData.items = cleanData.items.filter(item => 
         item.name.trim() !== '' || item.본인부담금 || item.공단부담금 || item.전액본인부담금 || item.비급여
@@ -178,9 +180,9 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
       if (dbError) throw dbError;
       
       setSaveSuccess(true);
-      // 부모 컴포넌트에 데이터 전달 (통계용)
+      // 부모 컴포넌트에 데이터 전달하여 통계 새로고침 트리거
       if (onAnalysisComplete) {
-        onAnalysisComplete(cleanData);
+        onAnalysisComplete({ ...cleanData, _refreshTrigger: Date.now() });
       }
     } catch (err) {
       console.error(err);
@@ -189,6 +191,47 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
       setIsSaving(false);
     }
   };
+
+  // 항목 그룹화 로직
+  const basicItems = formData.items.map((item, idx) => ({ ...item, originalIndex: idx })).filter(item => item.group === '기본항목');
+  const optionalItems = formData.items.map((item, idx) => ({ ...item, originalIndex: idx })).filter(item => item.group === '선택항목');
+
+  const renderItemRow = (item) => (
+    <div key={item.originalIndex} className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col lg:flex-row lg:items-center gap-4 relative group hover:border-indigo-200 transition-colors">
+      <div className="flex-1">
+        <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">항목명</label>
+        <input type="text" value={item.name} onChange={(e) => handleItemChange(item.originalIndex, 'name', e.target.value)}
+          placeholder="예: 조제 및 투약료(행위료)" className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 font-bold focus:ring-2 focus:ring-indigo-500 outline-none transition-all" />
+      </div>
+      
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:w-[65%]">
+        <div>
+          <label className="block text-[11px] font-bold text-slate-500 mb-1 truncate">일부본인: 본인부담</label>
+          <input type="text" value={item.본인부담금} onChange={(e) => handleItemChange(item.originalIndex, '본인부담금', e.target.value)}
+            className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="-" />
+        </div>
+        <div>
+          <label className="block text-[11px] font-bold text-slate-500 mb-1 truncate">일부본인: 공단부담</label>
+          <input type="text" value={item.공단부담금} onChange={(e) => handleItemChange(item.originalIndex, '공단부담금', e.target.value)}
+            className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="-" />
+        </div>
+        <div>
+          <label className="block text-[11px] font-bold text-slate-500 mb-1 truncate">급여: 전액본인</label>
+          <input type="text" value={item.전액본인부담금} onChange={(e) => handleItemChange(item.originalIndex, '전액본인부담금', e.target.value)}
+            className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="-" />
+        </div>
+        <div>
+          <label className="block text-[11px] font-bold text-amber-600 mb-1 truncate">비급여</label>
+          <input type="text" value={item.비급여} onChange={(e) => handleItemChange(item.originalIndex, '비급여', e.target.value)}
+            className="w-full p-2.5 rounded-lg border border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20 text-sm font-bold text-amber-900 dark:text-amber-100 focus:ring-2 focus:ring-amber-500 outline-none" placeholder="-" />
+        </div>
+      </div>
+
+      <button onClick={() => removeItemRow(item.originalIndex)} className="absolute -top-3 -right-3 lg:static lg:w-auto bg-white lg:bg-transparent lg:p-2 p-1.5 rounded-full border border-slate-200 lg:border-none text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors shadow-sm lg:shadow-none" title="삭제">
+        <Trash2 className="w-4 h-4" />
+      </button>
+    </div>
+  );
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
@@ -344,61 +387,43 @@ export const ReceiptAnalyzer = ({ onAnalysisComplete }) => {
             </div>
 
             {/* 세부 진료 항목 (빈칸 제외) */}
-            <div className="bg-slate-50 dark:bg-slate-800/50 p-6 md:p-8 rounded-2xl border border-slate-200 dark:border-slate-700">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-                <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                  <div className="w-2 h-6 bg-indigo-500 rounded-full"></div>
-                  발생한 세부 진료 내역
-                </h3>
-                <button onClick={addItemRow} className="text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold py-2 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-sm">
-                  <PlusCircle className="w-4 h-4" /> 항목 직접 추가하기
-                </button>
-              </div>
-
-              {formData.items.length === 0 ? (
+            <div className="bg-slate-50 dark:bg-slate-800/50 p-6 md:p-8 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col gap-8">
+              
+              {formData.items.length === 0 && (
                 <div className="py-12 text-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900/50 text-slate-400 font-medium">
-                  분석을 실행하면 금액이 발생한 항목들만 이곳에 기록됩니다.<br/>짜여진 표가 아니라 빈칸을 제외한 내용만 표시됩니다.
+                  분석을 실행하면 금액이 발생한 항목들만 이곳에 기록됩니다.<br/>기본항목과 선택항목으로 나뉘어 표시됩니다.
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {formData.items.map((item, idx) => (
-                    <div key={idx} className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col lg:flex-row lg:items-center gap-4 relative group hover:border-indigo-200 transition-colors">
-                      
-                      {/* 항목명 */}
-                      <div className="flex-1">
-                        <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">항목명</label>
-                        <input type="text" value={item.name} onChange={(e) => handleItemChange(idx, 'name', e.target.value)}
-                          placeholder="예: 입원료(1인실)" className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 font-bold focus:ring-2 focus:ring-indigo-500 outline-none transition-all" />
-                      </div>
-                      
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:w-[65%]">
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-500 mb-1 truncate">일부본인: 본인부담</label>
-                          <input type="text" value={item.본인부담금} onChange={(e) => handleItemChange(idx, '본인부담금', e.target.value)}
-                            className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="-" />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-500 mb-1 truncate">일부본인: 공단부담</label>
-                          <input type="text" value={item.공단부담금} onChange={(e) => handleItemChange(idx, '공단부담금', e.target.value)}
-                            className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="-" />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-500 mb-1 truncate">급여: 전액본인</label>
-                          <input type="text" value={item.전액본인부담금} onChange={(e) => handleItemChange(idx, '전액본인부담금', e.target.value)}
-                            className="w-full p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="-" />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold text-amber-600 mb-1 truncate">비급여</label>
-                          <input type="text" value={item.비급여} onChange={(e) => handleItemChange(idx, '비급여', e.target.value)}
-                            className="w-full p-2.5 rounded-lg border border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20 text-sm font-bold text-amber-900 dark:text-amber-100 focus:ring-2 focus:ring-amber-500 outline-none" placeholder="-" />
-                        </div>
-                      </div>
+              )}
 
-                      <button onClick={() => removeItemRow(idx)} className="absolute -top-3 -right-3 lg:static lg:w-auto bg-white lg:bg-transparent lg:p-2 p-1.5 rounded-full border border-slate-200 lg:border-none text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors shadow-sm lg:shadow-none" title="삭제">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
+              {/* 기본항목 박스 */}
+              {(basicItems.length > 0 || formData.items.length > 0) && (
+                <div className="bg-white dark:bg-slate-900/50 p-5 rounded-2xl border-2 border-indigo-100 dark:border-indigo-900/30 relative">
+                  <div className="absolute -top-4 left-4 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 font-bold px-4 py-1.5 rounded-lg text-sm shadow-sm flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-indigo-500"></div> 기본항목
+                  </div>
+                  <div className="mt-4 flex flex-col gap-4">
+                    {basicItems.map(item => renderItemRow(item))}
+                    {basicItems.length === 0 && <p className="text-sm text-slate-400 text-center py-4">항목이 없습니다.</p>}
+                    <button onClick={() => addItemRow('기본항목')} className="self-start text-sm bg-indigo-50 text-indigo-600 font-bold py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-indigo-100 transition-colors">
+                      <PlusCircle className="w-4 h-4" /> 기본항목 추가
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* 선택항목 박스 */}
+              {(optionalItems.length > 0 || formData.items.length > 0) && (
+                <div className="bg-white dark:bg-slate-900/50 p-5 rounded-2xl border-2 border-purple-100 dark:border-purple-900/30 relative mt-4">
+                  <div className="absolute -top-4 left-4 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 font-bold px-4 py-1.5 rounded-lg text-sm shadow-sm flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-purple-500"></div> 선택항목
+                  </div>
+                  <div className="mt-4 flex flex-col gap-4">
+                    {optionalItems.map(item => renderItemRow(item))}
+                    {optionalItems.length === 0 && <p className="text-sm text-slate-400 text-center py-4">항목이 없습니다.</p>}
+                    <button onClick={() => addItemRow('선택항목')} className="self-start text-sm bg-purple-50 text-purple-600 font-bold py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-purple-100 transition-colors">
+                      <PlusCircle className="w-4 h-4" /> 선택항목 추가
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
