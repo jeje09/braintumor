@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
-import { MessageSquare, Heart, ThumbsUp, Plus, X, Search, ShieldCheck, User } from 'lucide-react';
+import { MessageSquare, Heart, ThumbsUp, Plus, X, Search, ShieldCheck, User, Send } from 'lucide-react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const DISEASES = [
   '교모세포종', '성상세포종', '뇌수막종', '신경초종', '뇌하수체선종',
@@ -16,6 +18,16 @@ const BOARDS = [
   { id: '응원합니다', icon: <ThumbsUp className="w-4 h-4" /> }
 ];
 
+const QUILL_MODULES = {
+  toolbar: [
+    [{ 'header': [1, 2, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{'list': 'ordered'}, {'list': 'bullet'}],
+    ['link', 'image', 'video'],
+    ['clean']
+  ],
+};
+
 export const Stories = () => {
   const { user, profile } = useAuth();
   const [activeBoard, setActiveBoard] = useState('우리들의 이야기');
@@ -25,6 +37,11 @@ export const Stories = () => {
   // Modals
   const [isWriteOpen, setIsWriteOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  
+  // Comments
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
   // Write Form
   const [formData, setFormData] = useState({
@@ -57,6 +74,60 @@ export const Stories = () => {
   useEffect(() => {
     fetchPosts();
   }, [activeBoard]);
+
+  useEffect(() => {
+    if (selectedPost) {
+      fetchComments(selectedPost.id);
+    } else {
+      setComments([]);
+      setNewComment('');
+    }
+  }, [selectedPost]);
+
+  const fetchComments = async (postId) => {
+    try {
+      const { data, error } = await supabase
+        .from('comments')
+        .select(`
+          *,
+          profiles:author_id (nickname, role)
+        `)
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      setComments(data || []);
+    } catch (e) {
+      console.error('댓글을 불러오지 못했습니다.', e);
+    }
+  };
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    if (!newComment.trim()) return;
+
+    setIsSubmittingComment(true);
+    try {
+      const { error } = await supabase.from('comments').insert({
+        post_id: selectedPost.id,
+        author_id: user.id,
+        content: newComment.trim()
+      });
+
+      if (error) throw error;
+      setNewComment('');
+      fetchComments(selectedPost.id);
+    } catch (e) {
+      console.error(e);
+      alert('댓글 등록에 실패했습니다.');
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -189,7 +260,7 @@ export const Stories = () => {
                       {post.title}
                     </h3>
                   </div>
-                  <p className="text-sm text-slate-500 line-clamp-1">{post.content}</p>
+                  <p className="text-sm text-slate-500 line-clamp-1" dangerouslySetInnerHTML={{ __html: (post.content || '').replace(/<[^>]+>/g, '') }}></p>
                 </div>
                 
                 <div className="flex items-center gap-4 text-sm text-slate-500 sm:text-right shrink-0">
@@ -251,14 +322,16 @@ export const Stories = () => {
 
               <div>
                 <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">내용</label>
-                <textarea
-                  required
-                  rows={8}
-                  value={formData.content}
-                  onChange={(e) => setFormData({...formData, content: e.target.value})}
-                  placeholder="따뜻한 마음으로 소통해주세요."
-                  className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
-                />
+                <div className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 h-[300px] sm:h-[400px]">
+                  <ReactQuill 
+                    theme="snow"
+                    modules={QUILL_MODULES}
+                    value={formData.content}
+                    onChange={(val) => setFormData({...formData, content: val})}
+                    className="h-full pb-10 text-slate-900 dark:text-white"
+                    placeholder="사진과 동영상(유튜브 링크)을 자유롭게 첨부하여 따뜻한 이야기를 공유해주세요."
+                  />
+                </div>
               </div>
             </div>
 
@@ -313,9 +386,10 @@ export const Stories = () => {
               </div>
             </div>
 
-            <div className="text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line min-h-[200px]">
-              {selectedPost.content}
-            </div>
+            <div 
+              className="text-base text-slate-700 dark:text-slate-300 leading-relaxed min-h-[200px] ql-editor px-0"
+              dangerouslySetInnerHTML={{ __html: selectedPost.content }}
+            />
 
             <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <button
@@ -331,6 +405,45 @@ export const Stories = () => {
               >
                 목록으로
               </button>
+            </div>
+
+            {/* Comments Section */}
+            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">댓글 {comments.length}개</h3>
+              
+              <div className="space-y-4 mb-6">
+                {comments.map(comment => (
+                  <div key={comment.id} className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 font-bold text-sm text-slate-700 dark:text-slate-300">
+                        {comment.profiles?.role === '환자' ? <User className="w-3.5 h-3.5 text-blue-500" /> : <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />}
+                        {comment.profiles?.nickname || '익명'}
+                      </div>
+                      <span className="text-xs text-slate-400">{formatDate(comment.created_at)}</span>
+                    </div>
+                    <p className="text-slate-700 dark:text-slate-300 text-sm whitespace-pre-wrap">{comment.content}</p>
+                  </div>
+                ))}
+              </div>
+
+              <form onSubmit={handleCommentSubmit} className="flex gap-2">
+                <input
+                  type="text"
+                  required
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder={user ? "따뜻한 댓글을 남겨보세요..." : "로그인 후 댓글을 작성할 수 있습니다."}
+                  disabled={!user || isSubmittingComment}
+                  className="flex-1 p-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm disabled:opacity-50"
+                />
+                <button
+                  type="submit"
+                  disabled={!user || isSubmittingComment || !newComment.trim()}
+                  className="px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:dark:bg-slate-700 text-white transition-colors flex items-center justify-center shrink-0"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </form>
             </div>
           </div>
         </div>

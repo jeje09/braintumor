@@ -15,6 +15,7 @@ import { Stories } from './pages/stories/Stories';
 import { Admin } from './pages/admin/Admin';
 import { Support } from './pages/support/Support';
 import { PatientRights } from './pages/patient-rights/PatientRights';
+import { MyPage } from './pages/mypage/MyPage';
 
 import { RoleSetupModal } from './components/RoleSetupModal';
 
@@ -41,6 +42,7 @@ const MainContent = () => {
       {activeTab === 'stories'   && <Stories />}
       {activeTab === 'support'   && <Support />}
       {activeTab === 'patient-rights' && <PatientRights />}
+      {activeTab === 'mypage'    && <MyPage />}
       {activeTab === 'admin'     && <Admin />}
     </main>
   );

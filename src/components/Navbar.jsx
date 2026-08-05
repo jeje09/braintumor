@@ -48,7 +48,7 @@ export const Navbar = () => {
               )}
               {user ? (
                 <>
-                  <span className="cursor-pointer hover:text-blue-700 transition-colors">마이페이지</span>
+                  <button onClick={() => handleNavClick('mypage')} className="hover:text-blue-700 transition-colors">마이페이지</button>
                   <div className="w-px h-3 bg-slate-200 dark:bg-slate-700"></div>
                   <button onClick={() => signOut()} className="hover:text-blue-700 transition-colors flex items-center gap-1">
                     로그아웃
@@ -88,16 +88,16 @@ export const Navbar = () => {
             {/* Logo Area */}
             <div
               onClick={() => handleNavClick('home')}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-4 cursor-pointer group"
             >
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img src="/logo.png" alt="logo" className="w-12 h-12 object-contain rounded-md" />
+              <div className="w-16 h-16 flex items-center justify-center">
+                <img src="/logo.png" alt="logo" className="w-16 h-16 object-contain rounded-md" />
               </div>
               <div className="flex flex-col justify-center">
-                <span className="text-[22px] font-black tracking-tight text-[#1E3A8A] dark:text-white leading-none">
+                <span className="text-[28px] font-black tracking-tight text-[#1E3A8A] dark:text-white leading-none">
                   Living with
                 </span>
-                <span className="text-[22px] font-black tracking-tight text-[#1E3A8A] dark:text-white leading-tight mt-1">
+                <span className="text-[28px] font-black tracking-tight text-[#1E3A8A] dark:text-white leading-tight mt-1">
                   Brain Tumor
                 </span>
               </div>
