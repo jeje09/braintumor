@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ShieldCheck, Info } from 'lucide-react';
 import { ReceiptAnalyzer } from './components/ReceiptAnalyzer';
 import { StatisticsView } from './components/StatisticsView';
 
 export const PatientRights = () => {
+  const [analyzedReceipt, setAnalyzedReceipt] = useState(null);
+
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8 animate-fade-in pb-16">
+    <div className="w-full px-4 md:px-8 max-w-[1920px] mx-auto space-y-8 animate-fade-in pb-16">
       
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-indigo-900 to-blue-900 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
@@ -39,10 +41,10 @@ export const PatientRights = () => {
       {/* Main Content Area */}
       <section>
         {/* 1. 나의 의료비 리포트 & 환자 질문 도우미 */}
-        <ReceiptAnalyzer />
+        <ReceiptAnalyzer onAnalysisComplete={setAnalyzedReceipt} />
 
         {/* 2. 익명 의료비 통계 */}
-        <StatisticsView />
+        <StatisticsView analyzedReceipt={analyzedReceipt} />
         
         {/* 3. 투명한 병원 참여 */}
         <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-8 border border-blue-100 dark:border-blue-800/50 flex flex-col md:flex-row items-center justify-between gap-6">
