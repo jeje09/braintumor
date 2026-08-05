@@ -45,7 +45,10 @@ export const Support = () => {
               <CheckCircle2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="space-y-4 flex-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">1. 중증질환자 산정특례 제도</h3>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">1. 중증질환자 산정특례 제도</h3>
+                <a href="https://www.mohw.go.kr/menu.es?mid=a10708030600" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 px-3 py-1.5 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors shrink-0">자세히 보기 ↗</a>
+              </div>
               <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 진료비 부담이 큰 중증질환(암, 뇌혈관질환 등)에 대해 환자가 부담하는 진료비(급여 항목)를 대폭 낮춰주는 건강보험공단의 핵심 제도입니다. 뇌종양 확진 시 병원에서 즉시 등록을 도와줍니다.
               </p>
@@ -91,7 +94,10 @@ export const Support = () => {
               <Landmark className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div className="space-y-4 flex-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">2. 본인부담상한제</h3>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">2. 본인부담상한제</h3>
+                <a href="https://www.nhis.or.kr/nhis/minwon/wbhapa01000m01.do?mode=view&articleNo=10946900" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 dark:text-emerald-400 px-3 py-1.5 rounded-full hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-colors shrink-0">자세히 보기 ↗</a>
+              </div>
               <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 과도한 의료비로 인한 가계의 경제적 부담을 덜어주기 위해 1년간(1월 1일 ~ 12월 31일) 환자가 부담한 건강보험 본인부담금이 개인별 상한액을 초과하는 경우, 그 초과 금액을 국민건강보험공단에서 부담(환급)하는 제도입니다.
               </p>
@@ -137,7 +143,10 @@ export const Support = () => {
               <Stethoscope className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             </div>
             <div className="space-y-4 flex-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">3. 성인 암 환자 의료비 지원사업 (보건복지부)</h3>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">3. 성인 암 환자 의료비 지원사업 (보건복지부)</h3>
+                <a href="https://www.mohw.go.kr/menu.es?mid=a10703010100" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-teal-600 bg-teal-50 dark:bg-teal-900/30 dark:text-teal-400 px-3 py-1.5 rounded-full hover:bg-teal-100 dark:hover:bg-teal-900/50 transition-colors shrink-0">자세히 보기 ↗</a>
+              </div>
               <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 만 18세 이상의 저소득층 암 환자를 대상으로 의료급여수급자 및 차상위 본인부담경감대상자에게 의료비를 지원하는 국가 사업입니다.
               </p>
@@ -161,9 +170,9 @@ export const Support = () => {
               <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div className="space-y-4 flex-1">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4 flex-wrap">
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white">4. 긴급복지지원</h3>
-                <a href="https://www.bokjiro.go.kr" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-full hover:bg-purple-100 transition-colors">상세보기 ↗</a>
+                <a href="https://www.mohw.go.kr/menu.es?mid=a10708010100" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-purple-600 bg-purple-50 dark:bg-purple-900/30 dark:text-purple-400 px-3 py-1.5 rounded-full hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors shrink-0">자세히 보기 ↗</a>
               </div>
               <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 갑작스러운 위기 상황(중한 질병, 주소득자 실직 등)으로 생계 유지가 곤란한 저소득 가구에 생계·의료·주거비 등을 <strong>선지원 후 심사</strong> 방식으로 신속하게 지원하는 제도입니다.
@@ -189,7 +198,10 @@ export const Support = () => {
               <AlertTriangle className="w-6 h-6 text-rose-600 dark:text-rose-400" />
             </div>
             <div className="space-y-4 flex-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">5. 재난적 의료비 지원사업</h3>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">5. 재난적 의료비 지원사업</h3>
+                <a href="https://www.nhis.or.kr/static/html/wbma/c/wbmac0222.html" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-rose-600 bg-rose-50 dark:bg-rose-900/30 dark:text-rose-400 px-3 py-1.5 rounded-full hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-colors shrink-0">자세히 보기 ↗</a>
+              </div>
               <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 소득수준 대비 과도한 의료비(비급여 등)가 발생한 가구의 경제적 파탄을 막기 위해 <strong>비급여를 포함한 의료비</strong>의 일부를 국가가 지원합니다. (국민건강보험공단 지사 신청)
               </p>
@@ -214,9 +226,9 @@ export const Support = () => {
               <Activity className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="space-y-4 flex-1">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4 flex-wrap">
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white">6. 경기도형 긴급복지지원 (의료비 및 간병비)</h3>
-                <a href="https://housing.gg.go.kr/html/24404.do" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full hover:bg-blue-100 transition-colors">상세보기 ↗</a>
+                <a href="https://www.gg.go.kr/welfarehotline/contents/contents.do?ciIdx=1423&menuId=3895" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 px-3 py-1.5 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors shrink-0">자세히 보기 ↗</a>
               </div>
               <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 갑작스러운 위기 상황(중한 질병 등)으로 생계 유지가 곤란한 경기도민을 위해 의료비와 간병비를 신속하게 지원하는 제도입니다.
@@ -242,7 +254,10 @@ export const Support = () => {
               <Heart className="w-6 h-6 text-pink-600 dark:text-pink-400" />
             </div>
             <div className="space-y-4 flex-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">7. 경기도 간병 SOS 프로젝트</h3>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">7. 경기도 간병 SOS 프로젝트</h3>
+                <a href="https://www.gg.go.kr/myggd/vol193/1_3.php" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-pink-600 bg-pink-50 dark:bg-pink-900/30 dark:text-pink-400 px-3 py-1.5 rounded-full hover:bg-pink-100 dark:hover:bg-pink-900/50 transition-colors shrink-0">자세히 보기 ↗</a>
+              </div>
               <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
                 저소득층 어르신의 간병비 부담을 덜어주는 경기도의 대표적인 간병인 지원 사업입니다. (2026년 기준 16개 시·군 시행 중)
               </p>
