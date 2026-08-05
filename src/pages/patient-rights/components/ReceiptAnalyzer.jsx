@@ -1,18 +1,86 @@
 import React, { useState, useRef } from 'react';
-import { Upload, FileImage, FileText, Loader2, Send, AlertCircle, Info } from 'lucide-react';
-import { analyzeMedicalReceipt, askReceiptQuestion } from '../../../lib/gemini';
+import { Upload, FileImage, FileText, Loader2, Save, MessageCircle } from 'lucide-react';
+import { analyzeMedicalReceipt } from '../../../lib/gemini';
+import { supabase } from '../../../lib/supabase';
+
+// 폼 초기 상태 정의
+const initialFormState = {
+  basicInfo: {
+    병원명: '',
+    진료과목: '',
+    병명: '',
+    입원기간: '',
+    진료비총액: '',
+    공단부담총액: '',
+    본인부담총액: ''
+  },
+  items: {
+    진찰료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    입원료_1인실: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    입원료_2인실: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    입원료_4인실이상: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    식대: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    투약및조제료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    주사료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    마취료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    처치및수술료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    검사료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    영상진단료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    방사선치료료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    치료재료대: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    재활및물리치료료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    정신요법료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    전혈및혈액성분제제료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    CT진단료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    MRI진단료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    PET진단료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    초음파진단료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    보철교정료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    선택진료료: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' },
+    선택진료료이외: { 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' }
+  },
+  extraItems: []
+};
+
+// 표 렌더링용 순서 정의
+const baseItemKeys = [
+  { key: '진찰료', label: '진찰료', group: '기본항목' },
+  { key: '입원료_1인실', label: '입원료 1인실', group: '기본항목' },
+  { key: '입원료_2인실', label: '입원료 2인실', group: '기본항목' },
+  { key: '입원료_4인실이상', label: '입원료 4인실 이상', group: '기본항목' },
+  { key: '식대', label: '식대', group: '기본항목' },
+  { key: '투약및조제료', label: '투약 및 조제료', group: '기본항목' },
+  { key: '주사료', label: '주사료', group: '기본항목' },
+  { key: '마취료', label: '마취료', group: '기본항목' },
+  { key: '처치및수술료', label: '처치 및 수술료', group: '기본항목' },
+  { key: '검사료', label: '검사료', group: '기본항목' },
+  { key: '영상진단료', label: '영상진단료', group: '기본항목' },
+  { key: '방사선치료료', label: '방사선치료료', group: '기본항목' },
+  { key: '치료재료대', label: '치료재료대', group: '기본항목' },
+  { key: '재활및물리치료료', label: '재활 및 물리치료료', group: '기본항목' },
+  { key: '정신요법료', label: '정신요법료', group: '기본항목' },
+  { key: '전혈및혈액성분제제료', label: '전혈 및 혈액성분제제료', group: '기본항목' },
+  { key: 'CT진단료', label: 'CT 진단료', group: '선택항목' },
+  { key: 'MRI진단료', label: 'MRI 진단료', group: '선택항목' },
+  { key: 'PET진단료', label: 'PET 진단료', group: '선택항목' },
+  { key: '초음파진단료', label: '초음파 진단료', group: '선택항목' },
+  { key: '보철교정료', label: '보철/교정료', group: '선택항목' },
+  { key: '선택진료료', label: '선택진료료', group: '선택항목' },
+  { key: '선택진료료이외', label: '선택진료료 이외', group: '선택항목' }
+];
 
 export const ReceiptAnalyzer = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
+  const [saveSuccess, setSaveSuccess] = useState(false);
   
-  const [chatInput, setChatInput] = useState('');
-  const [chatHistory, setChatHistory] = useState([]);
-  const [isChatting, setIsChatting] = useState(false);
-
+  // 폼 상태 관리 (초기에는 빈 폼 표시)
+  const [formData, setFormData] = useState(JSON.parse(JSON.stringify(initialFormState)));
+  const [analysisSummary, setAnalysisSummary] = useState('');
+  
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -24,10 +92,14 @@ export const ReceiptAnalyzer = () => {
       }
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
-      setAnalysisResult(null);
       setError('');
-      setChatHistory([]);
+      setSaveSuccess(false);
     }
+  };
+
+  const parseNumberOrEmpty = (val) => {
+    if (val === null || val === undefined || val === '') return '';
+    return String(val);
   };
 
   const handleAnalyze = async () => {
@@ -35,20 +107,47 @@ export const ReceiptAnalyzer = () => {
 
     setIsAnalyzing(true);
     setError('');
+    setSaveSuccess(false);
     
     try {
       const result = await analyzeMedicalReceipt(selectedFile);
       if (result.error) {
         setError(result.error);
-        if (result.rawText) {
-          setAnalysisResult({ rawText: result.rawText });
-        }
       } else {
-        setAnalysisResult(result);
-        setChatHistory([{
-          role: 'system',
-          content: '영수증 분석이 완료되었습니다. 궁금한 점이 있으시면 무엇이든 물어보세요.'
-        }]);
+        // AI가 추출한 결과를 폼 상태로 매핑
+        const newForm = JSON.parse(JSON.stringify(initialFormState));
+        
+        if (result.basicInfo) {
+          Object.keys(newForm.basicInfo).forEach(key => {
+            if (result.basicInfo[key] !== undefined) {
+              newForm.basicInfo[key] = parseNumberOrEmpty(result.basicInfo[key]);
+            }
+          });
+        }
+
+        if (result.items) {
+          Object.keys(newForm.items).forEach(key => {
+            if (result.items[key]) {
+              newForm.items[key].본인부담금 = parseNumberOrEmpty(result.items[key].본인부담금);
+              newForm.items[key].공단부담금 = parseNumberOrEmpty(result.items[key].공단부담금);
+              newForm.items[key].전액본인부담금 = parseNumberOrEmpty(result.items[key].전액본인부담금);
+              newForm.items[key].비급여 = parseNumberOrEmpty(result.items[key].비급여);
+            }
+          });
+        }
+        
+        if (result.extraItems && Array.isArray(result.extraItems)) {
+          newForm.extraItems = result.extraItems.map(item => ({
+            name: item.name || '',
+            본인부담금: parseNumberOrEmpty(item.본인부담금),
+            공단부담금: parseNumberOrEmpty(item.공단부담금),
+            전액본인부담금: parseNumberOrEmpty(item.전액본인부담금),
+            비급여: parseNumberOrEmpty(item.비급여)
+          }));
+        }
+
+        setFormData(newForm);
+        setAnalysisSummary(result.analysisSummary || '');
       }
     } catch (err) {
       setError(err.message || '영수증 분석 중 오류가 발생했습니다.');
@@ -57,41 +156,67 @@ export const ReceiptAnalyzer = () => {
     }
   };
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!chatInput.trim() || !analysisResult || isChatting) return;
+  // 폼 입력 핸들러
+  const handleBasicInfoChange = (key, value) => {
+    setFormData(prev => ({
+      ...prev,
+      basicInfo: { ...prev.basicInfo, [key]: value }
+    }));
+    setSaveSuccess(false);
+  };
 
-    const userMessage = chatInput.trim();
-    setChatInput('');
-    setChatHistory(prev => [...prev, { role: 'user', content: userMessage }]);
-    setIsChatting(true);
+  const handleItemChange = (itemKey, columnKey, value) => {
+    setFormData(prev => ({
+      ...prev,
+      items: {
+        ...prev.items,
+        [itemKey]: {
+          ...prev.items[itemKey],
+          [columnKey]: value
+        }
+      }
+    }));
+    setSaveSuccess(false);
+  };
+  
+  const handleExtraItemChange = (index, columnKey, value) => {
+    const newExtraItems = [...formData.extraItems];
+    newExtraItems[index] = { ...newExtraItems[index], [columnKey]: value };
+    setFormData(prev => ({ ...prev, extraItems: newExtraItems }));
+    setSaveSuccess(false);
+  };
+  
+  const addExtraItem = () => {
+    setFormData(prev => ({
+      ...prev,
+      extraItems: [...prev.extraItems, { name: '', 본인부담금: '', 공단부담금: '', 전액본인부담금: '', 비급여: '' }]
+    }));
+  };
 
+  const handleSave = async () => {
+    setIsSaving(true);
+    setError('');
+    setSaveSuccess(false);
     try {
-      const aiResponse = await askReceiptQuestion(analysisResult, userMessage);
-      setChatHistory(prev => [...prev, { role: 'ai', content: aiResponse }]);
+      const cleanData = JSON.parse(JSON.stringify(formData));
+      
+      const { data, error: dbError } = await supabase
+        .from('receipts')
+        .insert([{
+          hospital_name: cleanData.basicInfo.병원명,
+          disease_name: cleanData.basicInfo.병명,
+          period: cleanData.basicInfo.입원기간,
+          total_amount: Number(cleanData.basicInfo.진료비총액) || null,
+          raw_data: cleanData
+        }]);
+
+      if (dbError) throw dbError;
+      setSaveSuccess(true);
     } catch (err) {
-      setChatHistory(prev => [...prev, { role: 'system', content: '응답을 받아오지 못했습니다. 잠시 후 다시 시도해주세요.' }]);
+      console.error(err);
+      setError('데이터베이스 저장에 실패했습니다: ' + (err.message || '알 수 없는 오류'));
     } finally {
-      setIsChatting(false);
-    }
-  };
-
-  const formatCurrency = (num) => {
-    if (num === undefined || num === null) return '-';
-    return new Intl.NumberFormat('ko-KR').format(num) + '원';
-  };
-
-  const getComparisonText = (total) => {
-    if (!total) return null;
-    const avg = 25000000; // 2,500만원
-    const patientCount = 324;
-    
-    if (total > avg * 1.2) {
-      return `귀하의 진료비는 동일 질환 환자군 ${patientCount}명 기준 평균보다 다소 높은 편입니다. (평균: 2,500만원)`;
-    } else if (total < avg * 0.8) {
-      return `귀하의 진료비는 동일 질환 환자군 ${patientCount}명 기준 평균보다 다소 낮은 편입니다. (평균: 2,500만원)`;
-    } else {
-      return `귀하의 진료비는 동일 질환 환자군 ${patientCount}명 기준 평균 범위 안에 있습니다. (평균: 2,500만원)`;
+      setIsSaving(false);
     }
   };
 
@@ -100,25 +225,18 @@ export const ReceiptAnalyzer = () => {
       <div className="p-6 border-b border-slate-200 dark:border-slate-800">
         <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
           <FileText className="w-5 h-5 text-blue-600" />
-          나의 의료비 리포트
+          입원진료비 청구서 입력 및 분석
         </h2>
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-          진료비 영수증을 업로드하면 AI가 분석하여 이해하기 쉽게 정리해 드립니다.
+          영수증 사진을 업로드하면 AI가 아래 표에 맞춰 데이터를 자동으로 입력합니다. 잘못 입력된 부분이나 빈칸은 직접 클릭하여 언제든지 수정할 수 있습니다.
         </p>
-        
-        <div className="mt-4 bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg border border-blue-100 dark:border-blue-900/50 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-          <div className="text-sm text-blue-800 dark:text-blue-300">
-            <strong>개인정보 보호 안내:</strong> 사진을 찍기 전에 환자 성명, 주민등록번호 등 민감한 개인정보는 펜이나 종이로 가려주세요. 업로드된 이미지는 분석 즉시 처리되며 서버에 영구 보관되지 않습니다.
-          </div>
-        </div>
       </div>
 
       <div className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
           
-          {/* Left Column: Upload & Preview */}
-          <div>
+          {/* Left Column: Upload */}
+          <div className="xl:col-span-4 flex flex-col gap-4">
             {!selectedFile ? (
               <div 
                 onClick={() => fileInputRef.current?.click()}
@@ -126,7 +244,6 @@ export const ReceiptAnalyzer = () => {
               >
                 <Upload className="w-10 h-10 text-slate-400 mb-4" />
                 <p className="text-slate-600 dark:text-slate-300 font-medium">영수증 이미지 업로드 (클릭)</p>
-                <p className="text-slate-400 text-sm mt-2">JPG, PNG 형식 지원</p>
                 <input 
                   type="file" 
                   ref={fileInputRef} 
@@ -136,14 +253,14 @@ export const ReceiptAnalyzer = () => {
                 />
               </div>
             ) : (
-              <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 relative group">
-                <img src={previewUrl} alt="영수증 미리보기" className="w-full h-auto max-h-96 object-contain" />
+              <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 relative group h-[400px]">
+                <img src={previewUrl} alt="영수증 미리보기" className="w-full h-full object-contain" />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button 
                     onClick={() => {
                       setSelectedFile(null);
                       setPreviewUrl('');
-                      setAnalysisResult(null);
+                      setFormData(JSON.parse(JSON.stringify(initialFormState)));
                     }}
                     className="bg-white text-slate-800 px-4 py-2 rounded-lg font-medium text-sm"
                   >
@@ -153,136 +270,177 @@ export const ReceiptAnalyzer = () => {
               </div>
             )}
 
-            {error && (
-              <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100">
-                {error}
-              </div>
-            )}
-
-            {selectedFile && !analysisResult && (
+            {selectedFile && (
               <button
                 onClick={handleAnalyze}
                 disabled={isAnalyzing}
-                className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors flex justify-center items-center gap-2 disabled:opacity-70"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors flex justify-center items-center gap-2 disabled:opacity-70"
               >
                 {isAnalyzing ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    AI가 분석 중입니다...
-                  </>
+                  <><Loader2 className="w-5 h-5 animate-spin" /> AI 자동 입력 중...</>
                 ) : (
-                  <>
-                    <FileImage className="w-5 h-5" />
-                    영수증 분석하기
-                  </>
+                  <><FileImage className="w-5 h-5" /> 영수증 AI 자동 입력</>
                 )}
               </button>
             )}
-          </div>
 
-          {/* Right Column: Analysis Result & Chat */}
-          <div className="flex flex-col h-full">
-            {analysisResult ? (
-              <div className="flex flex-col h-[500px]">
-                {/* Result Cards */}
-                {analysisResult.totalAmount !== undefined ? (
-                  <div className="space-y-4 mb-6">
-                    <div className="bg-emerald-50 dark:bg-emerald-950/30 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900/50">
-                      <p className="text-emerald-800 dark:text-emerald-300 font-bold mb-1">총 진료비</p>
-                      <p className="text-2xl font-black text-emerald-900 dark:text-emerald-100 mb-2">{formatCurrency(analysisResult.totalAmount)}</p>
-                      <div className="bg-white/60 dark:bg-black/20 p-2 rounded-lg inline-block text-xs font-medium text-emerald-700 dark:text-emerald-400">
-                        {getComparisonText(analysisResult.totalAmount)}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
-                        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">건강보험 적용</p>
-                        <p className="text-lg font-bold text-slate-800 dark:text-slate-100">{formatCurrency(analysisResult.insuranceCovered)}</p>
-                      </div>
-                      <div className="bg-amber-50 dark:bg-amber-950/30 p-4 rounded-xl border border-amber-100 dark:border-amber-900/50">
-                        <p className="text-amber-800 dark:text-amber-300 text-sm font-medium mb-1">환자 전액 부담 (비급여)</p>
-                        <p className="text-lg font-bold text-amber-900 dark:text-amber-100">{formatCurrency(analysisResult.nonCovered)}</p>
-                      </div>
-                    </div>
-                    {analysisResult.majorTreatments && (
-                      <div className="p-4">
-                        <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">주요 처치 항목:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {analysisResult.majorTreatments.map((item, idx) => (
-                            <span key={idx} className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full">
-                              {item}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
-                      <Info className="w-4 h-4 mt-0.5 text-slate-500" />
-                      <p>{analysisResult.analysisSummary}</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="bg-slate-50 p-4 rounded-xl mb-4 overflow-auto max-h-64 text-sm whitespace-pre-wrap text-slate-700">
-                    {analysisResult.rawText}
-                  </div>
-                )}
-
-                {/* AI Chat Interface */}
-                <div className="flex-1 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden flex flex-col bg-slate-50 dark:bg-slate-950">
-                  <div className="bg-slate-100 dark:bg-slate-800 px-4 py-3 border-b border-slate-200 dark:border-slate-700 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span className="text-sm font-bold text-slate-700 dark:text-slate-300">AI 영수증 질문 도우미</span>
-                  </div>
-                  
-                  <div className="flex-1 p-4 overflow-y-auto space-y-4">
-                    {chatHistory.map((msg, idx) => (
-                      <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm ${
-                          msg.role === 'user' 
-                            ? 'bg-blue-600 text-white rounded-br-none' 
-                            : msg.role === 'system'
-                              ? 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 mx-auto text-xs'
-                              : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-none border border-slate-200 dark:border-slate-700'
-                        }`}>
-                          {msg.content}
-                        </div>
-                      </div>
-                    ))}
-                    {isChatting && (
-                      <div className="flex justify-start">
-                        <div className="bg-white dark:bg-slate-800 rounded-2xl rounded-bl-none border border-slate-200 dark:border-slate-700 px-4 py-3 flex items-center gap-2">
-                          <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></span>
-                          <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-                          <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <form onSubmit={handleSendMessage} className="p-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex gap-2">
-                    <input
-                      type="text"
-                      value={chatInput}
-                      onChange={(e) => setChatInput(e.target.value)}
-                      placeholder="예: 비급여 항목 중 300만원은 어떤 건가요?"
-                      className="flex-1 bg-slate-100 dark:bg-slate-800 border-none rounded-lg px-4 text-sm focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="submit"
-                      disabled={isChatting || !chatInput.trim()}
-                      className="bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-lg transition-colors disabled:opacity-50"
-                    >
-                      <Send className="w-4 h-4" />
-                    </button>
-                  </form>
-                </div>
-              </div>
-            ) : (
-              <div className="h-full flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center bg-slate-50/50 dark:bg-slate-900/50">
-                <FileText className="w-12 h-12 mb-4 text-slate-300 dark:text-slate-700" />
-                <p className="font-medium text-slate-500 dark:text-slate-400">영수증을 업로드하시면<br/>분석 결과와 AI 채팅이 이곳에 표시됩니다.</p>
+            {error && (
+              <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100">
+                {error}
               </div>
             )}
+            
+            {saveSuccess && (
+              <div className="p-3 bg-emerald-50 text-emerald-700 rounded-lg text-sm border border-emerald-200 font-medium">
+                ✅ 데이터베이스에 성공적으로 저장되었습니다.
+              </div>
+            )}
+          </div>
+
+          {/* Right Column: Editable Table */}
+          <div className="xl:col-span-8 overflow-x-auto pb-4">
+            <div className="min-w-[800px] border border-slate-900 bg-white">
+              
+              {/* Table Header Row 1 */}
+              <div className="flex border-b border-slate-900">
+                <div className="w-1/2 flex items-center justify-center font-bold text-xl p-4 border-r border-slate-900 bg-slate-50">
+                  입원진료비 청구서 업로드
+                </div>
+                <div className="w-1/2 flex flex-col text-sm">
+                  <div className="text-center font-bold border-b border-slate-900 py-1.5 bg-slate-100 tracking-widest">기초자료</div>
+                  
+                  {['병원명', '진료과목', '병명', '입원기간', '진료비총액', '공단부담총액', '본인부담총액'].map((field, idx) => (
+                    <div key={field} className={`flex ${idx < 6 ? 'border-b border-slate-900' : ''} h-8`}>
+                      <div className="w-1/3 bg-slate-50 border-r border-slate-900 flex items-center justify-center font-bold text-slate-800 text-xs">
+                        {field}
+                      </div>
+                      <div className="w-2/3">
+                        <input 
+                          type="text" 
+                          value={formData.basicInfo[field]} 
+                          onChange={(e) => handleBasicInfoChange(field, e.target.value)}
+                          className="w-full h-full border-none px-2 py-0 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-transparent"
+                          placeholder=""
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Spacer Row */}
+              <div className="h-4 border-b border-slate-900 bg-slate-200"></div>
+
+              {/* Table Header Row 2 (Columns) */}
+              <div className="flex border-b border-slate-900 bg-slate-100 font-bold text-sm text-center">
+                <div className="w-[8%] p-2 border-r border-slate-900 flex items-center justify-center tracking-widest">항목</div>
+                <div className="w-[18%] p-2 border-r border-slate-900 flex items-center justify-center">세부내역</div>
+                <div className="w-[54%] flex flex-col border-r border-slate-900">
+                  <div className="py-1 border-b border-slate-900">급여</div>
+                  <div className="flex flex-1">
+                    <div className="w-1/3 py-1 border-r border-slate-900 flex items-center justify-center text-xs">본인부담금</div>
+                    <div className="w-1/3 py-1 border-r border-slate-900 flex items-center justify-center text-xs">공단부담금</div>
+                    <div className="w-1/3 py-1 flex items-center justify-center text-xs">전액본인부담금</div>
+                  </div>
+                </div>
+                <div className="w-[20%] p-2 flex items-center justify-center">비급여</div>
+              </div>
+
+              {/* Data Rows */}
+              {baseItemKeys.map((item, idx) => {
+                const isGroupStart = idx === 0 || item.key === 'CT진단료';
+                const rowSpan = item.group === '기본항목' ? 16 : 7;
+                
+                return (
+                  <div key={item.key} className="flex border-b border-slate-900 hover:bg-slate-50 transition-colors group h-8">
+                    {/* 첫 번째 열: 그룹(기본항목/선택항목) 표시 (야매 CSS 병합 대신 첫 줄에만 표시하고 나머진 비움) */}
+                    <div className="w-[8%] border-r border-slate-900 bg-slate-50 flex items-center justify-center">
+                       {isGroupStart && <span className="font-bold text-[10px] tracking-widest">{item.group}</span>}
+                    </div>
+
+                    {/* 두 번째 열: 항목명 */}
+                    <div className="w-[18%] border-r border-slate-900 text-xs font-medium flex items-center pl-2">
+                      {item.label}
+                    </div>
+                    
+                    {/* 세 번째 열: 급여 (본인/공단/전액) */}
+                    <div className="w-[54%] flex border-r border-slate-900">
+                      <div className="w-1/3 border-r border-slate-900">
+                        <input type="text" value={formData.items[item.key].본인부담금} onChange={(e) => handleItemChange(item.key, '본인부담금', e.target.value)}
+                          className="w-full h-full border-none px-2 py-0 text-xs text-right focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                      </div>
+                      <div className="w-1/3 border-r border-slate-900">
+                        <input type="text" value={formData.items[item.key].공단부담금} onChange={(e) => handleItemChange(item.key, '공단부담금', e.target.value)}
+                          className="w-full h-full border-none px-2 py-0 text-xs text-right focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                      </div>
+                      <div className="w-1/3">
+                        <input type="text" value={formData.items[item.key].전액본인부담금} onChange={(e) => handleItemChange(item.key, '전액본인부담금', e.target.value)}
+                          className="w-full h-full border-none px-2 py-0 text-xs text-right focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                      </div>
+                    </div>
+                    
+                    {/* 네 번째 열: 비급여 */}
+                    <div className="w-[20%]">
+                      <input type="text" value={formData.items[item.key].비급여} onChange={(e) => handleItemChange(item.key, '비급여', e.target.value)}
+                        className="w-full h-full border-none px-2 py-0 text-xs text-right focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                    </div>
+                  </div>
+                );
+              })}
+              
+              {/* Extra Items (기타 항목 동적 추가) */}
+              {formData.extraItems.map((item, idx) => (
+                <div key={`extra-${idx}`} className="flex border-b border-slate-900 hover:bg-slate-50 transition-colors h-8 group">
+                  <div className="w-[8%] border-r border-slate-900 bg-slate-50 flex items-center justify-center">
+                    {idx === 0 && <span className="font-bold text-[10px] tracking-widest text-slate-500">기타</span>}
+                  </div>
+                  <div className="w-[18%] border-r border-slate-900">
+                     <input type="text" value={item.name} onChange={(e) => handleExtraItemChange(idx, 'name', e.target.value)}
+                        placeholder="항목명 직접입력" className="w-full h-full border-none px-2 py-0 text-xs focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                  </div>
+                  <div className="w-[54%] flex border-r border-slate-900">
+                    <div className="w-1/3 border-r border-slate-900">
+                      <input type="text" value={item.본인부담금} onChange={(e) => handleExtraItemChange(idx, '본인부담금', e.target.value)} className="w-full h-full border-none px-2 py-0 text-xs text-right focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                    </div>
+                    <div className="w-1/3 border-r border-slate-900">
+                      <input type="text" value={item.공단부담금} onChange={(e) => handleExtraItemChange(idx, '공단부담금', e.target.value)} className="w-full h-full border-none px-2 py-0 text-xs text-right focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                    </div>
+                    <div className="w-1/3">
+                      <input type="text" value={item.전액본인부담금} onChange={(e) => handleExtraItemChange(idx, '전액본인부담금', e.target.value)} className="w-full h-full border-none px-2 py-0 text-xs text-right focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                    </div>
+                  </div>
+                  <div className="w-[20%]">
+                    <input type="text" value={item.비급여} onChange={(e) => handleExtraItemChange(idx, '비급여', e.target.value)} className="w-full h-full border-none px-2 py-0 text-xs text-right focus:bg-blue-50 focus:outline-none group-hover:bg-transparent" />
+                  </div>
+                </div>
+              ))}
+              
+              <div className="flex">
+                  <div className="w-full p-2 bg-slate-50 text-center border-t-0">
+                    <button onClick={addExtraItem} className="text-xs text-blue-600 font-bold hover:underline py-1 px-4">+ 기타 항목 한 줄 추가하기</button>
+                  </div>
+              </div>
+              
+            </div>
+            
+            {analysisSummary && (
+              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800 flex gap-3">
+                <MessageCircle className="w-5 h-5 shrink-0" />
+                <p>{analysisSummary}</p>
+              </div>
+            )}
+
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-lg shadow transition-colors flex items-center gap-2 disabled:opacity-70"
+              >
+                {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                데이터베이스에 저장하기
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
