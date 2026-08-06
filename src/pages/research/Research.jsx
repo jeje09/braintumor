@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { Sparkles, ExternalLink, ShieldCheck, Tag } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { Sparkles, ExternalLink, ShieldCheck, Tag, Plus, Trash2 } from 'lucide-react';
 import newsData from '../../data/news.json';
 
 export const Research = () => {
-  const { research } = useApp();
+  const { research, addResearch, deleteResearch } = useApp();
+  const { isSuperAdmin } = useAuth();
+  
+  const [newRes, setNewRes] = useState({
+    title: '', source: '', category: '임상시험', badge: '신규', badgeColor: 'bg-emerald-500', summary: '', link: ''
+  });
+
+  const handleAddResearch = (e) => {
+    e.preventDefault();
+    if (!newRes.title || !newRes.source) return;
+    addResearch({ ...newRes });
+    setNewRes({ title: '', source: '', category: '임상시험', badge: '신규', badgeColor: 'bg-emerald-500', summary: '', link: '' });
+  };
 
   return (
     <div className="space-y-10 pb-16">
@@ -68,12 +81,55 @@ export const Research = () => {
       {/* Manual Research List Grid */}
       <section className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">플랫폼 추천 주요 임상/논문 데이터</h2>
+        
+        {/* Admin Panel: Add Research */}
+        {isSuperAdmin && (
+          <div className="mb-8 glass-card p-6 rounded-3xl space-y-4 border border-emerald-200 dark:border-emerald-900 shadow-sm bg-white/50 dark:bg-slate-900/50">
+            <h3 className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-emerald-600" />
+              <span>수퍼관리자: 기사/연구 데이터 등록</span>
+            </h3>
+            <form onSubmit={handleAddResearch} className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">기사/연구 제목</label>
+                <input required value={newRes.title} onChange={e => setNewRes({...newRes, title: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white" />
+              </div>
+              <div>
+                <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">출처 (병원/학회)</label>
+                <input required value={newRes.source} onChange={e => setNewRes({...newRes, source: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white" />
+              </div>
+              <div className="md:col-span-2">
+                <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">요약 설명</label>
+                <textarea required rows={2} value={newRes.summary} onChange={e => setNewRes({...newRes, summary: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white" />
+              </div>
+              <div className="md:col-span-2 flex items-end gap-4">
+                <div className="flex-1">
+                  <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">원문 링크</label>
+                  <input value={newRes.link} onChange={e => setNewRes({...newRes, link: e.target.value})} className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white" />
+                </div>
+                <button type="submit" className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-md h-[42px]">
+                  기사 등록
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {research.map((item) => (
           <article
             key={item.id}
-            className="glass-card p-6 rounded-3xl space-y-4 border border-amber-100 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
+            className="glass-card p-6 rounded-3xl space-y-4 border border-amber-100 dark:border-slate-800 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative group"
           >
+            {isSuperAdmin && (
+              <button
+                onClick={() => { if (window.confirm('정말 이 기사를 삭제하시겠습니까?')) deleteResearch(item.id); }}
+                className="absolute top-4 right-4 p-1.5 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                title="삭제"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className={`text-sm font-extrabold px-3 py-1 rounded-full text-white ${item.badgeColor}`}>

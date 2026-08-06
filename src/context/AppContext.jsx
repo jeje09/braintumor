@@ -804,7 +804,10 @@ export const AppProvider = ({ children }) => {
 
   const [brainTumors] = useState(INITIAL_BRAIN_TUMORS);
   const [gbmFaqs, setGbmFaqs] = useState(INITIAL_GBM_FAQS);
-  const [research, setResearch] = useState(INITIAL_RESEARCH);
+  const [research, setResearch] = useState(() => {
+    const saved = localStorage.getItem('companion_research');
+    return saved ? JSON.parse(saved) : INITIAL_RESEARCH;
+  });
   const [nutrition] = useState(INITIAL_NUTRITION);
   const [youtubeVideos, setYoutubeVideos] = useState(INITIAL_YOUTUBE_VIDEOS);
   const [hospitals] = useState(INITIAL_HOSPITALS);
@@ -837,9 +840,10 @@ export const AppProvider = ({ children }) => {
     }
   }, [darkMode]);
 
-  // Persist products & stories
+  // Persist products, stories & research
   useEffect(() => { localStorage.setItem('companion_products_v3', JSON.stringify(products)); }, [products]);
   useEffect(() => { localStorage.setItem('companion_stories', JSON.stringify(stories)); }, [stories]);
+  useEffect(() => { localStorage.setItem('companion_research', JSON.stringify(research)); }, [research]);
 
   const loginAdmin = (pw) => {
     if (pw === adminPassword) { setIsAdminAuthenticated(true); return true; }
@@ -856,13 +860,17 @@ export const AppProvider = ({ children }) => {
   const addProduct = (item) => setProducts(prev => [{ ...item, id: Date.now() }, ...prev]);
   const deleteProduct = (id) => setProducts(prev => prev.filter(p => p.id !== id));
 
+  // Research CRUD
+  const addResearch = (item) => setResearch(prev => [{ ...item, id: Date.now(), date: new Date().toLocaleDateString('ko-KR') }, ...prev]);
+  const deleteResearch = (id) => setResearch(prev => prev.filter(r => r.id !== id));
+
   return (
     <AppContext.Provider value={{
       activeTab, setActiveTab,
       selectedDeepTumorId, setSelectedDeepTumorId,
       brainTumors,
       gbmFaqs,
-      research,
+      research, addResearch, deleteResearch,
       nutrition,
       youtubeVideos,
       hospitals,

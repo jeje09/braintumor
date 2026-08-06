@@ -29,7 +29,7 @@ const QUILL_MODULES = {
 };
 
 export const Stories = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, isSuperAdmin } = useAuth();
   const [activeBoard, setActiveBoard] = useState('우리들의 이야기');
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,7 +63,9 @@ export const Stories = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPosts(data || []);
+      // Filter out hidden posts for non-admins
+      const visiblePosts = (data || []).filter(p => isSuperAdmin || !p.is_hidden);
+      setPosts(visiblePosts);
     } catch (e) {
       console.error(e);
     } finally {
@@ -174,6 +176,29 @@ export const Stories = () => {
     }
   };
 
+  const handleDeletePost = async (postId) => {
+    if (!window.confirm('게시글을 완전히 삭제하시겠습니까?')) return;
+    try {
+      const { error } = await supabase.from('posts').delete().eq('id', postId);
+      if (error) throw error;
+      setPosts(posts.filter(p => p.id !== postId));
+    } catch (e) {
+      console.error(e);
+      alert('삭제에 실패했습니다. (DB 테이블에 is_hidden 컬럼이 없거나 권한 문제일 수 있습니다.)');
+    }
+  };
+
+  const handleToggleHidePost = async (postId, currentHidden) => {
+    try {
+      const { error } = await supabase.from('posts').update({ is_hidden: !currentHidden }).eq('id', postId);
+      if (error) throw error;
+      setPosts(posts.map(p => p.id === postId ? { ...p, is_hidden: !currentHidden } : p));
+    } catch (e) {
+      console.error(e);
+      alert('숨김 처리에 실패했습니다. (DB에 is_hidden 컬럼을 추가해주세요.)');
+    }
+  };
+
   const formatDate = (dateString) => {
     const d = new Date(dateString);
     return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
@@ -246,7 +271,7 @@ export const Stories = () => {
               return (
               <div 
                 key={post.id}
-                className={`p-5 sm:p-6 transition-colors flex flex-col gap-4 border-b border-slate-100 dark:border-slate-800/50 ${isExpanded ? 'bg-slate-50 dark:bg-slate-800/50' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'}`}
+                className={`p-5 sm:p-6 transition-colors flex flex-col gap-4 border-b border-slate-100 dark:border-slate-800/50 ${isExpanded ? 'bg-slate-50 dark:bg-slate-800/50' : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'} ${post.is_hidden ? 'opacity-50' : ''}`}
               >
                 {/* Header (Title, Category, Author, Date, Likes) */}
                 <div 
@@ -258,6 +283,11 @@ export const Stories = () => {
                       {post.category && (
                         <span className="px-2.5 py-1 text-xs font-bold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 rounded-md">
                           {post.category}
+                        </span>
+                      )}
+                      {post.is_hidden && (
+                        <span className="px-2.5 py-1 text-xs font-bold bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 rounded-md">
+                          숨김 처리됨
                         </span>
                       )}
                       <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
@@ -290,13 +320,30 @@ export const Stories = () => {
                       dangerouslySetInnerHTML={{ __html: post.content }}
                     />
 
-                    <div className="pt-6 flex items-center justify-start">
+                    <div className="pt-6 flex items-center justify-between">
                       <button
                         onClick={() => handleLike(post.id, post.likes_count)}
                         className="flex items-center gap-2 px-4 py-2 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 dark:bg-pink-900/20 dark:hover:bg-pink-900/40 transition-colors font-bold text-sm border border-pink-100 dark:border-pink-900/50"
                       >
                         <Heart className="w-4 h-4" /> 공감 {post.likes_count || 0}
                       </button>
+                      
+                      {isSuperAdmin && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleToggleHidePost(post.id, post.is_hidden); }}
+                            className="px-3 py-1.5 rounded-lg text-sm font-bold bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400 transition-colors"
+                          >
+                            {post.is_hidden ? '숨김 해제' : '글 숨기기'}
+                          </button>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleDeletePost(post.id); }}
+                            className="px-3 py-1.5 rounded-lg text-sm font-bold bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 transition-colors"
+                          >
+                            삭제
+                          </button>
+                        </div>
+                      )}
                     </div>
 
                     {/* Comments Section */}

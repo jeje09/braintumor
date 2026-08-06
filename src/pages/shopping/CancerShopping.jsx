@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { ShoppingBag, ExternalLink, ShieldCheck, Heart, Info, Check } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { ShoppingBag, ExternalLink, ShieldCheck, Heart, Info, Check, Plus, Trash2 } from 'lucide-react';
 
 export const CancerShopping = () => {
-  const { products } = useApp();
+  const { products, addProduct, deleteProduct } = useApp();
+  const { isSuperAdmin } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [newProd, setNewProd] = useState({ category: '항구역 케어', iframeCode: '' });
+
+  const handleAddProduct = (e) => {
+    e.preventDefault();
+    if (!newProd.iframeCode) return;
+    addProduct({ ...newProd });
+    setNewProd({ category: '항구역 케어', iframeCode: '' });
+  };
 
   const categories = ['전체', '편안한 휴식', '바른 영양', '안전한 이동', '뷰티·위생', '생활 편의'];
 
@@ -101,13 +111,63 @@ export const CancerShopping = () => {
         </p>
       </div>
 
+      {/* Admin Panel: Add Product */}
+      {isSuperAdmin && (
+        <section className="glass-card p-6 rounded-3xl space-y-4 border border-sky-200 dark:border-sky-900 shadow-sm bg-white/50 dark:bg-slate-900/50">
+          <h3 className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-sky-600" />
+            <span>수퍼관리자: 쇼핑 물품 등록</span>
+          </h3>
+          <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-12 gap-4 text-sm items-end">
+            <div className="md:col-span-3">
+              <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">카테고리</label>
+              <select
+                value={newProd.category}
+                onChange={(e) => setNewProd({...newProd, category: e.target.value})}
+                className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white"
+              >
+                {categories.filter(c => c !== '전체').map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <div className="md:col-span-7">
+              <label className="font-bold block mb-1 text-slate-600 dark:text-slate-400">Iframe 코드 입력</label>
+              <input
+                type="text"
+                required
+                value={newProd.iframeCode}
+                onChange={(e) => setNewProd({...newProd, iframeCode: e.target.value})}
+                placeholder='예: <iframe src="https://coupa.ng/..." width="120" height="240" ...></iframe>'
+                className="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <button
+                type="submit"
+                className="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-sm shadow-md"
+              >
+                등록
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
+
       {/* Product Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {filteredProducts.map((prod) => (
           <div
             key={prod.id}
-            className="flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-300"
+            className="flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 hover:shadow-xl transition-all duration-300 relative group"
           >
+            {isSuperAdmin && (
+              <button
+                onClick={() => { if (window.confirm('정말 삭제하시겠습니까?')) deleteProduct(prod.id); }}
+                className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                title="삭제"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
             {prod.iframeCode ? (
               <div 
                 className="w-full flex items-center justify-center"

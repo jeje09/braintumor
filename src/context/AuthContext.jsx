@@ -84,11 +84,15 @@ export const AuthProvider = ({ children }) => {
     return supabase.auth.signOut();
   };
 
+  const SUPER_ADMIN_EMAILS = ['jeje09@nate.com', 'jeje09@daum.net'];
+  const isSuperAdmin = user && SUPER_ADMIN_EMAILS.includes(user?.email);
+
   return (
     <AuthContext.Provider value={{
       user,
       profile,
       loading,
+      isSuperAdmin,
       saveProfile,
       signUp,
       signIn,
