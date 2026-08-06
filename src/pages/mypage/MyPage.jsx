@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
-import { User, ShieldCheck, FileText, Loader2, LogOut, Camera, Check, X } from 'lucide-react';
+import { User, ShieldCheck, FileText, Loader2, LogOut, Camera } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export const MyPage = () => {
@@ -9,19 +9,48 @@ export const MyPage = () => {
   const { setActiveTab } = useApp();
   const [myPosts, setMyPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isEditingAvatar, setIsEditingAvatar] = useState(false);
-  const [newAvatarUrl, setNewAvatarUrl] = useState('');
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const fileInputRef = useRef(null);
 
   const avatarUrl = user?.user_metadata?.avatar_url;
 
-  const handleSaveAvatar = async () => {
-    if (!newAvatarUrl.trim()) return;
-    try {
-      await updateAvatar(newAvatarUrl.trim());
-      setIsEditingAvatar(false);
-    } catch (err) {
-      alert('아이콘 업데이트에 실패했습니다.');
-    }
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingAvatar(true);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        const size = 120;
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        const scale = Math.max(size / img.width, size / img.height);
+        const x = (size - img.width * scale) / 2;
+        const y = (size - img.height * scale) / 2;
+        
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(0, 0, size, size);
+        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        
+        try {
+          await updateAvatar(dataUrl);
+        } catch (err) {
+          alert('아이콘 업데이트에 실패했습니다.');
+        } finally {
+          setIsUploadingAvatar(false);
+          if (fileInputRef.current) fileInputRef.current.value = '';
+        }
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
   };
 
   useEffect(() => {
@@ -80,41 +109,30 @@ export const MyPage = () => {
                 profile?.role === '환자' ? <User className="w-10 h-10 text-blue-500" /> : <ShieldCheck className="w-10 h-10 text-emerald-500" />
               )}
             </div>
+            {isUploadingAvatar && (
+              <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                <Loader2 className="w-6 h-6 text-white animate-spin" />
+              </div>
+            )}
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              hidden 
+              accept="image/*" 
+              onChange={handleImageUpload} 
+            />
             <button 
-              onClick={() => {
-                setNewAvatarUrl(avatarUrl || '');
-                setIsEditingAvatar(true);
-              }}
-              className="absolute bottom-0 right-0 p-1.5 bg-slate-800 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploadingAvatar}
+              className="absolute bottom-0 right-0 p-1.5 bg-slate-800 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg disabled:opacity-50"
             >
               <Camera className="w-3.5 h-3.5" />
             </button>
           </div>
           <div className="flex-1">
-            {isEditingAvatar ? (
-              <div className="mb-2">
-                <p className="text-xs text-slate-500 mb-1">새로운 아이콘(이미지 URL)을 입력하세요.</p>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={newAvatarUrl}
-                    onChange={(e) => setNewAvatarUrl(e.target.value)}
-                    placeholder="https://example.com/image.png"
-                    className="flex-1 text-sm px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
-                  />
-                  <button onClick={handleSaveAvatar} className="p-1.5 bg-sky-600 text-white rounded-lg hover:bg-sky-700">
-                    <Check className="w-4 h-4" />
-                  </button>
-                  <button onClick={() => setIsEditingAvatar(false)} className="p-1.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600">
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <h1 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
-                반갑습니다, {profile?.nickname || '익명'}님!
-              </h1>
-            )}
+            <h1 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
+              반갑습니다, {profile?.nickname || '익명'}님!
+            </h1>
             <p className="text-slate-500 dark:text-slate-400 font-medium flex items-center gap-2">
               <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm">{profile?.role || '역할 미지정'}</span>
               <span>{user.email}</span>
