@@ -29,7 +29,13 @@ export const StatisticsView = ({ analyzedReceipt }) => {
     }
   };
 
-  const currentDisease = analyzedReceipt?.basicInfo?.병명 || '뇌종양';
+  const [manualDisease, setManualDisease] = useState('');
+
+  useEffect(() => {
+    if (analyzedReceipt?.basicInfo?.병명) {
+      setManualDisease(analyzedReceipt.basicInfo.병명);
+    }
+  }, [analyzedReceipt]);
 
   const diseaseBreakdown = useMemo(() => {
     if (receipts.length === 0) return [];
@@ -46,13 +52,18 @@ export const StatisticsView = ({ analyzedReceipt }) => {
       .sort((a, b) => b.count - a.count);
   }, [receipts]);
 
+  const diseaseOptions = ['전체', ...diseaseBreakdown.map(d => d.name)];
+  const currentDisease = manualDisease || (analyzedReceipt?.basicInfo?.병명) || '전체';
+
   const stats = useMemo(() => {
     if (receipts.length === 0) return null;
 
-    // 현재 병명과 일치하거나 유사한 데이터 필터링
-    const targetReceipts = receipts.filter(r => 
-      r.disease_name && r.disease_name.replace(/\s+/g, '').includes(currentDisease.replace(/\s+/g, ''))
-    );
+    // 현재 선택된 병명에 따라 데이터 필터링
+    const targetReceipts = currentDisease === '전체' 
+      ? receipts 
+      : receipts.filter(r => 
+          r.disease_name && r.disease_name.replace(/\s+/g, '').includes(currentDisease.replace(/\s+/g, ''))
+        );
 
     if (targetReceipts.length === 0) return null;
 
@@ -115,6 +126,62 @@ export const StatisticsView = ({ analyzedReceipt }) => {
     };
   }, [receipts, currentDisease]);
 
+  const topNonCoveredItems = useMemo(() => {
+    if (receipts.length === 0) return [];
+    
+    const targetReceipts = currentDisease === '전체' 
+      ? receipts 
+      : receipts.filter(r => 
+          r.disease_name && r.disease_name.replace(/\s+/g, '').includes(currentDisease.replace(/\s+/g, ''))
+        );
+
+    if (targetReceipts.length === 0) return [];
+
+    const itemCounts = {};
+    let totalValidReceipts = 0; 
+
+    targetReceipts.forEach(r => {
+      if (r.raw_data && r.raw_data.items && Array.isArray(r.raw_data.items)) {
+        let hasNonCovered = false;
+        r.raw_data.items.forEach(item => {
+          const nonCoveredAmt = Number(String(item.비급여 || '').replace(/,/g, '')) || 0;
+          if (nonCoveredAmt > 0 && item.name) {
+            hasNonCovered = true;
+            const name = item.name.trim();
+            let normName = name;
+            
+            // 간단한 키워드 기반 그룹화
+            if (name.includes('MRI')) normName = 'MRI (자기공명영상)';
+            else if (name.includes('ALA') || name.includes('알라') || name.includes('글리올란')) normName = '형광유도 약제비 (5-ALA 등)';
+            else if (name.includes('병실') || name.includes('1인실') || name.includes('2인실')) normName = '상급병실료 차액';
+            else if (name.includes('식대')) normName = '비급여 식대';
+            else if (name.includes('초음파')) normName = '초음파 검사료';
+            else if (name.includes('수면')) normName = '수면 내시경/처치료';
+            else if (name.includes('제증명')) normName = '제증명료 (진단서 등)';
+            else if (name.includes('로봇')) normName = '로봇 수술료';
+            else if (name.includes('유착방지')) normName = '유착방지제';
+            
+            if (!itemCounts[normName]) itemCounts[normName] = { name: normName, count: 0 };
+            itemCounts[normName].count += 1;
+          }
+        });
+        if (hasNonCovered) totalValidReceipts++;
+      }
+    });
+
+    if (totalValidReceipts === 0) return [];
+
+    return Object.values(itemCounts)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5) // Top 5
+      .map(item => ({
+        name: item.name,
+        percent: Math.round((item.count / totalValidReceipts) * 100),
+        desc: `분석된 영수증 ${totalValidReceipts}건 중 ${item.count}건에서 청구됨`
+      }));
+
+  }, [receipts, currentDisease]);
+
   const formatCurrency = (num) => {
     if (isNaN(num)) return '0원';
     return new Intl.NumberFormat('ko-KR').format(num) + '원';
@@ -126,36 +193,52 @@ export const StatisticsView = ({ analyzedReceipt }) => {
   const renderComparison = () => {
     if (!myTotalAmount || !stats || !stats.overall) return null;
     
-    const diff = myTotalAmount - stats.overall.avgTotalAmount;
-    const diffPercent = Math.round((Math.abs(diff) / stats.overall.avgTotalAmount) * 100);
+    const avg = stats.overall.avgTotalAmount;
+    const diff = myTotalAmount - avg;
+    const diffPercent = Math.round((Math.abs(diff) / avg) * 100);
     
-    if (diff > 0) {
-      return (
-        <div className="mt-6 p-5 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+    const maxAmount = Math.max(myTotalAmount, avg) * 1.2;
+    const myWidth = Math.round((myTotalAmount / maxAmount) * 100);
+    const avgWidth = Math.round((avg / maxAmount) * 100);
+
+    const isHigher = diff > 0;
+    
+    return (
+      <div className={`mt-8 p-6 rounded-2xl ${isHigher ? 'bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/50' : 'bg-emerald-50 dark:bg-emerald-900/10 border-emerald-200 dark:border-emerald-800/50'} border`}>
+        <div className="flex items-start gap-3 mb-6">
+          <AlertCircle className={`w-6 h-6 shrink-0 ${isHigher ? 'text-amber-600' : 'text-emerald-600'}`} />
           <div>
-            <p className="text-amber-900 font-bold">내 진료비 비교 분석</p>
-            <p className="text-amber-800 mt-1 leading-relaxed">
-              등록하신 진료비({formatCurrency(myTotalAmount)})는 '{currentDisease}' 평균 대비 <strong>약 {diffPercent}% ({formatCurrency(diff)}) 더 높습니다.</strong>
-              비급여 항목(MRI, 상급병실료 등)의 비중이 높은지 세부 내역을 확인해보세요.
+            <p className={`font-bold text-lg ${isHigher ? 'text-amber-900 dark:text-amber-300' : 'text-emerald-900 dark:text-emerald-300'}`}>나의 진료비 비교 분석</p>
+            <p className={`mt-1 leading-relaxed ${isHigher ? 'text-amber-800 dark:text-amber-400' : 'text-emerald-800 dark:text-emerald-400'}`}>
+              등록하신 진료비({formatCurrency(myTotalAmount)})는 '{currentDisease}' 평균 대비 <strong>약 {diffPercent}% ({formatCurrency(Math.abs(diff))}) {isHigher ? '더 높습니다' : '더 낮습니다'}.</strong><br/>
+              {isHigher ? '비급여 항목(MRI, 상급병실료 등)의 비중이 높은지 세부 내역을 확인해보세요.' : '급여 항목 위주의 효율적인 진료가 이루어졌거나, 진료 기간이 상대적으로 짧을 수 있습니다.'}
             </p>
           </div>
         </div>
-      );
-    } else {
-      return (
-        <div className="mt-6 p-5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+
+        <div className="space-y-4 max-w-2xl mx-auto bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
           <div>
-            <p className="text-emerald-900 font-bold">내 진료비 비교 분석</p>
-            <p className="text-emerald-800 mt-1 leading-relaxed">
-              등록하신 진료비({formatCurrency(myTotalAmount)})는 '{currentDisease}' 평균 대비 <strong>약 {diffPercent}% ({formatCurrency(Math.abs(diff))}) 더 낮습니다.</strong>
-              급여 항목 위주의 효율적인 진료가 이루어졌거나, 진료 기간이 상대적으로 짧을 수 있습니다.
-            </p>
+            <div className="flex justify-between text-sm font-bold mb-1">
+              <span className="text-slate-700 dark:text-slate-300">나의 진료비</span>
+              <span className={isHigher ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}>{formatCurrency(myTotalAmount)}</span>
+            </div>
+            <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-4 overflow-hidden">
+              <div className={`h-4 rounded-full transition-all duration-1000 ease-out ${isHigher ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: `${myWidth}%` }}></div>
+            </div>
+          </div>
+          
+          <div>
+            <div className="flex justify-between text-sm font-bold mb-1">
+              <span className="text-slate-700 dark:text-slate-300">[{currentDisease}] 전체 평균</span>
+              <span className="text-indigo-600 dark:text-indigo-400">{formatCurrency(avg)}</span>
+            </div>
+            <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-4 overflow-hidden">
+              <div className="bg-indigo-500 h-4 rounded-full transition-all duration-1000 ease-out" style={{ width: `${avgWidth}%` }}></div>
+            </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   };
 
   const renderStatsGroup = (title, dataGroup, icon, colorClass) => {
@@ -229,19 +312,30 @@ export const StatisticsView = ({ analyzedReceipt }) => {
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden mt-8">
-      <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+      <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-4 justify-between md:items-center">
         <div>
           <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-indigo-600" />
-            익명 의료비 통계 (실시간 DB 연동)
+            질환별 의료비 전체 통계 대시보드
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            환자들이 제공한 영수증 데이터를 기반으로 <strong>[{currentDisease}]</strong> 관련 실시간 산출된 의료비 흐름입니다.
+            실시간 데이터베이스 기반으로 산출된 투명한 의료비 흐름을 확인하세요.
           </p>
         </div>
-        <div className="bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300 px-4 py-2 rounded-lg flex items-center gap-2 font-bold text-sm shadow-sm">
-          <Users className="w-4 h-4" />
-          [{currentDisease}] 누적 데이터: {stats ? stats.totalCount : 0}명
+        <div className="flex items-center gap-3">
+          <select 
+            value={currentDisease} 
+            onChange={(e) => setManualDisease(e.target.value)}
+            className="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-sm shadow-sm outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            {diseaseOptions.map(d => (
+              <option key={d} value={d}>{d}</option>
+            ))}
+          </select>
+          <div className="bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300 px-4 py-2 rounded-lg flex items-center gap-2 font-bold text-sm shadow-sm">
+            <Users className="w-4 h-4" />
+            누적: {stats ? stats.totalCount : 0}건
+          </div>
         </div>
       </div>
 
@@ -286,26 +380,26 @@ export const StatisticsView = ({ analyzedReceipt }) => {
 
             <div className="mt-8 bg-slate-50 dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
               <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-4">비급여 주요 항목 (빈도순 - 전체 통계 기반)</h4>
-              <div className="space-y-3">
-                {[
-                  { name: "형광유도 약제비 (5-ALA 등)", percent: 85, desc: "종양과 정상 뇌조직의 경계를 명확히 하기 위해 수술 전 복용" },
-                  { name: "상급병실료 (1-2인실 차액)", percent: 72, desc: "중환자실 퇴실 후 안정 목적으로 입원" },
-                  { name: "최신 의료재료대", percent: 45, desc: "수술 중 사용되는 지혈제, 유착방지제 등" },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-4">
-                    <div className="w-16 text-right font-bold text-indigo-600 dark:text-indigo-400 shrink-0">{item.percent}%</div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="font-medium text-slate-700 dark:text-slate-200">{item.name}</span>
+              {topNonCoveredItems.length === 0 ? (
+                <p className="text-sm text-slate-500 dark:text-slate-400">분석 가능한 비급여 상세 내역이 아직 없습니다.</p>
+              ) : (
+                <div className="space-y-3">
+                  {topNonCoveredItems.map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-4">
+                      <div className="w-16 text-right font-bold text-indigo-600 dark:text-indigo-400 shrink-0">{item.percent}%</div>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="font-medium text-slate-700 dark:text-slate-200">{item.name}</span>
+                        </div>
+                        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
+                          <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: `${item.percent}%` }}></div>
+                        </div>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{item.desc}</p>
                       </div>
-                      <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
-                        <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: `${item.percent}%` }}></div>
-                      </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{item.desc}</p>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </>
         )}
