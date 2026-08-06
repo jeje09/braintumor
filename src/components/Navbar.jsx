@@ -6,9 +6,11 @@ import { Search, Bell, Menu, X, Globe, Smartphone, User, LogOut, Lock, Sun, Moon
 
 export const Navbar = () => {
   const { activeTab, setActiveTab, darkMode, setDarkMode } = useApp();
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const avatarUrl = user?.user_metadata?.avatar_url;
 
   // 메인 네비게이션 항목 (아이콘 제거, 텍스트 중심)
   const mainNavItems = [
@@ -48,7 +50,13 @@ export const Navbar = () => {
               )}
               {user ? (
                 <>
-                  <button onClick={() => handleNavClick('mypage')} className="hover:text-blue-700 transition-colors">마이페이지</button>
+                  <button onClick={() => handleNavClick('mypage')} className="hover:text-blue-700 transition-colors flex items-center justify-center w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden ring-2 ring-transparent hover:ring-sky-500">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                    )}
+                  </button>
                   <div className="w-px h-3 bg-slate-200 dark:bg-slate-700"></div>
                   <button onClick={() => signOut()} className="hover:text-blue-700 transition-colors flex items-center gap-1">
                     로그아웃
@@ -56,8 +64,8 @@ export const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <button onClick={() => setIsAuthModalOpen(true)} className="hover:text-blue-700 transition-colors">
-                    마이페이지
+                  <button onClick={() => setIsAuthModalOpen(true)} className="hover:text-blue-700 transition-colors flex items-center justify-center w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 ring-2 ring-transparent hover:ring-sky-500">
+                    <User className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                   </button>
                   <div className="w-px h-3 bg-slate-200 dark:bg-slate-700"></div>
                   <button onClick={() => setIsAuthModalOpen(true)} className="hover:text-blue-700 transition-colors">

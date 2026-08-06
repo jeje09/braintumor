@@ -64,6 +64,16 @@ export const AuthProvider = ({ children }) => {
     return { data, error };
   };
 
+  const updateAvatar = async (avatarUrl) => {
+    const { data, error } = await supabase.auth.updateUser({
+      data: { avatar_url: avatarUrl }
+    });
+    if (data?.user) {
+      setUser(data.user);
+    }
+    return { data, error };
+  };
+
   const signUp = async (email, password) => {
     return supabase.auth.signUp({ email, password });
   };
@@ -94,6 +104,7 @@ export const AuthProvider = ({ children }) => {
       loading,
       isSuperAdmin,
       saveProfile,
+      updateAvatar,
       signUp,
       signIn,
       signInWithGoogle,
